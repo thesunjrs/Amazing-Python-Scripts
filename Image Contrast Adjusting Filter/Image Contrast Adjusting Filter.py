@@ -62,6 +62,6 @@ plt.imshow(img_new, cmap='gray')
 plt.title("Image 'After' Contrast Adjustment")
 filename = os.path.basename(img_path)
 
-plt.savefig("./Image Contrast Adjusting Filter/(Contrast Adjusted)"+filename)
+plt.savefig(f"./Image Contrast Adjusting Filter/(Contrast Adjusted){filename}")
 
 plt.show()

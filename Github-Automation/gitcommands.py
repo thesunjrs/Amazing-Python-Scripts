@@ -8,9 +8,7 @@ def init():
 
 
 def createReadme():
-    if _platform == "linux" or _platform == "linux2":
-        call('touch README.md')
-    elif _platform == "darwin":
+    if _platform in ["linux", "linux2", "darwin"]:
         call('touch README.md')
     elif _platform == "win32":
         call('type nul>README.md')
@@ -21,7 +19,7 @@ def add(filelist):
         # perform git add on file
         print(f"{logcolors.SUCCESS}Adding{logcolors.ENDC}",
               file.split('\\')[-1])
-        call(('git add ' + file))
+        call(f'git add {file}')
 
 
 # git commit -m "passed message"
@@ -56,17 +54,17 @@ def commit(filelist, *args, **kwargs):
 
 
 def setremote(url):
-    call('git remote add origin ' + url)
+    call(f'git remote add origin {url}')
 
 
 def setBranch(branch):
-    call('git branch -M ' + branch)
+    call(f'git branch -M {branch}')
 
 
 # git push
 
 
 def push(url, branch):
-    call('git push -u ' + url + ' ' + branch)
+    call(f'git push -u {url} {branch}')
     call('cls', shell=True)
     print(f'{logcolors.SUCCESS}Successfully Pushed Changes{logcolors.ENDC}')

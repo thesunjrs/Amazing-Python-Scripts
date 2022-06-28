@@ -44,8 +44,7 @@ class CreateMeet:
                 credentials = flow.run_local_server(port=0)
             with open(token_file, "wb") as token:
                 dump(credentials, token)
-        calendar_service = build("calendar", "v3", credentials=credentials)
-        return calendar_service
+        return build("calendar", "v3", credentials=credentials)
 
 
 print('------------------------------')
@@ -60,10 +59,7 @@ end = input('Enter ending time : ').strip()
 emails = list(
     input('Enter the emails of guests separated by 1 space each : ').strip().split())
 topic = input('Enter the topic of the meeting : ')
-time = {
-    'start': date+'T'+start+':00.000000',
-    'end': date+'T'+end+':00.000000'
-}
+time = {'start': f'{date}T{start}:00.000000', 'end': f'{date}T{end}:00.000000'}
 guests = {email: email for email in emails}
 meet = CreateMeet(guests, time, topic)
 keys = ['organizer', 'hangoutLink', 'summary', 'start', 'end', 'attendees']
@@ -72,4 +68,4 @@ print('---------------------')
 print('-- Meeting Details --')
 print('---------------------')
 for key in keys:
-    print(key+' : ', details[key])
+    print(f'{key} : ', details[key])

@@ -29,13 +29,13 @@ def speak(audio):
 def wish_user():
     hour = int(datetime.datetime.now().hour)
     if hour >= 0 and hour < 12:
-        speak("Good Morning!" + Master)
+        speak(f"Good Morning!{Master}")
 
     elif hour >= 12 and hour < 16:
-        speak("Good Afternoon!" + Master)
+        speak(f"Good Afternoon!{Master}")
 
     else:
-        speak("Good Evening" + Master)
+        speak(f"Good Evening{Master}")
 
     speak("I am your Desktop-Assistant! How may I help you?")
 
@@ -100,7 +100,7 @@ if __name__ == '__main__':
             speak(f"Its {time} now")
 
         elif 'date today' in query:
-            date = datetime.datetime.today()
+            date = datetime.datetime.now()
             speak(f"Today is {date}")
 
         elif 'send email' in query:

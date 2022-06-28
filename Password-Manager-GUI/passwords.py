@@ -12,8 +12,7 @@ master_password = sys.argv[1]
 
 def sql_connection():
     try:
-        con = sqlite3.connect('passwordManager.db')
-        return con
+        return sqlite3.connect('passwordManager.db')
     except Error:
         print(Error)
 

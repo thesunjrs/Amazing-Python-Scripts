@@ -1,17 +1,17 @@
 from tkinter import *
 
 # Function for finding GST rate
-def GST_Calc() :
+def GST_Calc():
     
     gst_percentField.delete(0, END)
 
     org_cost= int(original_priceField.get())
-    
+
     N_price = int(net_priceField.get())
 
     gst_rate = ((N_price - org_cost) * 100) / org_cost; 
 
-    gst_percentField.insert(10, str(gst_rate) + " % ") 
+    gst_percentField.insert(10, f"{str(gst_rate)} % ") 
 
 def clearAll():
  

@@ -8,7 +8,7 @@ import pickle
 def let_user_pick(options, str):
     print(f"Enter the {str}")
     for idx, element in enumerate(options):
-        print("{}) {}".format(idx+1, element))
+        print(f"{idx + 1}) {element}")
     i = input("Enter number: ")
     try:
         if 0 < int(i) <= len(options):

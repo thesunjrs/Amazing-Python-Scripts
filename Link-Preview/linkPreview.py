@@ -21,8 +21,8 @@ def getTitle(soup):
     res = res.get_text() or res.get("content", None)
 
     if (len(res) > 60):
-        res = res[0:60]
-    if (res == None or len(res.split()) == 0):
+        res = res[:60]
+    if res is None or len(res.split()) == 0:
         res = "Not available"
     return res.strip()
 
@@ -41,8 +41,8 @@ def getDesc(soup):
     res = ogDesc or twitterDesc or metaDesc or pDesc
     res = res.get_text() or res.get("content", None)
     if (len(res) > 60):
-        res = res[0:60]
-    if (res == None or len(res.split()) == 0):
+        res = res[:60]
+    if res is None or len(res.split()) == 0:
         res = "Not available"
     return res.strip()
 
@@ -62,15 +62,15 @@ def getImage(soup, url):
     res = res.get("content", None) or res.get_text() or res.get("src", None)
 
     count = 0
-    for i in range(0, len(res)):
-        if (res[i] == "." or res[i] == "/"):
+    for i in range(len(res)):
+        if res[i] in [".", "/"]:
             count += 1
         else:
             break
     res = res[count::]
-    if ((not res == None) and ((not "https://" in res) or (not "https://" in res))):
-        res = url + "/" + res
-    if (res == None or len(res.split()) == 0):
+    if res is not None and "https://" not in res:
+        res = f"{url}/{res}"
+    if res is None or len(res.split()) == 0:
         res = "Not available"
 
     return res
@@ -94,8 +94,8 @@ url = input("Enter URL to preview : ")
 # parsing and checking the url
 if (url == ""):
     url = 'www.girlscript.tech'
-if ((not "http://" in url) or (not "https://" in url)):
-    url = "https://" + url
+if "http://" not in url or "https://" not in url:
+    url = f"https://{url}"
 
 # printing values
 
@@ -103,10 +103,8 @@ if ((not "http://" in url) or (not "https://" in url)):
 db = {}
 # create file if it doesn't exist
 if not os.path.exists('Link-Preview/db.json'):
-    f = open('Link-Preview/db.json', "w")
-    f.write("{}")
-    f.close()
-
+    with open('Link-Preview/db.json', "w") as f:
+        f.write("{}")
 # read db
 with open('Link-Preview/db.json', 'r+') as file:
     data = file.read()

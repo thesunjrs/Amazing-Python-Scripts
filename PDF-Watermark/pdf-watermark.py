@@ -13,15 +13,13 @@ original_pdf = ori_pdf.getPage(0)
 
 ori_page_count = ori_pdf.getNumPages()
 
-output = open('watermarked.pdf', 'wb')
-final = PdfFileWriter()
+with open('watermarked.pdf', 'wb') as output:
+    final = PdfFileWriter()
 
-for i in range(ori_page_count):
-    each_page = ori_pdf.getPage(i)
-    each_page.mergePage(watermark)
-    final.addPage(each_page)
+    for i in range(ori_page_count):
+        each_page = ori_pdf.getPage(i)
+        each_page.mergePage(watermark)
+        final.addPage(each_page)
 
-with output as page:
-    final.write(page)
-
-output.close()
+    with output as page:
+        final.write(page)

@@ -19,7 +19,7 @@ def pdf2text(PDF_file):
     print("Converting to images......")
     for page in pages:
 
-        filename = "page_"+str(image_counter)+".jpg"
+        filename = f"page_{str(image_counter)}.jpg"
 
         page.save(filename, 'JPEG')
 
@@ -32,7 +32,7 @@ def pdf2text(PDF_file):
     print("Extracting Text.......")
     for i in range(1, filelimit + 1):
 
-        filename = "page_"+str(i)+".jpg"
+        filename = f"page_{str(i)}.jpg"
 
         mtext += str(((pytesseract.image_to_string(Image.open(filename)))))
 
@@ -41,7 +41,7 @@ def pdf2text(PDF_file):
 
     # Deleting Image files
     for i in range(1, filelimit + 1):
-        filename = "page_"+str(i)+".jpg"
+        filename = f"page_{str(i)}.jpg"
         os.remove(filename)
 
     return mtext

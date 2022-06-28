@@ -11,8 +11,7 @@ from sqlite3 import Error
 # Function to connect to the SQL Database
 def sql_connection():
     try:
-        con = sqlite3.connect('./Stack-overflow-scraper/stackoverflow.db')
-        return con
+        return sqlite3.connect('./Stack-overflow-scraper/stackoverflow.db')
     except Error:
         print(Error)
 
@@ -40,8 +39,7 @@ def get_URL():
     if not tag:
         messagebox.showinfo("Alert", "Please Enter tag!")
         return
-    url = 'https://stackoverflow.com/questions/tagged/{}?sort=MostVotes&edited=true'.format(tag)
-    return url
+    return f'https://stackoverflow.com/questions/tagged/{tag}?sort=MostVotes&edited=true'
 
 def number_questions():
     questions = int(questions_box.get())
@@ -55,11 +53,10 @@ def scrape_questions():
         window.update_idletasks()
         time.sleep(0.10)
 
-    question_count = number_questions()  
+    question_count = number_questions()
     count = 0   
 
-    url = get_URL()
-    if url:
+    if url := get_URL():
         page = requests.get(url)
     else:
         clear_progress()
@@ -84,8 +81,8 @@ def scrape_questions():
         entities = (question_text, question_summary, question_link, votes, views)
         sql_insert(con, entities)
         count += 1
-        
-    messagebox.showinfo("Success!", "Questions scrapped successfully!") 
+
+    messagebox.showinfo("Success!", "Questions scrapped successfully!")
     clear_progress()
 
 # Function to fetch stackoverflow questions from DB
@@ -111,11 +108,17 @@ def sql_fetch(con):
     # Format rows
     for row in rows:
         question_text = "{:<65}".format(
-            row[0] if len(row[0]) < 60 else row[0][:56]+"...")
+            row[0] if len(row[0]) < 60 else f"{row[0][:56]}..."
+        )
+
         question_summary = "{:<65}".format(
-            row[1] if len(row[1]) < 60 else row[1][:56]+"...")
+            row[1] if len(row[1]) < 60 else f"{row[1][:56]}..."
+        )
+
         question_link = "{:<40}".format(
-            row[2] if len(row[2]) < 30 else row[2][:36]+"...")
+            row[2] if len(row[2]) < 30 else f"{row[2][:36]}..."
+        )
+
         votes = "{:^15}".format(row[3])
         views = "{:^15}".format(row[4])
         display_text += (question_text + question_summary + question_link + votes + views +'\n')

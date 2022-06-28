@@ -7,8 +7,7 @@ def sql_connection():
     Establishes a connection to the SQL file database
     :return connection object:
     """
-    con = sqlite3.connect('./Twitter_Scraper_without_API/TwitterDatabase.db')
-    return con
+    return sqlite3.connect('./Twitter_Scraper_without_API/TwitterDatabase.db')
 
 
 def sql_table(con):
@@ -47,9 +46,9 @@ while 1:
     count = 0
     # snscrape uses the given string of hashtag to find the desired amount of
     # tweets and associated info
-    for i in sntweets.TwitterSearchScraper('#' + tag).get_items():
+    for i in sntweets.TwitterSearchScraper(f'#{tag}').get_items():
         count += 1
-        entities = ('#'+tag, i.username, i.content, i.url)
+        entities = f'#{tag}', i.username, i.content, i.url
         sql_insert_table(con, entities)
 
         if count == max_count:
@@ -60,7 +59,6 @@ while 1:
     ans = input('Press (y) to continue or any other key to exit: ').lower()
     if ans == 'y':
         continue
-    else:
-        print('Exiting..')
-        break
+    print('Exiting..')
+    break
 

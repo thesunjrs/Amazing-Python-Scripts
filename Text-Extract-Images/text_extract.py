@@ -43,7 +43,7 @@ def extract():
         print(img_file)
 
         # The output text file
-        text_file = img_file + ".txt"
+        text_file = f"{img_file}.txt"
         output_path = os.path.join(destination_path, text_file)
 
         # saving the  text for every image in a separate .txt file

@@ -46,10 +46,10 @@ class Rds(object):
 
     @staticmethod
     def _can_stop_instance(tags):
-        for tag in tags:
-            if tag["Key"].lower() == 'excludepower' and tag['Value'].lower() == 'true':
-                return False
-        return True
+        return not any(
+            tag["Key"].lower() == 'excludepower' and tag['Value'].lower() == 'true'
+            for tag in tags
+        )
 
     @staticmethod
     def _can_delete_snapshot(tags):
@@ -64,23 +64,21 @@ class Rds(object):
         tags = instance['TagList']
         if self._can_delete_instance(tags):
             self._delete_instance(identifier)
-        else:
-            if self._can_stop_instance(tags) and instance['DBInstanceStatus'] == 'available':
-                try:
-                    self._stop_instance(identifier)
-                except Exception as e:
-                    print(str(e))
+        elif self._can_stop_instance(tags) and instance['DBInstanceStatus'] == 'available':
+            try:
+                self._stop_instance(identifier)
+            except Exception as e:
+                print(e)
 
     def _cleanup_cluster(self, cluster):
         tags = cluster['TagList']
         if self._can_delete_instance(tags):
             self._delete_cluster(cluster['DBClusterIdentifier'])
-        else:
-            if self._can_stop_instance(tags) and cluster['Status'] == 'available':
-                try:
-                    self._stop_cluster(cluster['DBClusterIdentifier'])
-                except Exception as e:
-                    print(str(e))
+        elif self._can_stop_instance(tags) and cluster['Status'] == 'available':
+            try:
+                self._stop_cluster(cluster['DBClusterIdentifier'])
+            except Exception as e:
+                print(e)
 
     def _cleanup_snapshots_clusters(self):
         snapshots = self.rds.describe_db_cluster_snapshots()
@@ -92,7 +90,7 @@ class Rds(object):
                     self._delete_cluster_snapshot(
                         snapshot['DBClusterSnapshotIdentifier'])
                 except Exception as e:
-                    print(str(e))
+                    print(e)
 
     def _cleanup_snapshot_instance(self):
         snapshots = self.rds.describe_db_snapshots()
@@ -104,7 +102,7 @@ class Rds(object):
                     self._delete_instance_snapshot(
                         snapshot['DBSnapshotIdentifier'])
                 except Exception as e:
-                    print(str(e))
+                    print(e)
 
     @staticmethod
     def _is_older_snapshot(snapshot_datetime):
@@ -112,10 +110,7 @@ class Rds(object):
         snapshot_date = datetime.date(int(snapshot_date[0]), int(
             snapshot_date[1]), int(snapshot_date[2]))
         today = datetime.date.today()
-        if abs(today - snapshot_date).days > 2:
-            return True
-        else:
-            return False
+        return abs(today - snapshot_date).days > 2
 
     @staticmethod
     def _check_snapshot_tag(tags):
@@ -123,10 +118,7 @@ class Rds(object):
         for tag in tags:
             if tag['Key'].lower() == 'retain' and tag['Value'].lower() == 'true':
                 flag = True
-        if flag:
-            return True
-        else:
-            return False
+        return bool(flag)
 
 
 if __name__ == "__main__":

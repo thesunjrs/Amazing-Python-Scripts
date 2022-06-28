@@ -24,7 +24,7 @@ def attachmentdownload(resulthreads):
 if __name__ == '__main__':
     query = input("Enter search query: ")
     # appending to make sure the result threads always has an attachment
-    newquery = query + " + has:attachment"
+    newquery = f"{query} + has:attachment"
     # search functions accepts all the operators described at https://support.google.com/mail/answer/7190?hl=en
     resulthreads = ezgmail.search(newquery)
 

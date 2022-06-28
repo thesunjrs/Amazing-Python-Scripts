@@ -10,7 +10,7 @@ category = input("Enter category: ")
 number_articles = int(input("Enter number of articles: "))
 driver_path = input('Enter chrome driver path: ')
 
-url = 'https://hashnode.com/search?q={}'.format(category)
+url = f'https://hashnode.com/search?q={category}'
 
 # initiating the webdriver. Parameter includes the path of the webdriver.
 driver = webdriver.Chrome(driver_path)
@@ -33,7 +33,7 @@ for blog in blogs:
     check_blog = blog.find('a')['href']
     if check_blog[0] == '/':
         continue
-    
+
     # If div is blog then start scraping individual blogs
     blog_link = blog.find('a', class_='items-start')['href']
     post_url = blog_link
@@ -44,7 +44,7 @@ for blog in blogs:
     soup = BeautifulSoup(post_html, "html.parser")
     title = soup.find('h1', itemprop = 'headline name').text
     author = soup.find('span', itemprop = 'name').text
-    
+
     # Post content found
     blog_content_body = soup.find(
         'div', itemprop='text')
@@ -52,8 +52,10 @@ for blog in blogs:
 
     title_string = (title.strip()).encode(
         'latin-1', 'replace').decode('latin-1')
-    author_string = ("By - {}".format(author.strip())
-                     ).encode('latin-1', 'replace').decode('latin-1')
+    author_string = f"By - {author.strip()}".encode(
+        'latin-1', 'replace'
+    ).decode('latin-1')
+
 
     # Add a page
     pdf = FPDF()
@@ -77,7 +79,7 @@ for blog in blogs:
 
     # save the pdf with name .pdf
     pdf_title = ''.join(e for e in title if e.isalnum())
-    pdf.output("{}.pdf".format(pdf_title))
+    pdf.output(f"{pdf_title}.pdf")
 
     count = count + 1
     if(count == number_articles):

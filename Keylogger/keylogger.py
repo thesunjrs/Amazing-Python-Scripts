@@ -1,7 +1,7 @@
 from pynput.keyboard import Key, Listener
 import random
 
-file_name = 'file' + str(random.randint(0, 10000)) + '.txt'
+file_name = f'file{random.randint(0, 10000)}.txt'
 f = open(file_name, 'w')
 
 

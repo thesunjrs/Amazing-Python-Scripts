@@ -30,17 +30,23 @@ def get_problem(category, no_of_problems):
     prblm_info = {}
     try:
         #checking if there is no network or any other iisue
-        driver.get(baseurl + '/' + category)
+        driver.get(f'{baseurl}/{category}')
         wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='question-app']/div/div[2]/div[2]/div[2]/table/tbody[1]/tr[1]")))
     except TimeoutException as exception:
         print("Couldn't fetch problem. Network issue or page slow to render. Try again")
         os._exit(-1)
-    
+
     for problem_index in range(1, no_of_problems + 1):
         #set problem name
-        problem_name = driver.find_element_by_xpath("//*[@id='question-app']/div/div[2]/div[2]/div[2]/table/tbody[1]/tr[{}]/td[3]".format(problem_index)).text
+        problem_name = driver.find_element_by_xpath(
+            f"//*[@id='question-app']/div/div[2]/div[2]/div[2]/table/tbody[1]/tr[{problem_index}]/td[3]"
+        ).text
+
         #set problem url
-        problem_url = driver.find_element_by_xpath("//*[@id='question-app']/div/div[2]/div[2]/div[2]/table/tbody[1]/tr[{}]/td[3]/div/a".format(problem_index)).get_attribute('href')
+        problem_url = driver.find_element_by_xpath(
+            f"//*[@id='question-app']/div/div[2]/div[2]/div[2]/table/tbody[1]/tr[{problem_index}]/td[3]/div/a"
+        ).get_attribute('href')
+
         print(problem_name," ",problem_url)
         prblm_info[problem_name] = problem_url
     return prblm_info
@@ -90,7 +96,7 @@ def to_pdf(problem):
     pdf.write(5, 'Problem_Link: ')
     pdf.write(5,url,url)
     title = title.rstrip()
-    pdf.output("./LeetCode-Scrapper/"+title+".pdf")   
+    pdf.output(f"./LeetCode-Scrapper/{title}.pdf")   
     
     
 def main():
@@ -99,10 +105,8 @@ def main():
     info = get_problem(problem_difficulty[category], no_of_problems)
     for name, url in info.items():
         problem=get_description(url,name)
-        if(problem is not None ):
+        if (problem is not None ):
             to_pdf(problem)
-        else:
-            pass
             
 if __name__ == '__main__':
     main()

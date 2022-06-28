@@ -44,30 +44,16 @@ def read_tensor_from_image_file(file_name, input_height=299, input_width=299,
         dims_expander, [input_height, input_width])
     normalized = tf.divide(tf.subtract(resized, [input_mean]), [input_std])
     sess = tf.Session()
-    result = sess.run(normalized)
-
-    return result
+    return sess.run(normalized)
 
 
 def load_labels(label_file):
-    label = []
     proto_as_ascii_lines = tf.gfile.GFile(label_file).readlines()
-    for l in proto_as_ascii_lines:
-        label.append(l.rstrip())
-    return label
+    return [l.rstrip() for l in proto_as_ascii_lines]
 
 
 def main(img):
     file_name = img
-    model_file = "retrained_graph.pb"
-    label_file = "retrained_labels.txt"
-    input_height = 224
-    input_width = 224
-    input_mean = 128
-    input_std = 128
-    input_layer = "input"
-    output_layer = "final_result"
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--image", help="image to be processed")
     parser.add_argument("--graph", help="graph/model to be executed")
@@ -80,25 +66,16 @@ def main(img):
     parser.add_argument("--output_layer", help="name of output layer")
     args = parser.parse_args()
 
-    if args.graph:
-        model_file = args.graph
+    model_file = args.graph or "retrained_graph.pb"
     if args.image:
         file_name = args.image
-    if args.labels:
-        label_file = args.labels
-    if args.input_height:
-        input_height = args.input_height
-    if args.input_width:
-        input_width = args.input_width
-    if args.input_mean:
-        input_mean = args.input_mean
-    if args.input_std:
-        input_std = args.input_std
-    if args.input_layer:
-        input_layer = args.input_layer
-    if args.output_layer:
-        output_layer = args.output_layer
-
+    label_file = args.labels or "retrained_labels.txt"
+    input_height = args.input_height or 224
+    input_width = args.input_width or 224
+    input_mean = args.input_mean or 128
+    input_std = args.input_std or 128
+    input_layer = args.input_layer or "input"
+    output_layer = args.output_layer or "final_result"
     graph = load_graph(model_file)
     t = read_tensor_from_image_file(file_name,
                                     input_height=input_height,
@@ -106,8 +83,8 @@ def main(img):
                                     input_mean=input_mean,
                                     input_std=input_std)
 
-    input_name = "import/" + input_layer
-    output_name = "import/" + output_layer
+    input_name = f"import/{input_layer}"
+    output_name = f"import/{output_layer}"
     input_operation = graph.get_operation_by_name(input_name)
     output_operation = graph.get_operation_by_name(output_name)
 

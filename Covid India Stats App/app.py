@@ -132,12 +132,14 @@ def create_state_list(index):
                   "Manipur", "Arunachal Pradesh", "Meghalaya", "Nagaland", "Sikkim", "Mizoram"]
     payload_list = []
     start_index = 0 + 3 * (index - 1)
-    end_index = 29 if (start_index + 3) > 29 else (start_index + 3)
+    end_index = 29 if start_index > 26 else start_index + 3
     for i in range(start_index, end_index):
-        postback = {}
-        postback["type"] = "postback"
-        postback["title"] = state_list[i]
-        postback["payload"] = state_list[i]
+        postback = {
+            "type": "postback",
+            "title": state_list[i],
+            "payload": state_list[i],
+        }
+
         payload_list.append(postback)
     return payload_list
 
@@ -150,17 +152,15 @@ def get_stats_send(sender_id, state):
         if i['state'] == state:
             x = i
             break
-    message_data = json.dumps({
-        "recipient": {
-            "id": sender_id
-        },
-        "message": {
-            "text": "ACTIVE CASES: {}\nCONFIRMED CASES: {}\nDEATHS: {}\nRECOVERED: {}".format(x['active'],
-                                                                                              x['confirmed'],
-                                                                                              x['deaths'],
-                                                                                              x['recovered'])
+    message_data = json.dumps(
+        {
+            "recipient": {"id": sender_id},
+            "message": {
+                "text": f"ACTIVE CASES: {x['active']}\nCONFIRMED CASES: {x['confirmed']}\nDEATHS: {x['deaths']}\nRECOVERED: {x['recovered']}"
+            },
         }
-    })
+    )
+
     call_send_api(message_data)
 
 

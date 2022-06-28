@@ -18,19 +18,13 @@ def timer():
                 m += 1
             elif(m == 59):
                 m = 0
-        if(m < 10):
-            m = str(0)+str(m)
-        else:
-            m = str(m)
-        if(s < 10):
-            s = str(0)+str(s)
-        else:
-            s = str(s)
-        now = m+":"+s
+        m = str(0)+str(m) if (m < 10) else str(m)
+        s = str(0)+str(s) if (s < 10) else str(s)
+        now = f"{m}:{s}"
 
         txt_var.set(now)
-        if work:
-            root.after(1000, timer)
+    if work:
+        root.after(1000, timer)
 # start function
 
 

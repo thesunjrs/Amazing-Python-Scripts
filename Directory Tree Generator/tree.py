@@ -10,7 +10,7 @@ def realname(path, root=None):
     result = os.path.basename(path)
     if os.path.islink(path):
         realpath = os.readlink(path)
-        result = '%s -> %s' % (os.path.basename(path), realpath)
+        result = f'{os.path.basename(path)} -> {realpath}'
     return result
 
 
@@ -29,13 +29,13 @@ def ptree(startpath, depth=-1):
         if level > 0:
             indent = '|   ' * (level-1) + '|-- '
         subindent = '|   ' * (level) + '|-- '
-        print('{}{}/'.format(indent, realname(root)))
+        print(f'{indent}{realname(root)}/')
 
         for d in dirs:
             if os.path.islink(os.path.join(root, d)):
-                print('{}{}'.format(subindent, realname(d, root=root)))
+                print(f'{subindent}{realname(d, root=root)}')
         for f in files:
-            print('{}{}'.format(subindent, realname(f, root=root)))
+            print(f'{subindent}{realname(f, root=root)}')
 
 
 if __name__ == '__main__':

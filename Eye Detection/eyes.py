@@ -6,7 +6,7 @@ capture = cv2.VideoCapture(0)  # To open camera 1
 
 if (capture.isOpened() == False):
     print("Sorry")
-while(capture.isOpened()):
+while (capture.isOpened()):
 
     # Load trained cascade classifier
     ret, color_image = capture.read()
@@ -20,8 +20,17 @@ while(capture.isOpened()):
     # Count the number of eyes
     a = str(len(eyes))
     font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(color_image, a+" eyes detected", (15, 350),
-                font, 2, (0, 0, 0), 2, cv2.LINE_AA)
+    cv2.putText(
+        color_image,
+        f"{a} eyes detected",
+        (15, 350),
+        font,
+        2,
+        (0, 0, 0),
+        2,
+        cv2.LINE_AA,
+    )
+
     # Draw rectangle around the eyes
     for (x, y, w, h) in eyes:
         cv2.rectangle(color_image, (x, y), (x + w, y + h), (0, 255, 0), 2)

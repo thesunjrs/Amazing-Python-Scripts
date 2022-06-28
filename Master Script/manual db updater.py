@@ -62,8 +62,7 @@ def check_data():
     data = read_data()
     paths = []
     for category in data:
-        for project in data[category]:
-            paths.append(data[category][project][0])
+        paths.extend(data[category][project][0] for project in data[category])
     i=0
     repo_dir = os.listdir("../")
     ignore = [".deepsource.toml", ".git", ".github", ".gitignore",
@@ -71,7 +70,7 @@ def check_data():
               "README.md", "SCRIPTS.md", "script_updater.py",
               "Template for README.md", "Master Script", ]
     for element in repo_dir:
-        if (not element in paths) and (not element in ignore):
+        if element not in paths and element not in ignore:
             print(element)
             i+=1
 
@@ -84,10 +83,7 @@ def check_data():
 if __name__ == "__main__":
     (options, args) = parser.parse_args()
 
-    # Inputs
-    add = options.add
-
-    if add:
+    if add := options.add:
         add_script()
     #add_script()
     check_data()

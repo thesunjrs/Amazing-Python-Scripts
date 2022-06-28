@@ -9,10 +9,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=['POST', 'GET'])
 def welcome():
-    message = "Welcome to create your own test Api for AWS for Ec2 just use your Url/ec2 and your 100 ec2 " \
-              "instance will be created in test environment if you dont want to use it in api based " \
-              "just go to code and use awsTesting class and done "
-    return message
+    return (
+        "Welcome to create your own test Api for AWS for Ec2 just use your Url/ec2 and your 100 ec2 "
+        "instance will be created in test environment if you dont want to use it in api based "
+        "just go to code and use awsTesting class and done "
+    )
 
 
 # this api is to create an ec2 for testing

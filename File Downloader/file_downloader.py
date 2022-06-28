@@ -4,6 +4,7 @@
         This python script will help users to download any kind of files, irrespective of their size from the internet.<br>
         You just need to have the url and you are good to go!
 """
+
 import os
 import requests
 from tqdm import tqdm
@@ -30,7 +31,7 @@ will not get data at once, but will get data one by one
 """
 
 extension=(os.path.splitext(url))[-1]
-file="file"+extension
+file = f"file{extension}"
 
 iterations=math.ceil(file_size/chunk_size)
 

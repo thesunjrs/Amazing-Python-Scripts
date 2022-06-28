@@ -13,8 +13,7 @@ def getNestedFiles(rootDir, ignoredirs):
     nestfiles = []
     for path, subdirs, files in walk(rootDir):
         if (all(ele not in path for ele in ignoredirs)):
-            for name in files:
-                nestfiles.append(join(path, name))
+            nestfiles.extend(join(path, name) for name in files)
     return nestfiles
 
 

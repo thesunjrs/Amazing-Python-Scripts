@@ -13,11 +13,14 @@ client_credentials_manager = SpotifyClientCredentials(
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 name = input("Enter Artist Name: ")  # chosen artist
 result = sp.search(name)  # search query
-artist_uri = ''
-for row in result['tracks']['items'][0]['artists']:
-    if name.lower() in row['name'].lower():
-        artist_uri = row['uri']
-        break
+artist_uri = next(
+    (
+        row['uri']
+        for row in result['tracks']['items'][0]['artists']
+        if name.lower() in row['name'].lower()
+    ),
+    '',
+)
 
 # Pull all of the artist's albums
 sp_albums = sp.artist_albums(artist_uri, album_type='album')
@@ -32,13 +35,14 @@ for i in range(len(sp_albums['items'])):
 
 def albumSongs(uri):
     album = uri  # assign album uri to a_name
-    spotify_albums[album] = {}  # Creates dictionary for that specific album
-    # Create keys-values of empty lists inside nested dictionary for album
-    spotify_albums[album]['album'] = []  # create empty list
-    spotify_albums[album]['track_number'] = []
-    spotify_albums[album]['id'] = []
-    spotify_albums[album]['name'] = []
-    spotify_albums[album]['uri'] = []
+    spotify_albums[album] = {
+        'album': [],
+        'track_number': [],
+        'id': [],
+        'name': [],
+        'uri': [],
+    }
+
     tracks = sp.album_tracks(album)  # pull data on album tracks
     for n in range(len(tracks['items'])):  # for each song track
         # append album name tracked via album_count
@@ -51,27 +55,21 @@ def albumSongs(uri):
 
 
 spotify_albums = {}
-album_count = 0
-for i in album_uris:  # each album
+for i in album_uris:
     albumSongs(i)
-    album_count += 1  # Updates album count once all tracks have been added
 
 
 def popularity(album):
     spotify_albums[album]['popularity'] = []
-    track_count = 0
     for track in spotify_albums[album]['uri']:
         pop = sp.track(track)
         spotify_albums[album]['popularity'].append(pop['popularity'])
-        track_count += 1
 
 
 for i in spotify_albums:
     popularity(i)
 
-dic_df = {}
-dic_df['name'] = []
-dic_df['popularity'] = []
+dic_df = {'name': [], 'popularity': []}
 for album in spotify_albums:
     for feature in ['name', 'popularity']:
         dic_df[feature].extend(spotify_albums[album][feature])

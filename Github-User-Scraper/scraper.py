@@ -15,8 +15,7 @@ dates = {'Today':'daily','This week':'weekly','This month':'monthly'}
 # Function to connect to the SQL Database
 def sql_connection():
     try:
-        con = sqlite3.connect('./Github-User-Scraper/githubUsers.db')
-        return con
+        return sqlite3.connect('./Github-User-Scraper/githubUsers.db')
     except Error:
         print(Error)
     
@@ -63,17 +62,24 @@ def sql_fetch(con):
     for row in rows:
         name = "{:<30}".format(row[0])
         profile_link = "{:<40}".format(
-            row[1] if len(row[1]) < 30 else row[1][:26]+"...")
+            row[1] if len(row[1]) < 30 else f"{row[1][:26]}..."
+        )
+
         date_range = "{:<30}".format(
-            row[2] if len(row[2]) < 30 else row[2][:26]+"...")
-        repo = "{:<30}".format(
-            row[3] if len(row[3]) < 30 else row[3][:26]+"...")
+            row[2] if len(row[2]) < 30 else f"{row[2][:26]}..."
+        )
+
+        repo = "{:<30}".format(row[3] if len(row[3]) < 30 else f"{row[3][:26]}...")
         repo_lang = "{:^20}".format(
-            row[4] if len(row[4]) < 30 else row[4][:26]+"...")
+            row[4] if len(row[4]) < 30 else f"{row[4][:26]}..."
+        )
+
         repo_link = "{:<30}".format(
-            row[5] if len(row[5]) < 30 else row[5][:26]+"...")
+            row[5] if len(row[5]) < 30 else f"{row[5][:26]}..."
+        )
+
         display_text += (name + profile_link + date_range + repo + repo_lang + repo_link + '\n')
-    
+
     return display_text
     
 
@@ -81,8 +87,7 @@ def sql_fetch(con):
 def get_URL():
     url_lang = language.get()
     url_date = dates[date.get()]
-    url = 'https://github.com/trending/developers/{}?since={}'.format(url_lang.lower(), url_date)
-    return url
+    return f'https://github.com/trending/developers/{url_lang.lower()}?since={url_date}'
 
 def scrape_users():
     url_lang = language.get()
@@ -119,16 +124,14 @@ def date_helper():
     date_range_type = dates[date.get()]
     today = datetime.date.today()
     if date_range_type == 'daily':
-        formatted = today.strftime("%d/%m/%Y")
-        return formatted
+        return today.strftime("%d/%m/%Y")
     elif date_range_type == 'weekly':
         from_date = ( datetime.date.today() - datetime.timedelta(days = 7))
         formatted_today = today.strftime("%d/%m/%Y")
         formatted_from_date = from_date.strftime("%d/%m/%Y")
-        return "{} - {}".format(formatted_from_date,formatted_today)
+        return f"{formatted_from_date} - {formatted_today}"
     else:
-        month = today.strftime("%B") 
-        return month
+        return today.strftime("%B")
 
 
 # Creating tkinter window

@@ -9,7 +9,7 @@ root.title("BMI CALCULATOR")
 def BMI_Cal():
     Bheight = float(var2.get())
     Bweight = float(var1.get())
-    BMI = str('%.2f' % (Bweight / (Bheight * Bheight)))
+    BMI = str('%.2f' % (Bweight / Bheight**2))
     labelBMIResult.config(text=BMI)
 
 

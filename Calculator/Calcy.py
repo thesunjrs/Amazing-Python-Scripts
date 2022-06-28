@@ -18,11 +18,7 @@ def performMath():
     global run
     global previous
     equation = ""
-    if previous == 0:
-        equation = input("Enter Equation:")
-    else:
-        equation = input(str(previous))
-
+    equation = input("Enter Equation:") if previous == 0 else input(str(previous))
     if equation == 'quit':
         print("GoodBye, Human..!")
         run = False
@@ -30,10 +26,7 @@ def performMath():
     else:
         equation = re.sub('[a-zA-Z,:()"{}"]', '', equation)
 
-        if previous == 0:
-            previous = eval(equation)
-        else:
-            previous = eval(str(equation) + equation)
+        previous = eval(equation) if previous == 0 else eval(str(equation) + equation)
 
 
 while run:

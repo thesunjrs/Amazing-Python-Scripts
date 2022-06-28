@@ -37,7 +37,7 @@ data =  api.json()
 
 bring_umbrella = False
 
-for i in range(0,12):
+for i in range(12):
     hourly_condition = data['hourly'][i]['weather'][0]['id']
     if(hourly_condition<700):
         bring_umbrella = True

@@ -13,24 +13,22 @@ filename = "job_records.csv"
 fields = ['Job Title', 'Company', 'Location', 'Job Description', 'URL']
 
 # Get user choice until valid choice is entered
-while (True):
+while True:
     search_option = int(input(
         "Enter 1 - to search by location \nEnter 2 - to search by role, skill or company \nEnter 3 for both : "))
-    if (search_option == 1):
+    if search_option == 1:
         location = input("Enter location :")
-        url = 'https://www.monsterindia.com/srp/results?locations={}'.format(
-            location)
+        url = f'https://www.monsterindia.com/srp/results?locations={location}'
         break
-    elif (search_option == 2):
+    elif search_option == 2:
         job_type = input("Enter role, skill or company : ")
-        url = 'https://www.monsterindia.com/srp/results?query={}'.format(
-            job_type)
+        url = f'https://www.monsterindia.com/srp/results?query={job_type}'
         break
-    elif (search_option == 3):
+    elif search_option == 3:
         location = input("Enter location :")
         job_type = input("Enter role, skill or company : ")
-        url = 'https://www.monsterindia.com/srp/results?query={}&locations={}'.format(
-            job_type, location)
+        url = f'https://www.monsterindia.com/srp/results?query={job_type}&locations={location}'
+
         break
     else:
         continue
@@ -60,11 +58,7 @@ with open(filename, 'w', newline='', encoding='utf8') as csvfile:
         company_name_tag = job_title_div.find(
             'span', {"class": "company-name"})
         company_name = company_name_tag.find('a', {"class": "under-link"})
-        if (company_name is None):
-            company_name = 'confidential'
-        else:
-            company_name = company_name.text
-
+        company_name = 'confidential' if (company_name is None) else company_name.text
         # Get location
         company_location_tag = job_title_div.find('span', {"class": "loc"})
         company_location = company_location_tag.find('small').text.strip()

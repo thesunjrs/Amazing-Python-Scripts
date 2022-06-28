@@ -7,7 +7,7 @@ def search():
     word = enterWordEntry.get()
 
     text = word.strip()
-    messagebox.showinfo("Input", " Input = "+text)
+    messagebox.showinfo("Input", f" Input = {text}")
     model_object = Model.model()
 
     if word != "" and word != " " and word is not None:

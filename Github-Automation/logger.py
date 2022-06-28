@@ -15,13 +15,13 @@ def writedata(*args, **kwargs):
     if (updatedbuffer != -1):
         buffer = updatedbuffer
         with open(jsonpath, 'w') as file:
-            json.dump([obj for obj in buffer], file, indent=4)
+            json.dump(list(buffer), file, indent=4)
     elif (path and diff):
         data['path'] = path
         data['changes'] = diff
         buffer.append(data)
         with open(jsonpath, 'w') as file:
-            json.dump([obj for obj in buffer], file, indent=4)
+            json.dump(list(buffer), file, indent=4)
 
 
 def updatedata(filename, diffarr):

@@ -41,15 +41,11 @@ def scraper():
 
     # Formatting the cryptocurrency data stored in the list
     stocks_data = ""
+    format_cell = "{:<30}"
     for stock in table_data:
-        single_record = ""
-        for cell in stock:
-            format_cell = "{:<30}"
-            single_record += format_cell.format(cell[:20])
-        single_record += "\n"
+        single_record = "".join(format_cell.format(cell[:20]) for cell in stock) + "\n"
         stocks_data += single_record
 
-     # Adding the formatted data into tkinter GUI
     query_label.config(state=tk.NORMAL)
     query_label.delete(1.0, "end")
     query_label.insert(1.0, stocks_data)

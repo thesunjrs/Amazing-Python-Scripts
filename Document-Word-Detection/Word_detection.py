@@ -2,6 +2,7 @@
 output : word detection on document (Simple OCR type of application)
 '''
 
+
 import cv2
 import numpy as np
 import imutils
@@ -26,8 +27,8 @@ thresh = cv2.threshold(blur, 0, 255,
 
 horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (25, 1))
 vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 25))
-print('horizontal kernel : {}'.format(horizontal_kernel))
-print('vertical kernel : {}'.format(vertical_kernel))
+print(f'horizontal kernel : {horizontal_kernel}')
+print(f'vertical kernel : {vertical_kernel}')
 
 # opening (erosion followed by dilation)
 

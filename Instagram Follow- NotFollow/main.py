@@ -42,7 +42,9 @@ class InstaBot:
         """ names of unfollowers
         """
         self.driver.find_element_by_xpath(
-            "//a[contains(@href,'/{}')]".format(self.username)).click()
+            f"//a[contains(@href,'/{self.username}')]"
+        ).click()
+
         sleep(2)
         self.driver.find_element_by_xpath(
             "//a[contains(@href,'/following')]").click()

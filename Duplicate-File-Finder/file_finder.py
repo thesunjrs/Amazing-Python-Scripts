@@ -14,7 +14,7 @@ def image_finder(parent_folder):
     duplicate_img = {}
     for dirName, subdirs, fileList in os.walk(parent_folder):
         # Iterating over various Sub-Folders
-        print('Scanning %s...' % dirName)
+        print(f'Scanning {dirName}...')
         for filename in fileList:
             # Get the path to the file
             path = os.path.join(dirName, filename)
@@ -40,29 +40,24 @@ def delete_duplicate(duplicate_img):
 # Joins two dictionaries
 def join_dicts(dict1, dict2):
     for key in dict2.keys():
-        if key in dict1:
-            dict1[key] = dict1[key] + dict2[key]
-        else:
-            dict1[key] = dict2[key]
+        dict1[key] = dict1[key] + dict2[key] if key in dict1 else dict2[key]
 
 
 # For finding Hash of various Files
 # If 2 files have the same md5checksum,they most likely have the same content
 def hash_file(path, blocksize=65536):
-    img_file = open(path, 'rb')
-    hasher = hashlib.md5()
-    buf = img_file.read(blocksize)
-    while len(buf) > 0:
-        hasher.update(buf)
+    with open(path, 'rb') as img_file:
+        hasher = hashlib.md5()
         buf = img_file.read(blocksize)
-    img_file.close()
+        while len(buf) > 0:
+            hasher.update(buf)
+            buf = img_file.read(blocksize)
     # Return Hex MD5
     return hasher.hexdigest()
 
 
 def print_results(dict1):
-    results = list(filter(lambda x: len(x) > 1, dict1.values()))
-    if len(results) > 0:
+    if results := list(filter(lambda x: len(x) > 1, dict1.values())):
         print('Found Duplicated Images - ')
         print('Details -')
         print('<--------------------->')
@@ -86,7 +81,7 @@ if __name__ == '__main__':
                 # Find the duplicated files and append them to the dictionary
                 join_dicts(duplicate, image_finder(i))
             else:
-                print('%s is not a valid path, please verify' % i)
+                print(f'{i} is not a valid path, please verify')
                 sys.exit()
         print_results(duplicate)
         # Delete Duplicate Images
@@ -99,10 +94,9 @@ if __name__ == '__main__':
                 print("Deleting Duplicate Files\n")
                 delete_duplicate(duplicate)
                 print("Thank You\n")
-                break
             else:
                 print("Nothing Deleted!!! Thank You\n")
-                break
+            break
     else:
         print("Use Command Line Interface")
         print("Hint: python file_finder.py <path of folders>")

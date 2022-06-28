@@ -20,7 +20,7 @@ def saveImage():
 # Function to scrape image source from bing
 def getImage():
     search = search_box.get()
-    url = "https://www.bing.com/images/search?q={}".format(search.replace(' ','?'))
+    url = f"https://www.bing.com/images/search?q={search.replace(' ', '?')}"
     page = requests.get(url)
 
     # Start scraping resultant html data
@@ -29,14 +29,12 @@ def getImage():
     images_ul = images_div.find('ul')
 
     image = images_ul.find("li")
-    link = image.find('img').get('src')
-
-    return link
+    return image.find('img').get('src')
 
 # Function to show image in the GUI
 def showImage():
     link = getImage()
-    str_value = '<img src="{}">'.format(link)
+    str_value = f'<img src="{link}">'
     my_label.set_html(str_value)
 
 

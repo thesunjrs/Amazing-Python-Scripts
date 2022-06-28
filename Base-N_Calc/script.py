@@ -33,8 +33,8 @@ def Con_Dec_to_Base_Y(num, base_y):
     # Converting the integeral part
     integeral_part = int(num)
     res_int = []
-    while int(integeral_part) != 0:
-        integeral_part = integeral_part / base_y                    # Divide number by base
+    while integeral_part != 0:
+        integeral_part /= base_y
         element = (integeral_part - int(integeral_part)) * base_y   # Get the remainder
         res_int.append(str(int(element)))                           # Append element
     res_int = res_int[::-1]                                         # Numbers are organised from LCM to HCM
@@ -49,11 +49,7 @@ def Con_Dec_to_Base_Y(num, base_y):
         res_dec.append(str(int(decimal_part)))                      # Append element
 
     # Organize result
-    if len(res_dec) == 0:
-        res = res_int                                               # If result has decimal numbers
-    else:
-        res = res_int + ["."] + res_dec                             # If not
-
+    res = res_int + ["."] + res_dec if res_dec else res_int
     # Return grouped result
     return " ".join(res)
 
@@ -93,10 +89,8 @@ def Main():
     # <----- check base x value ----->
     if base_x == 10:
         Result = Con_Dec_to_Base_Y(num, base_y)
-    if base_y == 10:
-        Result = Con_Base_X_to_Dec(num, base_x)
-    else:
-        Result = Con_Base_X_to_Dec(num, base_x)
+    Result = Con_Base_X_to_Dec(num, base_x)
+    if base_y != 10:
         Result = Con_Dec_to_Base_Y(Result, base_y)
 
     Status["text"] = "Successfull Conversion! :0 "

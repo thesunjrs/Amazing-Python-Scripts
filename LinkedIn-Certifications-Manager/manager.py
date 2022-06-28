@@ -40,7 +40,7 @@ class LinkedIn:
     def addCertData(self, name, org, credId, credUrl):
         sleep(5)
         currentUrl = driver.current_url
-        driver.get(currentUrl+'edit/forms/certification/new/')
+        driver.get(f'{currentUrl}edit/forms/certification/new/')
         nameInput = WebDriverWait(driver, 10).until(EC.presence_of_element_located(
             (By.XPATH, xLinkedin['xCertName'])))
         nameInput.send_keys(name)

@@ -45,24 +45,14 @@ class PageSpeedResponse(Response):
         metrics = self._json['originLoadingExperience']['metrics']
         keys_ = list(metrics.keys())
 
-        originLoadingExperienceDetailed_ = {}
-
-        for each in keys_:
-            originLoadingExperienceDetailed_[each] = metrics[each]['category']
-
-        return originLoadingExperienceDetailed_
+        return {each: metrics[each]['category'] for each in keys_}
 
     @property
     def loadingExperienceDetailed(self):
         metrics = self._json['loadingExperience']['metrics']
         keys_ = list(metrics.keys())
 
-        loadingExperienceDetailed_ = {}
-
-        for each in keys_:
-            loadingExperienceDetailed_[each] = metrics[each]['category']
-
-        return loadingExperienceDetailed_
+        return {each: metrics[each]['category'] for each in keys_}
 
     # In case of re-directs
     @property

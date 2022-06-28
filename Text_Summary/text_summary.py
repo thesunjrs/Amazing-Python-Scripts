@@ -22,12 +22,11 @@ def read_article(file_name):
     file = open(file_name, 'r', encoding="utf-8")
     filedata = file.readlines()
     article = filedata[0].split(". ")
-    sentences = []
+    sentences = [
+        sentence.replace("[^a-zA-Z]", " ").split(" ") for sentence in article
+    ]
 
-    for sentence in article:
-        # Uncomment if you want to print the whole file on screen.
-        # print(sentence)
-        sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
+
     sentences.pop()
 
     return sentences
@@ -95,8 +94,6 @@ def generate_summary(file_name, top_n=5):
     :return: Summary of text
     """
     stop_words = stopwords.words('english')
-    summarize_text = []
-
     # Step 1 - Read text anc split it
     sentences = read_article(file_name)
 
@@ -111,15 +108,10 @@ def generate_summary(file_name, top_n=5):
     ranked_sentence = sorted(((scores[i], s) for i, s in enumerate(sentences)),
                              reverse=True)
 
-    # Print the index of the statements
-    # print("Indexes of top ranked_sentence order are ", ranked_sentence)
-
-    for i in range(top_n):
-        summarize_text.append(" ".join(ranked_sentence[i][1]))
-
+    summarize_text = [" ".join(ranked_sentence[i][1]) for i in range(top_n)]
     # Step 5 - Output of the text file
     filepath_index = file_name.find('.txt')
-    outputpath = file_name[:filepath_index] + '_textRank.txt'
+    outputpath = f'{file_name[:filepath_index]}_textRank.txt'
 
     with open(outputpath, 'w') as w:
         for sentence in summarize_text:

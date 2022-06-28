@@ -34,10 +34,7 @@ def details(soup):
     tags = soup.find('div', {'class': 'tags'})
     # print("Tags : ", tags.find('ul').getText())
 
-    list = []
-    for _ in range(4):
-        list.append(tags.find('ul').getText())
-
+    list = [tags.find('ul').getText() for _ in range(4)]
     print("\nTags : \n")
     print((list[0].replace("\n", "  ")))
 
@@ -51,7 +48,7 @@ def entry():
     print("\n")
     print(anime_name)
 
-    search_url = ("https://www.anime-planet.com/anime/" + anime_name)
+    search_url = f"https://www.anime-planet.com/anime/{anime_name}"
     source_code = requests.get(search_url)
     content = source_code.content
     global soup

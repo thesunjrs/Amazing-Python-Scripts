@@ -13,7 +13,7 @@ def write_csv(loc, info):
     headers = ['Title', 'Company Name', 'Location', 'Date', 'Summary', 'Url']
 
     # Adding info into the rows of the file
-    with open('./Job Scraper/' + loc+'_openings.csv', 'a', encoding='utf-8') as csv_f:
+    with open(f'./Job Scraper/{loc}_openings.csv', 'a', encoding='utf-8') as csv_f:
         csv_p = csv.writer(csv_f, delimiter=',')
         csv_p.writerow(headers)
         csv_p.writerows(info)
@@ -33,15 +33,15 @@ def job_scraper():
     url = f'https://in.indeed.com/jobs?q={title}&l={loc}'
     req_page = requests.get(url)
 
-    job_array = []
-
     if req_page.status_code == 200:
         soup = BeautifulSoup(req_page.text, "html.parser")
         job_table = soup.find("td", id="resultsCol")
         count = 0
-        
+
         flag = 1
-        while flag :
+        job_array = []
+
+        while flag:
             for job_card in job_table.find_all("div", class_="jobsearch-SerpJobCard"):
                 # Getting the job title
                 title_elem = job_card.find('a', class_='jobtitle turnstileLink')
@@ -51,17 +51,13 @@ def job_scraper():
                 company_details = job_card.find('div', class_='sjcl')
                 company_name = company_details.find('span', class_='company')
                 company_name = company_name.text.strip()
-                
+
                 # Getting the company location
                 company_loc = company_details.find('span', class_='location')
-                if company_loc!= None:
-                    company_loc = company_loc.text.strip()
-                else:
-                    company_loc = loc
-
+                company_loc = company_loc.text.strip() if company_loc!= None else loc
                 # Getting the URL of the post
                 link = job_card.find('a')['href']
-                link = 'https://in.indeed.com' + link
+                link = f'https://in.indeed.com{link}'
 
                 # Getting the date of the post
                 date_elem = job_card.find('span', class_='date')
@@ -86,7 +82,7 @@ def job_scraper():
                 if page.attrs['aria-label'] == 'Next':
                     found = 1
                     break
-            
+
             if found:
                 next_page_link = 'https://in.indeed.com' + page.attrs['href']
 

@@ -7,7 +7,7 @@ def rectangle(hor, ver, col):
     t.pensize(1)    # size of pen
     t.color(col)
     t.begin_fill()
-    for counter in range(1, 3):
+    for _ in range(1, 3):
         t.forward(hor)
         t.right(90)  # move 90 degree right
         t.forward(ver)

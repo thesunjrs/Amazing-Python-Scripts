@@ -18,9 +18,7 @@ class EnglishCorpus:
     def make_sentence_list(self, sentences: str) -> list:
         doc = self.nlp(sentences)
         self.ginza_sents_object = doc.sents
-        sentence_list = [s for s in doc.sents]
-
-        return sentence_list
+        return list(doc.sents)
 
     # Put a space between words
     def make_corpus(self) -> list:

@@ -7,7 +7,7 @@ print("!! Invisibility is no more a Dream !!")
 cap = cv2.VideoCapture(0)
 time.sleep(3)
 background = 0
-for i in range(20):
+for _ in range(20):
     ret, background = cap.read()
 
 background = np.flip(background, axis=1)

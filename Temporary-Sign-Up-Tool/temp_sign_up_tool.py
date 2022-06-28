@@ -30,8 +30,7 @@ def generatePassword(length):
     printable = f'{letters}{numbers}{punctuations}'
     printable = list(printable)
     random.shuffle(printable)
-    temp_password = ''.join(random.choices(printable, k=length))
-    return temp_password
+    return ''.join(random.choices(printable, k=length))
 
 
 def generateEmailIdAndLink():
@@ -48,7 +47,7 @@ def generateEmailIdAndLink():
     ses = str(response.cookies).split(",")[2].split(" ")[2]
 
     # we then pass this session id to get JSON data for the email
-    response = requests.get('https://10minutemail.net/address.api.php?' + ses)
+    response = requests.get(f'https://10minutemail.net/address.api.php?{ses}')
     page_soup = soup(response.content, "html.parser")  # saving the json
 
     # selecting the needed data from the json, cleaning the data
@@ -82,13 +81,11 @@ def getResultInChromeTab(name, password, email, link):
     # saves the data and opens the file (open in localhost)
 
     out_filename = "tempRegistration.html"
-    f = open(out_filename, "w")
-
-    f.write('<p> Username: ' + name + "</p>")
-    f.write('<p> Password: ' + password + "</p>")
-    f.write('<p> Email Id: ' + email + "</p>")
-    f.write(f'<a href = {link}> Link: ' + link + "</a>")
-    f.close()
+    with open(out_filename, "w") as f:
+        f.write(f'<p> Username: {name}</p>')
+        f.write(f'<p> Password: {password}</p>')
+        f.write(f'<p> Email Id: {email}</p>')
+        f.write(f'<a href = {link}> Link: {link}</a>')
     webbrowser.open("tempRegistration.html")
 
 
@@ -98,14 +95,12 @@ def getResultInNotepad(name, password, email, link):
     # writes all the data in the file saves it closes it and then opens it as a popup
 
     out_filename = "tempRegistration.txt"
-    f = open(out_filename, "w")
+    with open(out_filename, "w") as f:
+        f.write(f'Name: {name}' + '\n')
+        f.write(f"Password: {password}" + '\n')
+        f.write(f"Email Id: {email}" + '\n' + '\n')
+        f.write(f"Link: {link}")
 
-    f.write('Name: ' + name + '\n')
-    f.write("Password: " + password + '\n')
-    f.write("Email Id: " + email + '\n' + '\n')
-    f.write("Link: " + link)
-
-    f.close()
     webbrowser.open("tempRegistration.txt")
 
 

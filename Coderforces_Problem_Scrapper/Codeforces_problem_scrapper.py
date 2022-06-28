@@ -9,12 +9,8 @@ def select_difficulty():
     This function will let user to choose the difficulty level
     :return: difficulty_level[]
     """
-    difficulty_level = []
     print("\nEnter the Range of difficulty  between 800 to 3500: ")
-    difficulty_level.append(int(input("Min: ")))
-    difficulty_level.append(int(input("Max: ")))
-
-    return difficulty_level
+    return [int(input("Min: ")), int(input("Max: "))]
 
 
 def extracting_problem_links(diff_level):
@@ -35,18 +31,10 @@ def extracting_problem_links(diff_level):
     print("\nRequesting URL ...")
     driver.get(f"https://codeforces.com/problemset/?tags={diff_level[0]}-{diff_level[1]}")
 
-    # ===================Getting no. of Pages to Scrape=============================
-
-    # It will give the total no. of pages present with that question from
-    # which we are going to scrape
-    page_links = []
-
     print("\nFinding available pages to scrape....")
 
     available_pages = driver.find_elements_by_css_selector("div.pagination a")
-    for page_no in available_pages:
-        page_links.append(page_no.get_attribute("href"))
-
+    page_links = [page_no.get_attribute("href") for page_no in available_pages]
     print(f"Available Pages to scrape are: {len(page_links[:-1])}")
 
     # ===================================================================================
@@ -116,9 +104,8 @@ def getproblem(URLs):
     # Headless = True for taking a scrolling snapshot
     options.headless = True
     driver = webdriver.Chrome(DRIVER_PATH, options=options)
-    file_counter = 1
-
-    for url in URLs:
+    MARGIN = 10
+    for file_counter, url in enumerate(URLs, start=1):
         driver.get(url)
         # Deciding height by tag
         required_height = driver.execute_script(
@@ -126,7 +113,7 @@ def getproblem(URLs):
         driver.set_window_size(1366, required_height)
 
         title = driver.find_element_by_class_name("title").text
-        filename = title[3:] + '.pdf'
+        filename = f'{title[3:]}.pdf'
 
         # Taking SS of everything within the ttypography class
         driver.find_element_by_class_name('ttypography').screenshot(path)
@@ -134,7 +121,6 @@ def getproblem(URLs):
         # Opening image with pillow so based to capture its height and width
         cover = Image.open(path)
         WIDTH, HEIGHT = cover.size
-        MARGIN = 10
         # based on image's height and width we are adjusting the pdf margin and borders
         pdf = FPDF(unit='pt', format=[WIDTH + 2 * MARGIN, HEIGHT + 2 * MARGIN])
         pdf.add_page()  # Adding new page to the pdf
@@ -142,7 +128,6 @@ def getproblem(URLs):
 
         pdf.output(os.path.join(target_folder, filename), "F")  # saving the pdf with the specified filename
         print(f'File saved in your directory ./problems_pdf/{filename}   ({file_counter}/{len(URLs)}) !')
-        file_counter += 1
 
 
 if __name__ == "__main__":

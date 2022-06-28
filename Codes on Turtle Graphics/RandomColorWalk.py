@@ -6,7 +6,7 @@ tim = t.Turtle()
 t.colormode(255)
 tim.pensize(15)
 tim.speed("fastest")
-for i in range(300):
+for _ in range(300):
     tim.forward(30)
     # Choosing a random combination of colors
     tim.color((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))

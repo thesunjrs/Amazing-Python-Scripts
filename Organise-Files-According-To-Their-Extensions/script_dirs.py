@@ -64,8 +64,7 @@ for key in dic:
             # prints absolute path of the file
             print(os.path.abspath(file))
             # Renames the path of the file or moves the file in to the newly created directory
-            Path.rename(Path(os.path.abspath(file)),
-                        current / Path("./{}/".format(key) + file))
+            Path.rename(Path(os.path.abspath(file)), current / Path(f"./{key}/" + file))
 
 # This block just prints a note and the current structure of the directory
 

@@ -9,13 +9,14 @@ b : branching factor (choices, number of possible move)
 d : depth 
 '''
 
+
 # Format colour
 import random
 bright_cyan = "\033[0;96m"
 
 # import package
 
-board = [' ' for i in range(10)]
+board = [' ' for _ in range(10)]
 
 
 def insertLetter(letter, pos):
@@ -38,15 +39,15 @@ def printBoard(board):
     '''
     # "board" is a list of 10 strings representing the board (ignore index 0)
     print('   |   |')
-    print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
+    print(f' {board[1]} | {board[2]} | {board[3]}')
     print('   |   |')
     print('-----------')
     print('   |   |')
-    print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
+    print(f' {board[4]} | {board[5]} | {board[6]}')
     print('   |   |')
     print('-----------')
     print('   |   |')
-    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
+    print(f' {board[7]} | {board[8]} | {board[9]}')
     print('   |   |')
 
 
@@ -113,36 +114,26 @@ def compMove():
                 move = i
                 return move
 
-    if board[1] == 'X' or board[3] == 'X' or board[7] == 'X' or board[9] == 'X':
-        if 5 in possibleMove:
-            move = 5
-            return move
+    if (
+        board[1] == 'X'
+        or board[3] == 'X'
+        or board[7] == 'X'
+        or board[9] == 'X'
+    ) and 5 in possibleMove:
+        move = 5
+        return move
 
     edgesOpen = []
 
     if (board[1] == 'X' and board[9] == 'X') or (board[3] == 'X'
                                                  and board[7] == 'X'):
-        for i in possibleMove:
-            if i in [2, 4, 6, 8]:
-                edgesOpen.append(i)
-
+        edgesOpen.extend(i for i in possibleMove if i in [2, 4, 6, 8])
     # randomly select a corner to move Into
-    if len(edgesOpen) > 0:
+    if edgesOpen:
         move = selectRandom(edgesOpen)
         return move
 
-    # Same code repeat for edges also
-    cornersOpen = []
-
-    # Check whether there is any corner is empty if find empty then we place
-    # letter in that corner position
-
-    for i in possibleMove:
-        if i in [1, 3, 7, 9]:
-            cornersOpen.append(i)
-
-    # randomly select a corner to move Into
-    if len(cornersOpen) > 0:
+    if cornersOpen := [i for i in possibleMove if i in [1, 3, 7, 9]]:
         move = selectRandom(cornersOpen)
         return move
 
@@ -159,7 +150,7 @@ def compMove():
             edgesOpen.append(i)
 
     # randomly select a corner to move Into
-    if len(edgesOpen) > 0:
+    if edgesOpen:
         move = selectRandom(edgesOpen)
 
     return move
@@ -170,10 +161,7 @@ def selectRandom(li):
 
 
 def isBoardFull(board):
-    if board.count(' ') > 1:
-        return False
-    else:
-        return True
+    return board.count(' ') <= 1
 
 
 # Human = 'X'
@@ -187,7 +175,7 @@ def main():
     print(bright_cyan +
           "# -----------  Welcome to TIC TAC TOE ------------- #")
     name = input("Enter your name : ")
-    print("👲  {} : \'X\' and 🤖  Computer : \'O\' ".format(name.capitalize()))
+    print(f"👲  {name.capitalize()} : \'X\' and 🤖  Computer : \'O\' ")
     print()
 
     printBoard(board)
@@ -206,7 +194,7 @@ def main():
                 print('Tie game !!')
             else:
                 insertLetter('O', move)
-                print("Computer enter \'O\' at Position : {}".format(move))
+                print(f"Computer enter \'O\' at Position : {move}")
                 printBoard(board)  # print board
         else:
             print("\nYeah X\'s won the game 😎  !!")
@@ -222,8 +210,7 @@ while True:
     print()
     ans = input("Do want to play again 😀  ... ? (Y|N) : ")
     print()  # next line
-    if ans.lower() == 'y' and ans.upper() == 'Y':
-        board = [' ' for i in range(10)]
-        main()
-    else:
+    if ans.lower() != 'y' or ans.upper() != 'Y':
         break
+    board = [' ' for _ in range(10)]
+    main()

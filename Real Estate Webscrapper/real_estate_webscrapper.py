@@ -27,7 +27,7 @@ for item in all_containers:
         Price=item.find("span",{"class":"luxury-srp-card__price"}).text.replace("\n","").replace(" ","").replace("₹","")
         p=Price.split()
         item_data["Price"]=p[0]
-       
+
 
     try:
         Pricepersqft=item.find("div",{"class":"m-srp-card__area"}).text.replace("₹","")
@@ -43,17 +43,22 @@ for item in all_containers:
             item_data["Pricepersqft"]=None
 
     try:
-        item_data["Size"]=item.find("span",{"class":"m-srp-card__title__bhk"}).text.replace("\n","").strip()[0:5]
+        item_data["Size"] = (
+            item.find("span", {"class": "m-srp-card__title__bhk"})
+            .text.replace("\n", "")
+            .strip()[:5]
+        )
+
     except:
         item_data["Size"]=None
 
-    
+
     title=item.find("span",{"class":"m-srp-card__title"})
-    
+
     words=(title.text.replace("in","")).split()
-        
+
     for i in range(len(words)):
-        if words[i]=="sale" or words[i]=="Sale":            
+        if words[i] in ["sale", "Sale"]:            
             break
     s=""
     for word in range(i+1,len(words)):
@@ -65,11 +70,11 @@ for item in all_containers:
         item_data["Carpet Area"]=item.find("div",{"class":"m-srp-card__summary__info"}).text
     except:
         item_data["Carpet Area"]=item.find("div",{"class":"luxury-srp-card__area__value"}).text
-    
-    
+
+
     complete_dataset.append(item_data)
-    
-    
+
+
 
 df=pandas.DataFrame(complete_dataset)
 df.to_csv("./Real Estate Webscrapper/scraped.csv")

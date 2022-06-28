@@ -31,13 +31,11 @@ dict = {
     'https://internshala.com/internships/content%20writing-internship',
     'Civil Internship': 'https://internshala.com/internships/civil-internship'
 }
-x = 1
-for item in dict.keys():
+for x, item in enumerate(dict, start=1):
     print(x, item)
-    x += 1
 ch = int(input("Enter the categroy. eg 1 for Computer Science : "))
 url = dict[dict0[ch]]
-print('--------URL : ' + url)
+print(f'--------URL : {url}')
 with open('internshala.csv', mode='a') as f:
     writer = csv.writer(f,
                         delimiter=',',
@@ -49,7 +47,7 @@ with open('internshala.csv', mode='a') as f:
     ])
     for i in range(1, pages + 1):
         print('Page', i)
-        resp = requests.get(url + "/page-" + str(i))
+        resp = requests.get(f"{url}/page-{str(i)}")
         data = BeautifulSoup(resp.content, 'lxml')
         companies = data.findAll("div", {"class": "heading_6 company_name"})
         profiles = data.findAll("div", {"class": "heading_4_5 profile"})
@@ -57,7 +55,7 @@ with open('internshala.csv', mode='a') as f:
         details = data.findAll("div",
                                {"class": "internship_other_details_container"})
         links = data.findAll("a", {"class": "view_detail_button"})
-        for x in range(0, len(companies)):
+        for x in range(len(companies)):
             company = companies[x].text.strip()
             profile = profiles[x].text.strip()
             location = locations[x].text.strip()
@@ -69,9 +67,13 @@ with open('internshala.csv', mode='a') as f:
                 item = item.strip()
                 if item != '':
                     extracted.append(item)
-            info = [company, profile, location]
-            info.append(extracted[1].replace('immediatelyImmediately',
-                                             'Immediately'))
+            info = [
+                company,
+                profile,
+                location,
+                extracted[1].replace('immediatelyImmediately', 'Immediately'),
+            ]
+
             info.append(extracted[7])
             info.append(extracted[3])
             info.append(extracted[5])

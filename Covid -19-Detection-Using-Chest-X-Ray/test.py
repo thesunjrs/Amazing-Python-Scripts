@@ -88,12 +88,8 @@ def run_example():
 
     run_example.num = result[0]
     print(result[0])
-    if (run_example.num == 0.):
-        res = "Covid_19"
-        message.configure(text=res)
-    else:
-        res = "Normal"
-        message.configure(text=res)
+    res = "Covid_19" if (run_example.num == 0.) else "Normal"
+    message.configure(text=res)
 
 
 #clearButton = tk.Button(window, text="Clear", command=clear  ,fg="red"  ,bg="green"  ,width=20  ,height=2 ,activebackground = "Red" ,font=('times', 15, ' bold '))

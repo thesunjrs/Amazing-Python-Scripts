@@ -69,7 +69,7 @@ def search():
         messagebox.showwarning("Message", "Please enter a key to search")
 
     #setting initial colour for the rectangles
-    color = ['#98AFC7' for rect in range(len(array))]
+    color = ['#98AFC7' for _ in range(len(array))]
     flag = False
     #elements being checked
     for i in range(len(array)):

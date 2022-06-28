@@ -23,7 +23,7 @@ for i in range(26):
 # load images
 images = []
 for i in range(7):
-    img = pygame.image.load("./Hangman-Game/hangman" + str(i) + ".png")
+    img = pygame.image.load(f"./Hangman-Game/hangman{str(i)}.png")
     images.append(img)
 
 # game variables
@@ -52,13 +52,7 @@ def draw():
     text = TITLE_FONTS.render("HANGMAN GAME", 1, BLACK)
     win.blit(text, (WIDTH/2 - text.get_width()/2, 20))
     # draw word
-    display_word = ""
-    for i in word:
-        if i in guessed:
-            display_word += i + " "
-        else:
-            display_word += "_ "
-
+    display_word = "".join(f"{i} " if i in guessed else "_ " for i in word)
     text = WORD_FONTS.render(display_word, 1, BLACK)
     win.blit(text, (400, 200))
     # draw buttons
@@ -106,12 +100,7 @@ while run:
                         if ltr not in word:
                             hangman_status += 1
     draw()
-    # checking for winner
-    won = True
-    for i in word:
-        if i not in guessed:
-            won = False
-            break
+    won = all(i in guessed for i in word)
     if won:
         display_message("Wohooo...!! You Won!")
         break

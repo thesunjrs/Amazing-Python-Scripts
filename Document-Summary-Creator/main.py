@@ -10,7 +10,7 @@ def main():
     summary = summarize_sentences(sentences)
 
     filepath_index = filepath.find('.txt')
-    outputpath = filepath[:filepath_index] + '_summary.txt'
+    outputpath = f'{filepath[:filepath_index]}_summary.txt'
 
     with open(outputpath, 'w') as w:
         for sentence in summary:

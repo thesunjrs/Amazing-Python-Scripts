@@ -19,9 +19,7 @@ def generate_url():
     if (year_choice == 'All time'):
         year_choice = 'all-time'
     category_slug = categories[category_choice]
-    url = 'https://www.iplt20.com/stats/{}/{}'.format(
-        year_choice, category_slug)
-    return url
+    return f'https://www.iplt20.com/stats/{year_choice}/{category_slug}'
 
 # Function to scrape results based on request url
 
@@ -50,12 +48,12 @@ def scrape_results():
 
     # Formatting the data stored in the list
     p_records = ""
+    format_cell = "{:<20}"
     for player in table_data[:51]:
-        single_record = ""
-        for cell in player:
-            format_cell = "{:<20}"
-            single_record += format_cell.format(cell[:20])
-        single_record += "\n"
+        single_record = (
+            "".join(format_cell.format(cell[:20]) for cell in player) + "\n"
+        )
+
         p_records += single_record
 
     # Adding the formatted data into tkinter GUI

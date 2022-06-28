@@ -62,10 +62,7 @@ class Scraper:
 
     # Checks if the price of the product is below the budget
     def is_below_budget(self):
-        if self.product_price <= self.budget:
-            return True
-        else:
-            return False
+        return self.product_price <= self.budget
 
     # Runs the scraper
     def run(self):
@@ -94,7 +91,7 @@ class Scraper:
         The price is now within your budget. Here is the link, buy it now!\n"""
         body_mid = self.url
         body_end = '\n\nRegards\nYour friendly neighbourhood programmer'
-        body = str(body_start) + str(body_mid) + str(body_end)
+        body = body_start + str(body_mid) + body_end
 
         message = f"Subject: {subject}\n\n{body}"
 
@@ -140,9 +137,7 @@ def main():
            "C3PO scraper! Beep-bop bop-beep.")
     print(msg)
     c3po = Scraper(url, budget, u_email)
-    while True:
-        if c3po.run():
-            break
+    while not c3po.run():
         time.sleep(time_delay)
 
 

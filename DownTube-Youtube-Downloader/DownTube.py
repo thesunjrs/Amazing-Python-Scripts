@@ -45,12 +45,7 @@ def choice_single_link(links):
     except:
         raise "Can't verify link, check internet connectivity/provided link."
 
-    if only_audio:  # if -a/--audio-only flag is True
-        count = audio_download([links])  # function accepts a list of urls
-    else:
-        count = is_vid([links])  # function accepts a list of urls
-
-    return count
+    return audio_download([links]) if only_audio else is_vid([links])
 
 
 def choice_playlist(links):
@@ -60,12 +55,7 @@ def choice_playlist(links):
     except:
         raise "Can't verify playlist, check internet connectivity/provided link."
 
-    if only_audio:  # if -a/--audio-only flag is True
-        count = audio_download(links.videos)
-    else:
-        count = is_vid(links.videos)
-
-    return count
+    return audio_download(links.videos) if only_audio else is_vid(links.videos)
 
 
 def file_handler(path):
@@ -74,7 +64,7 @@ def file_handler(path):
         with open(path, "r") as file:
             i = 0  # counter for items
             for line in file.readlines():
-                if not "youtube" in line or not line.rstrip("\n"):
+                if "youtube" not in line or not line.rstrip("\n"):
                     continue
                 choice_single_link(line.rstrip("\n"))
                 i += 1
@@ -108,17 +98,20 @@ def is_vid(lst):
     ext, res = input("[extension] [resolution] > ").split(" ")
 
     # check input
-    if not res in resolutions_mp4+resolutions_webm or not ext in ["mp4", "webm"]:
+    if res not in resolutions_mp4 + resolutions_webm or ext not in [
+        "mp4",
+        "webm",
+    ]:
         raise "Invalid Input..."
 
     return video_download(lst, ext, res)
 
 
-def audio_download(objct):  # objct is a list of urls
+def audio_download(objct):    # objct is a list of urls
     """Function that downloads provided streams as audios"""
     i = 0  # counter for items
     for aud in objct:
-        print("Downloading: " + aud.title)
+        print(f"Downloading: {aud.title}")
         aud.register_on_progress_callback(on_progress)  # show progress bar
         try:
             aud.streams.filter(type="audio").order_by(
@@ -131,15 +124,24 @@ def audio_download(objct):  # objct is a list of urls
     return i
 
 
-def video_download(objct, ext, res):  # objct is a list of urls
+def video_download(objct, ext, res):    # objct is a list of urls
     """Function that downloads provided streams as videos"""
     i = 0  # counter for items
     for vid in objct:
-        print("Downloading: " + vid.title)
+        print(f"Downloading: {vid.title}")
         vid.register_on_progress_callback(on_progress)  # show progress bar
         try:
-            stream = vid.streams.filter(
-                progressive=True, type="video", resolution=res+"p", file_extension=ext).order_by("abr").desc()
+            stream = (
+                vid.streams.filter(
+                    progressive=True,
+                    type="video",
+                    resolution=f"{res}p",
+                    file_extension=ext,
+                )
+                .order_by("abr")
+                .desc()
+            )
+
 
             if len(stream) == 0:  # That if condition is for in case any videos in the playlist doesn't offer the same stream resolution (common in Mix playlists)
                 print(
@@ -158,14 +160,12 @@ def video_download(objct, ext, res):  # objct is a list of urls
 
 def check_Download_folder():
     """Checks if Donwloads folder exists.. If not, then it will create one."""
-    if os.path.exists("Downloads/"):
-        os.chdir("Downloads/")
-    else:
+    if not os.path.exists("Downloads/"):
         try:
             os.mkdir("Downloads")
         except:
             raise "Couldn't create 'Downloads' folder, Check write permissions"
-        os.chdir("Downloads/")
+    os.chdir("Downloads/")
 
 
 # Start checkpoint
@@ -187,12 +187,9 @@ if __name__ == "__main__":
     check_Download_folder()
 
     if link:
-        if playlist:
-            count = choice_playlist(link)
-        else:
-            count = choice_single_link(link)
+        count = choice_playlist(link) if playlist else choice_single_link(link)
     else:
         count = file_handler(file)
 
     # print a small report
-    print("\n[+]Downloaded {} items".format(count))
+    print(f"\n[+]Downloaded {count} items")

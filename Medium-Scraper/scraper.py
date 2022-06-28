@@ -10,7 +10,7 @@ category = input("Enter category (Ex- Programming or javascript) : ")
 number_articles = int(input("Enter number of articles: "))
 driver_path = input("Enter chrome driver path: ")
 
-url = 'https://medium.com/topic/{}'.format(category)
+url = f'https://medium.com/topic/{category}'
 
 # initiating the webdriver to run in incognito mode
 chrome_options = webdriver.ChromeOptions()
@@ -31,7 +31,7 @@ num = number_articles
 for article in articles:
     article_data = article.find('a')['href']
     if article_data[0] == '/':
-        article_data = 'https://medium.com' + article_data
+        article_data = f'https://medium.com{article_data}'
 
     post_url = article_data
     driver.get(post_url)
@@ -40,7 +40,7 @@ for article in articles:
     post_html = driver.page_source
     soup = BeautifulSoup(post_html, "html.parser")
     a_tags = soup.find_all('a')
-    
+
     author = a_tags[2].text
 
     title = soup.find('h1').text.strip()
@@ -67,14 +67,14 @@ for article in articles:
         article_part += '\n'
         # Add part of article to pdf
         pdf.multi_cell(0, 5, txt=article_part, align='L')
-        
+
     # save the pdf with name .pdf
     pdf_title = ''.join(e for e in title if e.isalnum())
-    pdf.output("{}.pdf".format(pdf_title))
+    pdf.output(f"{pdf_title}.pdf")
 
     num = num-1
     if(num == 0):
         break
-    
+
 
 driver.close()  # closing the webdriver

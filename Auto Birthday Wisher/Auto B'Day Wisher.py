@@ -48,6 +48,6 @@ if __name__ == "__main__":
     if writeInd != None:
         for i in writeInd:
             oldYear = df.loc[i, 'LastWishedYear']
-            df.loc[i, 'LastWishedYear'] = str(oldYear) + ", " + str(yearNow)
+            df.loc[i, 'LastWishedYear'] = f"{str(oldYear)}, {str(yearNow)}"
 
     df.to_excel('data.xlsx', index=False)

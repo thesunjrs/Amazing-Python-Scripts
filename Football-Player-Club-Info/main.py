@@ -26,10 +26,9 @@ class myScraper:
                 print(s.title)
                 if (s.sections is None):
                     return
-                else:
-                    for s in s.sections:
-                        level = level + 1
-                        print(s.title)
+                for s in s.sections:
+                    level = level + 1
+                    print(s.title)
 
     def execute(self):
         self.get_club_details(self.wiki_page.sections, level=0)

@@ -97,9 +97,7 @@ def ifPageExists(total_pages, page_no):
     This function checks whether the given page number is in the specified range
     of total pages.
     """
-    if page_no <= total_pages:
-        return False
-    return True
+    return page_no > total_pages
 
 
 def reorder_pages():
@@ -120,7 +118,7 @@ def reorder_pages():
     print("\nNow enter the Page no which you want to reorder with the expected location")
 
     # Running a loop to take input
-    for i in range(n):
+    for _ in range(n):
         ans_1 = True
         while ans_1:
             page_no = int(input("Enter the Page No. you want to reorder: "))

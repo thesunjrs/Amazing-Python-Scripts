@@ -28,13 +28,13 @@ def Download_vid():
 
     # Validating Input
 
-    if not "linkedin.com/posts" in url:
+    if "linkedin.com/posts" not in url:
         Invalid_Url()
         return
 
     response =req.get(url)
 
-    if not response.status_code == 200:
+    if response.status_code != 200:
         Invalid_Url()
         return       
 

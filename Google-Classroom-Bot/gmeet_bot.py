@@ -30,8 +30,7 @@ class ClassAutomation():
             return
         print("Initiating...")
         self.login()
-        self.driver.find_element_by_xpath(
-            "//div[text()='{}']".format(className)).click()
+        self.driver.find_element_by_xpath(f"//div[text()='{className}']").click()
         sleep(10)
         link = self.driver.find_element_by_partial_link_text(
             "https://meet.google.com/lookup/").text
@@ -42,20 +41,21 @@ class ClassAutomation():
         print("Quitting...")
         sleep(5)
         self.driver.quit()
-        if self.count < 2:
-            self.count = self.count + 1
-        else:
-            self.count = 0
+        self.count = self.count + 1 if self.count < 2 else 0
         self.findCount()
 
     # Returns the ClassName for the current time
     def findClass(self):
         with open("schedule.csv", "r") as csvFile:
             reader = csv.DictReader(csvFile)
-            for row in reader:
-                if row["Day"] == datetime.now().strftime("%a"):
-                    return row[classTime[self.count]]
-            return None
+            return next(
+                (
+                    row[classTime[self.count]]
+                    for row in reader
+                    if row["Day"] == datetime.now().strftime("%a")
+                ),
+                None,
+            )
 
     # Determines the current time position in the classTime list
 

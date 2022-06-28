@@ -38,27 +38,24 @@ SET_DECAY = True
 images = []
 labels = []
 
-# loop over all 43 classes
-gtFile = open(PATH + '/Train.csv')
-gtReader = csv.reader(gtFile, delimiter=',')  # csv parser for annotations file
-next(gtReader)
+with open(f'{PATH}/Train.csv') as gtFile:
+    gtReader = csv.reader(gtFile, delimiter=',')  # csv parser for annotations file
+    next(gtReader)
 
-# loop over all images in current annotations file
-for row in gtReader:
-    img = cv.imread(PATH + '/' + row[7])
-    images.append(cv.resize(img, (28, 28)))
-    labels.append(row[6])  # the 6th column is the label
-gtFile.close()
-
-print('Number of loaded images: ' + str(len(images)))
-print('Number of loaded labels: ' + str(len(labels)))
+    # loop over all images in current annotations file
+    for row in gtReader:
+        img = cv.imread(f'{PATH}/{row[7]}')
+        images.append(cv.resize(img, (28, 28)))
+        labels.append(row[6])  # the 6th column is the label
+print(f'Number of loaded images: {len(images)}')
+print(f'Number of loaded labels: {len(labels)}')
 
 train_X = np.asarray(images)
 train_X = train_X / 255
 train_X = np.asarray(train_X, dtype="float32")
 train_Y = np.asarray(labels, dtype="float32")
 
-print('Shape of training array: ' + str(train_X.shape))
+print(f'Shape of training array: {str(train_X.shape)}')
 
 
 def count_images_in_classes(lbls):
@@ -105,7 +102,7 @@ def preview(images, labels):
         i = random.choice(np.where(labels == c)[0])
         plt.subplot(10, 10, c + 1)
         plt.axis('off')
-        plt.title('class: {}'.format(c))
+        plt.title(f'class: {c}')
         plt.imshow(images[i])
 
 
@@ -139,8 +136,7 @@ def augment_imgs(imgs, p, imgaug=None):
         ])
 
     seq = iaa.Sequential([iaa.Sometimes(p, augs)])
-    res = seq.augment_images(imgs)
-    return res
+    return seq.augment_images(imgs)
 
 
 def augmentation(imgs, lbls):
@@ -156,7 +152,7 @@ def augmentation(imgs, lbls):
             add_num = MIN_IMGS_IN_CLASS - classes[i]
             imgs_for_augm = []
             lbls_for_augm = []
-            for j in range(add_num):
+            for _ in range(add_num):
                 im_index = random.choice(np.where(lbls == i)[0])
                 imgs_for_augm.append(imgs[im_index])
                 lbls_for_augm.append(lbls[im_index])
@@ -250,18 +246,15 @@ model.compile(loss="sparse_categorical_crossentropy",
 test_images = []
 test_labels = []
 test = '/content/Dataset'
-# loop over all 43 classes
-gtFile = open('/content/Dataset/Test.csv')  # annotations file
-gtReader = csv.reader(gtFile, delimiter=',')  # csv parser for annotations file
-next(gtReader)
+with open('/content/Dataset/Test.csv') as gtFile:
+    gtReader = csv.reader(gtFile, delimiter=',')  # csv parser for annotations file
+    next(gtReader)
 
-# loop over all images in current annotations file
-for row in gtReader:
-    img = cv.imread(PATH + '/' + row[7])
-    test_images.append(cv.resize(img, (28, 28)))
-    test_labels.append(row[6])
-gtFile.close()
-
+    # loop over all images in current annotations file
+    for row in gtReader:
+        img = cv.imread(f'{PATH}/{row[7]}')
+        test_images.append(cv.resize(img, (28, 28)))
+        test_labels.append(row[6])
 test_X = np.asarray(test_images)
 test_X = test_X / 255
 test_X = np.asarray(test_X, dtype="float32")
@@ -280,7 +273,7 @@ print(train_Y_ext.shape)
 with tf.device('/device:GPU:0'):
     os.mkdir("models_Xception")
     for i in range(EPOCHS):
-        model.save("models_Xception/model_" + str(i) + ".h5")
+        model.save(f"models_Xception/model_{str(i)}.h5")
         H = model.fit(train_X_ext, train_Y, epochs=1, batch_size=BATCH_SIZE)
 
 print(model.summary())

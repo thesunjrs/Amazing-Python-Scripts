@@ -14,17 +14,22 @@ for option in options:
     currency_name = option.text[(option.text.find(" ") + 3):]
     current_element = {'name': currency_name, 'short': currency_short}
     currencies.append(current_element)
-    print('{}. {} ({})'.format(len(currencies), current_element['name'],
-                               current_element['short']))
+    print(
+        f"{len(currencies)}. {current_element['name']} ({current_element['short']})"
+    )
+
 
 currency_index = int(input('Enter your currency\'s position number: ')) - 1
 currency = currencies[currency_index]
 amount = input(
-    '\033cEnter amount of {}s (if amount isn\'t integer, then write it with a dot, not comma): '
-    .format(currency['name'].lower()))
+    f"\033cEnter amount of {currency['name'].lower()}s (if amount isn\'t integer, then write it with a dot, not comma): "
+)
 
-currencies_table_url = 'https://www.x-rates.com/table/?from={}&amount={}'.format(
-    currency['short'], amount)
+
+currencies_table_url = (
+    f"https://www.x-rates.com/table/?from={currency['short']}&amount={amount}"
+)
+
 
 currencies_table_page = req.get(currencies_table_url).text
 
@@ -34,7 +39,7 @@ table_rows = soup.findChild('table', attrs={
     'class': 'tablesorter'
 }).findChildren('tr')[1:]
 
-print('\033cFor {} {}s you\'ll get:'.format(amount, currency['name'].lower()))
+print(f"\033cFor {amount} {currency['name'].lower()}s you\'ll get:")
 
 for table_row in table_rows:
     row_data = table_row.findChildren('td')

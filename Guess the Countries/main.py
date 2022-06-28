@@ -27,7 +27,9 @@ while True:
                              align="center", font=("Courrier", 35, "bold"))
     else:
         answer = screen.textinput(
-            str(correct)+"/196 Correct Guesses", "Name the Country:")
+            f"{str(correct)}/196 Correct Guesses", "Name the Country:"
+        )
+
         if answer is not None:
             answer = answer.lower()
         else:
@@ -36,14 +38,18 @@ while True:
             country_turtle.goto(0, 0)
             country_turtle.color('black')
             country_turtle.write(
-                str(correct)+" CORRECT GUESSES", align="center", font=("Courrier", 35, "bold"))
+                f"{str(correct)} CORRECT GUESSES",
+                align="center",
+                font=("Courrier", 35, "bold"),
+            )
+
             break
 
         if answer in guessed:
             print(guessed)
         else:
             country_turtle = turtle.Turtle()
-            for i in range(0, len(countries)):
+            for i in range(len(countries)):
                 country_name = countries[i]
                 if answer == country_name.lower():
                     print(country_name)

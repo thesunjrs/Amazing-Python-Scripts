@@ -52,25 +52,20 @@ def decode(path_image):
     img = cv2.imread(path_image)
     data = []
     stop = False
-    for index_i, i in enumerate(img):
+    for i in img:
         i.tolist()
         for index_j, j in enumerate(i):
-            if((index_j) % 3 == 2):
-                data.append(bin(j[0])[-1])
-                data.append(bin(j[1])[-1])
+            data.extend((bin(j[0])[-1], bin(j[1])[-1]))
+            if ((index_j) % 3 == 2):
                 if(bin(j[2])[-1] == '1'):
                     stop = True
                     break
             else:
-                data.append(bin(j[0])[-1])
-                data.append(bin(j[1])[-1])
                 data.append(bin(j[2])[-1])
         if(stop):
             break
 
-    message = []
-    for i in range(int((len(data)+1)/8)):
-        message.append(data[i*8:(i*8+8)])
+    message = [data[i*8:(i*8+8)] for i in range(int((len(data)+1)/8))]
     message = [chr(int(''.join(i), 2)) for i in message]
     message = ''.join(message)
     return message

@@ -6,16 +6,14 @@ CHARS = [".", ".", ".", "1", "1", "1", "1", "1", "0", "0", "0"]
 
 
 def grayify(image):
-    grayscale_image = image.convert("L")
-    return(grayscale_image)
+    return image.convert("L")
 
 # convert pixels to a string of ascii characters
 
 
 def pixels_to_ascii(image):
     pixels = image.getdata()
-    characters = "".join([CHARS[pixel//23] for pixel in pixels])
-    return(characters)
+    return "".join([CHARS[pixel//23] for pixel in pixels])
 
 
 def photoascii():
@@ -53,7 +51,7 @@ def photoascii():
                             for index in range(0, pixel_count, new_width)])
 
     # save result to "ascii_image.txt"
-    with open("./Photo To Ascii/{}(ASCII).txt".format(image_name), "w") as f:
+    with open(f"./Photo To Ascii/{image_name}(ASCII).txt", "w") as f:
         f.write(ascii_image)
 
 

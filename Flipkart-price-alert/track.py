@@ -12,7 +12,7 @@ def sendMail(title):
     server.starttls()
     server.ehlo()
     server.login(MY_EMAIL, MY_APP_PASSWORD)
-    subject = 'Change in price detected for ' + title
+    subject = f'Change in price detected for {title}'
     print(subject)
     body = 'Click the link to go to the product page \n' + PRODUCT_URL
     msg = f"Subject: {subject}\n\n{body}"
@@ -27,7 +27,7 @@ def priceCheck():
     page = requests.get(PRODUCT_URL, headers=headers)
     soup = bs(page.content, 'html.parser')
     # title from 'B_NuCI' class
-    title = soup.find("span", {"class": "B_NuCI"}).get_text()[0:8] + '..'
+    title = soup.find("span", {"class": "B_NuCI"}).get_text()[:8] + '..'
     print(title)
     # price from '_30jeq3 _16Jk6d' class,
     raw_price = soup.find("div", {"class": "_30jeq3 _16Jk6d"})

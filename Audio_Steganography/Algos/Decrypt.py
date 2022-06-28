@@ -30,7 +30,7 @@ class Decrypt:
         obj = playing.play()
 
         if obj.is_playing():
-            print(f"Playing audio")
+            print("Playing audio")
 
         obj.wait_done()
 
@@ -48,7 +48,10 @@ class Decrypt:
             except:
                 pass
 
-        print(f"This might take some while if your secret message is big and might contain some rubbish data.")
+        print(
+            "This might take some while if your secret message is big and might contain some rubbish data."
+        )
+
 
         # Reading the data from the wav file
         samplerate, data = wavfile.read(self.audio_path)
@@ -68,7 +71,7 @@ class Decrypt:
                 break
             if t == '0':
                 zeros += 1
-            if t == '1':
+            elif t == '1':
                 zeros = 0
 
         # Making sure the bit-string is of length divisible by 8 as we have stored the input-secret as 8-bits only
@@ -80,16 +83,13 @@ class Decrypt:
         bin_arr = in_bin.to_bytes(byte_num, "big")
         result = bin_arr.decode("utf-8", "ignore")
 
-        # Writing to output file if status was given true
-        if gen_file_status:
-            try:
-                with open(os.path.join(output_dir_path, file_name), "w", encoding="utf-8") as f:
-                    f.write(result)
-                print("Success !!!")
-                return result, True
-            except:
-                print(("Error !!!"))
-                pass
-                return None, False
-        else:
+        if not gen_file_status:
             return result, True
+        try:
+            with open(os.path.join(output_dir_path, file_name), "w", encoding="utf-8") as f:
+                f.write(result)
+            print("Success !!!")
+            return result, True
+        except:
+            print(("Error !!!"))
+            return None, False

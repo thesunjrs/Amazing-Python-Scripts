@@ -7,7 +7,7 @@ def webauto():
             "google.co.in", "youtube.com")
 
     for url in URLS:
-        print("Opening: " + url)
+        print(f"Opening: {url}")
         wb.get(chrome_path).open(url)
 
 

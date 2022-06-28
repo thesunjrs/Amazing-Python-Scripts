@@ -75,9 +75,12 @@ for post in posts:
 
 # This creates a GUI window with a progress bar to keep track of the download
 
-layout = [[sg.Text(f"Downloading files...", key='textkey')],
-          [sg.ProgressBar(25, orientation='h', size=(20, 20), key='progbar')],
-          [sg.Cancel()]]
+layout = [
+    [sg.Text("Downloading files...", key='textkey')],
+    [sg.ProgressBar(25, orientation='h', size=(20, 20), key='progbar')],
+    [sg.Cancel()],
+]
+
 
 window = sg.Window('Download in Progress', layout)
 
@@ -90,14 +93,12 @@ for index, url in enumerate(image_urls):
     _, extension = os.path.splitext(file_ending)
     if extension in image_extensions:
         try:
-            if os.path.exists(path + '/' + 'Downloaded Images'):
-                pass
-            else:
-                os.mkdir(path + '/' + 'Downloaded Images')
-            if event == 'Cancel' or event == sg.WIN_CLOSED:
+            if not os.path.exists(f'{path}/Downloaded Images'):
+                os.mkdir(f'{path}/Downloaded Images')
+            if event in ['Cancel', sg.WIN_CLOSED]:
                 break
 
-            destination = str(folder_lst[0]) + '/' + 'Downloaded Images' + '/'
+            destination = f'{str(folder_lst[0])}/Downloaded Images/'
             window['progbar'].update_bar(index + 1)
             print(
                 f"Downloading '{str(image_titles[index])[2:-1]}' to '{path}' from '{str(image_urls[index])[2:-1]}'"

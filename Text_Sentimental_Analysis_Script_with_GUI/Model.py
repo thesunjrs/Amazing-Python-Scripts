@@ -39,11 +39,7 @@ class model(object):
                       "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
 
         # Removing stop words from the tokenized words list
-        final_words = []
-        for word in tokenized_words:
-            if word not in stop_words:
-                final_words.append(word)
-
+        final_words = [word for word in tokenized_words if word not in stop_words]
         emotion_list = []
         with open('./Text_Sentimental_Analysis_Script_with_GUI/textFiles/emotions.txt', 'r') as file:
             for line in file:
@@ -53,9 +49,8 @@ class model(object):
                 if word in final_words:
                     emotion_list.append(emotion)
 
-        if emotion_list is None or len(emotion_list) == 0:
-            final_emotion = "Sorry the entered text was not enough for making a Sentiment Analysis please try again "
-        else:
-            final_emotion = "Your Sentimental Analysis says that your emotion is" + max(Counter(emotion_list),
-                                                                                        key=Counter(emotion_list).get)
-        return final_emotion
+        return (
+            "Sorry the entered text was not enough for making a Sentiment Analysis please try again "
+            if emotion_list is None or not emotion_list
+            else f"Your Sentimental Analysis says that your emotion is{max(Counter(emotion_list), key=Counter(emotion_list).get)}"
+        )

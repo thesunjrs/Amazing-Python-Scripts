@@ -4,9 +4,7 @@ import random
 # get tarot deck of 78 cards and 'predictions' from tarot.txt
 file_handle = open("./Tarot Reader/tarot.txt", "r")
 cards = file_handle.readlines()
-tarot_deck = []
-for card in cards:
-    tarot_deck.append(card)
+tarot_deck = list(cards)
 
 
 # Close file, display outro text
@@ -45,8 +43,12 @@ def youve_chosen_yes():
     print()
     print("And your third and final card is...")
     pick_card3 = random.randint(0, 78)
-    print(tarot_deck[pick_card3] if pick_card3 != pick_card1 and pick_card3 !=
-          pick_card2 else tarot_deck[random.randint(0,      78)])
+    print(
+        tarot_deck[pick_card3]
+        if pick_card3 not in [pick_card1, pick_card2]
+        else tarot_deck[random.randint(0, 78)]
+    )
+
     input(">> press enter")
     print()
     fin()

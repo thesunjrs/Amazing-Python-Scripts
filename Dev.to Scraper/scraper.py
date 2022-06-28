@@ -10,7 +10,7 @@ category = input("Enter category: ")
 number_articles = int(input("Enter number of articles: "))
 driver_path = input("Enter chrome driver path: ")
 
-url = 'https://dev.to/search?q={}'.format(category)
+url = f'https://dev.to/search?q={category}'
 
 # initiating the webdriver. Parameter includes the path of the webdriver.
 driver = webdriver.Chrome(driver_path)
@@ -31,7 +31,7 @@ for article in articles:
     article_data = article.find(
         'a', class_='crayons-story__hidden-navigation-link')['href']
 
-    post_url = "https://dev.to{}".format(article_data)
+    post_url = f"https://dev.to{article_data}"
     driver.get(post_url)
     time.sleep(5)
 
@@ -60,8 +60,10 @@ for article in articles:
 
     title_string = (title_content.text.strip()).encode(
         'latin-1', 'replace').decode('latin-1')
-    author_string = ("By - {}".format(author_name.text.strip())
-                     ).encode('latin-1', 'replace').decode('latin-1')
+    author_string = f"By - {author_name.text.strip()}".encode(
+        'latin-1', 'replace'
+    ).decode('latin-1')
+
 
     # Add a page
     pdf = FPDF()
@@ -82,7 +84,7 @@ for article in articles:
 
     # save the pdf with name .pdf
     pdf_title = ''.join(e for e in title_string if e.isalnum())
-    pdf.output("{}.pdf".format(pdf_title))
+    pdf.output(f"{pdf_title}.pdf")
 
     count = count + 1
     if(count == number_articles):

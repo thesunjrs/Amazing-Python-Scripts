@@ -20,21 +20,16 @@ def ischanged():
     initial = list(read_file())
     while True:
         current = list(read_file())
-        changeditem = []
-        previtem = []
         if (current != initial):
 
+            previtem = []
             for ele in initial:
                 if ele not in current:
-                    for item in ele:
-                        previtem.append(item)
-            for ele in current:
-                if ele not in initial:
-                    changeditem.append(ele)
-
+                    previtem.extend(iter(ele))
+            changeditem = [ele for ele in current if ele not in initial]
             # changedDiff = list(set(changeditem[0]) - set(previtem))
             # prevDiff = list(set(previtem) - set(changeditem[0]))
-            for i in range(0, len(changeditem)):
+            for i in range(len(changeditem)):
                 print('loop :-', i)
                 changedfile.append(onlyfiles[current.index(changeditem[i])])
             print('Changed file is:-', changedfile)

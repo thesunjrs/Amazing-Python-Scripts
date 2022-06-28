@@ -15,7 +15,7 @@ Enter the name of the folder you want to zip
 (N.B.: The folder name should not contain blank spaces)
 >
 """)
-    to_zip = to_zip.strip() + "/"
+    to_zip = f"{to_zip.strip()}/"
     zip_file_name = f'zip{randrange(0,10000)}.zip'
     zip_file = zipfile.ZipFile(zip_file_name, 'w', zipfile.ZIP_DEFLATED)
     zip_dir(to_zip, zip_file)

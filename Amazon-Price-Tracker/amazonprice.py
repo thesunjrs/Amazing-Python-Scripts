@@ -28,7 +28,8 @@ def mail_sending(mail_id, title, password):
     server.starttls()
     server.login(mail_id, password)
     subject = "GO BUY FAST!"
-    body = f"Price of {title} is fallen below the threshold amount. Click on the link below to buy the product!!!\n\n" + Url
+    body = f"Price of {title} is fallen below the threshold amount. Click on the link below to buy the product!!!\n\n{Url}"
+
     message = f'Subject:{subject}\n\n {body}'
     server.sendmail(mail_id, mail_id, message)
     server.quit()
@@ -85,8 +86,6 @@ def check_price():
     if fixed_price <= float(your_price):
         mail_sending(mail_id, title, password)
         exit()
-    else:
-        pass
 
 
 while 1:

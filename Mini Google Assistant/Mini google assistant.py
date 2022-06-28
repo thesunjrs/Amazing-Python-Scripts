@@ -31,7 +31,6 @@ def take_command():
     except:
         print("Ooops something went wrong!")
 
-        pass
     return command
 
 
@@ -42,13 +41,13 @@ def run_mini_google_assistant():
 
     if "play" in command:
         song = command.replace("play", "")
-        talk("playing the song" + song)
+        talk(f"playing the song{song}")
         print(song)
         pywhatkit.playonyt(song)
     elif "time" in command:
         time = datetime.datetime.now().strftime("%I:%M%p")
         print(time)
-        talk("Current time is" + time)
+        talk(f"Current time is{time}")
     elif "joke" in command:
         talk("Here is the joke")
         talk(pyjokes.get_joke())
@@ -60,7 +59,7 @@ def run_mini_google_assistant():
         talk(date)
     elif 'how are you' in command:
         talk('I am good. Nice to see you here!')
-    elif "capture" or "camera" in command:
+    else:
         talk("Ok I'll do it for you!")
         talk("Remenber, You can use s button to quit")
         vid = cv2.VideoCapture(0)
@@ -87,9 +86,6 @@ def run_mini_google_assistant():
         vid.release()
         # Destroy all the windows
         cv2.destroyAllWindows()
-
-    else:
-        talk("Sorry i am not getting you! Can you please repeat!")
 
 
 talk("Hello my friend, i am your personal mini google assistant.")

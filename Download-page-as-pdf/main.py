@@ -25,7 +25,7 @@ def main():
         name = arguments.name
 
     if not name.endswith('.pdf'):
-        name = name + '.pdf'
+        name = f'{name}.pdf'
 
     print(f'Name of the file: {name}')
 

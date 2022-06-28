@@ -13,8 +13,7 @@ COLUMN_COUNT = 7
 
 
 def create_board():
-    board = np.zeros((ROW_COUNT, COLUMN_COUNT))
-    return board
+    return np.zeros((ROW_COUNT, COLUMN_COUNT))
 
 
 def drop_piece(board, row, col, piece):
@@ -113,23 +112,21 @@ while not game_over:
             pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
             posx = event.pos[0]
             if turn == 0:
-                pygame.draw.circle(
-                    screen, RED, (posx, int(SQUARESIZE/2)), RADIUS)
+                pygame.draw.circle(screen, RED, (posx, SQUARESIZE // 2), RADIUS)
             else:
-                pygame.draw.circle(
-                    screen, YELLOW, (posx, int(SQUARESIZE/2)), RADIUS)
+                pygame.draw.circle(screen, YELLOW, (posx, SQUARESIZE // 2), RADIUS)
         pygame.display.update()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             # print(event.pos)
             pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
 
-            if turn == 0:
-                posx = event.pos[0]
-                col = int(math.floor(posx/SQUARESIZE))
+            posx = event.pos[0]
+            col = int(math.floor(posx/SQUARESIZE))
 
-                if is_valid_location(board, col):
-                    row = get_next_open_row(board, col)
+            if is_valid_location(board, col):
+                row = get_next_open_row(board, col)
+                if turn == 0:
                     drop_piece(board, row, col, 1)
 
                     if winning_move(board, 1):
@@ -138,12 +135,7 @@ while not game_over:
                         screen.blit(label, (40, 10))
                         game_over = True
 
-            else:
-                posx = event.pos[0]
-                col = int(math.floor(posx/SQUARESIZE))
-
-                if is_valid_location(board, col):
-                    row = get_next_open_row(board, col)
+                else:
                     drop_piece(board, row, col, 2)
 
                     if winning_move(board, 2):
@@ -156,7 +148,7 @@ while not game_over:
             draw_board(board)
 
             turn += 1
-            turn = turn % 2
+            turn %= 2
 
             if game_over:
                 pygame.time.wait(3000)

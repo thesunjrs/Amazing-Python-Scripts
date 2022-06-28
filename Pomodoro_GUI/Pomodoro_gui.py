@@ -38,11 +38,7 @@ def block_websites():
             for website in block_list:
 
                 # Website is already blocked
-                if website in content:
-                    pass
-
-                # To redirect the website to be blocked
-                else:
+                if website not in content:
                     h_file.write(redirect + "\t" + website + "\n")
 
         tk.messagebox.showinfo("Blocked", f"{url} successfully blocked!")
@@ -79,9 +75,9 @@ def remove_websites():
                 # Traversing through each line of the host file and
                 # checking for the websites to be blocked
                 for lines in content:
-                    if not any(website in lines for website in block_list):
+                    if all(website not in lines for website in block_list):
                         file.write(lines)
-                        
+
                 # Truncating the file to its original size
                 file.truncate()
 

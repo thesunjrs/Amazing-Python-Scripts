@@ -18,7 +18,6 @@ def summarize_sentences(sentences: str, language="english") -> list:
     # Call the summarization algorithm and do the summarization
     summarizer = LexRankSummarizer()
     summarizer.stop_words = get_stop_words(language)
-    summary = summarizer(document=parser.document,
-                         sentences_count=len(corpus) * 2 // 10)
-
-    return summary
+    return summarizer(
+        document=parser.document, sentences_count=len(corpus) * 2 // 10
+    )

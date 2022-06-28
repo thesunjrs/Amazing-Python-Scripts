@@ -1,7 +1,7 @@
 import requests
 import matplotlib.pyplot as plt
 city = input("Enter you city :  ")
-url = 'http://api.waqi.info/feed/' + city + '/?token='
+url = f'http://api.waqi.info/feed/{city}/?token='
 api_key = input("Enter your API key: ")
 
 main_url = url + api_key
@@ -28,12 +28,12 @@ print('Ozone :', o3)
 print('sulphur :', so2)
 print('pm10 :', so2)
 print('pm25 :', pm25)
-pollutants = [i for i in iaqi]
+pollutants = list(iaqi)
 values = [i['v'] for i in iaqi.values()]
 
 
 # Exploding the first slice
-explode = [0 for i in pollutants]
+explode = [0 for _ in pollutants]
 mx = values.index(max(values))  # explode 1st slice
 explode[mx] = 0.1
 

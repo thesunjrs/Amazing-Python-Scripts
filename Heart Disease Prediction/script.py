@@ -3,9 +3,8 @@ import pickle
 import numpy as np
 import pandas as pd
 
-data = {}
 print("[+] Enter the age")
-data["age"] = int(input())
+data = {"age": int(input())}
 print("Enter the sex (1 = male, 0 = female)")
 data["sex"] = int(input())
 print(
