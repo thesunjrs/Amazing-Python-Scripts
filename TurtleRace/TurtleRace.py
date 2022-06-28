@@ -8,11 +8,10 @@ UserInput = scr.textinput(title="Play luck",
                           prompt="Who would win in your opinion??Enter your lucky color from rainbow")
 # declaring a list of colors
 ColorList = ["Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet"]
-RaceRunning = False
 Runners = []
 pos = -100
 # for each and every turtle
-for i in range(0, 7):
+for i in range(7):
     NewTurtle = t.Turtle()
     NewTurtle.shape("turtle")
     NewTurtle.penup()
@@ -20,9 +19,7 @@ for i in range(0, 7):
     NewTurtle.goto(x=-250, y=pos)
     pos += 50
     Runners.append(NewTurtle)
-if UserInput:
-    RaceRunning = True
-    # till the game is running
+RaceRunning = bool(UserInput)
 while RaceRunning :
     for runner in Runners:
         if runner.xcor() > 230:

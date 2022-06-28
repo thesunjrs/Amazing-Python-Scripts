@@ -6,7 +6,7 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 print("The file should be in same FOLDER as this script")
 
 pdf_File_Name = input("Enter EXACT name of the PDF in this FOLDER: ")
-pdf_File = pdf_File_Name + ".pdf"
+pdf_File = f"{pdf_File_Name}.pdf"
 
 # Reading the pdf
 pdf = PdfFileReader(pdf_File)
@@ -28,6 +28,6 @@ write_Obj.encrypt(user_pwd=user_Password,
 
 # Naming and creating the encrypted PDF
 new_PDF_Name_Input = input("Enter new ENCRYPTED PDF name: ")
-new_PDF_Name = new_PDF_Name_Input + '.pdf'
+new_PDF_Name = f'{new_PDF_Name_Input}.pdf'
 encrypted_PDF = open(new_PDF_Name, 'wb')
 write_Obj.write(encrypted_PDF)

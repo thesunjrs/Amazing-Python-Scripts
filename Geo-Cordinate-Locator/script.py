@@ -19,9 +19,9 @@ def g():
     x = t1.get()
     y = u1.get()
     s = ""
-    s = s + "Latitude=> " + x
-    s = s + " "
-    s = s + "Longitude=> " + y
+    s = f"{s}Latitude=> {x}"
+    s += " "
+    s = f"{s}Longitude=> {y}"
     # print(s)
     clipboard.copy(s)
 

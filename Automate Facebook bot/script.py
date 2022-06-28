@@ -10,11 +10,7 @@ from getpass import getpass
 LOGIN_URL = 'https://www.facebook.com/login.php'
 num = str(input("Enter group ids separated by commas: "))
 lists = num.split(",")
-groupid = []
-for i in lists:
-    groupid.append(i)
-
-
+groupid = list(lists)
 message = input("Enter your message: ")
 
 
@@ -43,7 +39,7 @@ class FacebookLogin():
         time.sleep(2)  # Wait for 2 seconds for the page to show up
 
         for i in range(len(groupid)):
-            link = 'https://facebook.com/groups/'+groupid[i]
+            link = f'https://facebook.com/groups/{groupid[i]}'
             self.driver.get(link)
             print("Waiting for few seconds .......")
             time.sleep(45)

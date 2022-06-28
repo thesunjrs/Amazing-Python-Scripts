@@ -14,7 +14,7 @@ class Pass:
         output = output.replace('\n', ' ')
         ssidList = output.split(':')
         ssidList = ssidList[2:]
-        for i in range(0, len(ssidList)):
+        for i in range(len(ssidList)):
             ssidList[i] = ssidList[i].replace("All User Profile", '').strip()
         passwords = []
         for ssid in ssidList:
@@ -27,7 +27,7 @@ class Pass:
             ]
             passwords.append(line[0][1].lstrip())
         with open('passwords.txt', 'w') as fh:
-            for i in range(0, len(ssidList)):
+            for i in range(len(ssidList)):
                 fh.writelines(f'{ssidList[i]} : {passwords[i]}\n')
 
     def chdir(self, path):

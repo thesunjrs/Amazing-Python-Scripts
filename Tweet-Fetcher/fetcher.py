@@ -18,8 +18,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 
 def sql_connection():
     try:
-        con = sqlite3.connect('tweetsDatabase.db')
-        return con
+        return sqlite3.connect('tweetsDatabase.db')
     except Error:
         print(Error)
 
@@ -50,8 +49,8 @@ def sql_insert(con, entities):
 # Take input for hashtag to search and number of tweets to fetch
 hashTag = input("\nEnter hashtag to search: ")
 numberOfTweets = int(input("How many tweets do you want to fetch? "))
-search_words = "#"+hashTag
-new_search = search_words + " -filter:retweets"
+search_words = f"#{hashTag}"
+new_search = f"{search_words} -filter:retweets"
 
 # Call twitter API and pass above parameters
 try:

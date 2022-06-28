@@ -39,9 +39,9 @@ def delete_data(key):
 
 def retrieve_data():
     response = database.child("testdata").get()
-    print("data " + str(response))
-    print("Keys : " + str(response.key()))
-    print("Values : " + str(response.val()))
+    print(f"data {str(response)}")
+    print(f"Keys : {str(response.key())}")
+    print(f"Values : {str(response.val())}")
     return response
 
 

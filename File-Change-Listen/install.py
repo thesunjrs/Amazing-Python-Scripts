@@ -13,7 +13,7 @@ def installfiles():
     location = input('Enter installation directory: ')
     print('Installing Files')
     for file in files:
-        print('Installing %s' % file)
+        print(f'Installing {file}')
         copyfiles(file, location)
 
 

@@ -14,8 +14,8 @@ print("[-+-] pdf_csv.py packages imported! \n")
 def pdf_csv():  # convert pdf to csv
     print("[-+-] default filenames:")
     filename = "sample1"
-    pdf = filename + ".pdf"
-    csv = filename + ".csv"
+    pdf = f"{filename}.pdf"
+    csv = f"{filename}.csv"
     print(pdf)
     print(csv + "\n")
 
@@ -32,7 +32,7 @@ def pdf_csv():  # convert pdf to csv
 
     print("[-+-] looking for default pdf...")
     if os.path.exists(pdf_path) == True:  # check if the default pdf exists
-        print("[-+-] pdf found: " + pdf + "\n")
+        print(f"[-+-] pdf found: {pdf}" + "\n")
         pdf_flag = True
     else:
         print("[-+-] looking for another pdf...")
@@ -41,7 +41,7 @@ def pdf_csv():  # convert pdf to csv
             if defaultdir.endswith(".pdf")
         ]
         if len(arr_pdf) == 1:  # there has to be only 1 pdf in the directory
-            print("[-+-] pdf found: " + arr_pdf[0] + "\n")
+            print(f"[-+-] pdf found: {arr_pdf[0]}" + "\n")
             pdf_path = os.path.join(defaultdir, arr_pdf[0])
             pdf_flag = True
         elif len(arr_pdf) > 1:  # there are more than 1 pdf in the directory
@@ -58,10 +58,10 @@ def pdf_csv():  # convert pdf to csv
         try:
             print("[-+-] looking for default csv...")
             open(csv_path, "r")
-            print("[-+-] csv found: " + csv + "\n")
+            print(f"[-+-] csv found: {csv}" + "\n")
         except IOError:
             print("[-+-] did not find csv at default file path!")
-            print("[-+-] creating a blank csv file: " + csv + "... \n")
+            print(f"[-+-] creating a blank csv file: {csv}" + "... \n")
             open(csv_path, "w")
 
         print("[-+-] converting pdf to csv...")
@@ -75,7 +75,7 @@ def pdf_csv():  # convert pdf to csv
         except IOError:
             print("[-+-] pdf to csv conversion failed!")
 
-        print("[-+-] converted csv file can be found here: " + csv_path + "\n")
+        print(f"[-+-] converted csv file can be found here: {csv_path}" + "\n")
 
         print("[-+-] finished pdf_csv.py successfully!")
 

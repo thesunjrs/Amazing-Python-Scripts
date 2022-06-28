@@ -24,12 +24,7 @@ PARAMS= {'intitle': errorType, 'tagged': 'python', 'nottagged':errorMessage, 'so
 r= requests.get(url= URL, params= PARAMS)
 data= r.json()
 
-links=[]
-for i in data['items']:
-    # get those question links which are answered
-    if i["is_answered"]==True:
-        links.append(i["link"])
-
+links = [i["link"] for i in data['items'] if i["is_answered"]==True]
 # opening links the web browser
 n1=len(links)
 for i in range(7):

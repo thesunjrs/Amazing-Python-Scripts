@@ -79,9 +79,10 @@ def first_post():
 
 def next_post():
     try:
-        nex = chrome.find_element_by_class_name(
-            "coreSpriteRightPaginationArrow")
-        return nex
+        return chrome.find_element_by_class_name(
+            "coreSpriteRightPaginationArrow"
+        )
+
     except selenium.common.exceptions.NoSuchElementException:
         return 0
 
@@ -101,10 +102,7 @@ def download_allposts():
         # Create folder
         os.mkdir(user_name)
 
-    # Check if Posts contains multiple images or videos
-    multiple_images = nested_check()
-
-    if multiple_images:
+    if multiple_images := nested_check():
         nescheck = multiple_images
         count_img = 0
 
@@ -112,50 +110,59 @@ def download_allposts():
             elem_img = chrome.find_element_by_class_name('rQDP3')
 
             # Function to save nested images
-            save_multiple(user_name+'/'+'content1.'+str(count_img), elem_img)
+            save_multiple(f'{user_name}/content1.{str(count_img)}', elem_img)
             count_img += 1
             nescheck.click()
             nescheck = nested_check()
 
         # pass last_img_flag True
-        save_multiple(user_name+'/'+'content1.' +
-                                str(count_img), elem_img, last_img_flag=1)
+        save_multiple(
+            (f'{user_name}/content1.' + str(count_img)),
+            elem_img,
+            last_img_flag=1,
+        )
+
     else:
-        save_content('_97aPb', user_name+'/'+'content1')
+        save_content('_97aPb', f'{user_name}/content1')
     c = 2
 
-    while(True):
+    while True:
         next_el = next_post()
 
-        if next_el != False:
-            next_el.click()
-            time.sleep(1.3)
-
-            try:
-                multiple_images = nested_check()
-
-                if multiple_images:
-                    nescheck = multiple_images
-                    count_img = 0
-
-                    while nescheck:
-                        elem_img = chrome.find_element_by_class_name('rQDP3')
-                        save_multiple(user_name+'/'+'content' +
-                                                str(c)+'.'+str(count_img), elem_img)
-                        count_img += 1
-                        nescheck.click()
-                        nescheck = nested_check()
-                    save_multiple(user_name+'/'+'content'+str(c) +
-                                            '.'+str(count_img), elem_img, 1)
-                else:
-                    save_content('_97aPb', user_name+'/'+'content'+str(c))
-
-            except selenium.common.exceptions.NoSuchElementException:
-                print("finished")
-                return
-
-        else:
+        if next_el == False:
             break
+
+        next_el.click()
+        time.sleep(1.3)
+
+        try:
+            if multiple_images := nested_check():
+                nescheck = multiple_images
+                count_img = 0
+
+                while nescheck:
+                    elem_img = chrome.find_element_by_class_name('rQDP3')
+                    save_multiple(
+                        ((f'{user_name}/content' + str(c)) + '.')
+                        + str(count_img),
+                        elem_img,
+                    )
+
+                    count_img += 1
+                    nescheck.click()
+                    nescheck = nested_check()
+                save_multiple(
+                    (f'{user_name}/content{str(c)}' + '.') + str(count_img),
+                    elem_img,
+                    1,
+                )
+
+            else:
+                save_content('_97aPb', f'{user_name}/content{str(c)}')
+
+        except selenium.common.exceptions.NoSuchElementException:
+            print("finished")
+            return
 
         c += 1
 
@@ -176,11 +183,7 @@ def save_content(class_name, img_name):
     soup = bs(html, 'html.parser')
     link = soup.find('video')
 
-    if link:
-        link = link['src']
-
-    else:
-        link = soup.find('img')['src']
+    link = link['src'] if link else soup.find('img')['src']
     response = requests.get(link)
 
     with open(img_name, 'wb') as f:
@@ -203,9 +206,7 @@ def save_multiple(img_name, elem, last_img_flag=False):
 
     else:
         user_image = list_images[(len(list_images)//2)]
-    video = user_image.find('video')
-
-    if video:
+    if video := user_image.find('video'):
         link = video['src']
 
     else:
@@ -222,8 +223,7 @@ def nested_check():
 
     try:
         time.sleep(1)
-        nes_nex = chrome.find_element_by_class_name('coreSpriteRightChevron ')
-        return nes_nex
+        return chrome.find_element_by_class_name('coreSpriteRightChevron ')
 
     except selenium.common.exceptions.NoSuchElementException:
         return 0

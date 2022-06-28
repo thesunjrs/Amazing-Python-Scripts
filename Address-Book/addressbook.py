@@ -44,18 +44,16 @@ def create_table(conn, create_table_sql):
 displaying added/deleted message
 '''
 def onClickAdded():
-    tkinter.messagebox.showinfo(" ",Name.get()+" got added")
+    tkinter.messagebox.showinfo(" ", f"{Name.get()} got added")
 
 def onClickDeleted():
-    tkinter.messagebox.showinfo(" ",Name.get()+" got deleted")
+    tkinter.messagebox.showinfo(" ", f"{Name.get()} got deleted")
 
 """ Create a new task (ie creating new row) for the given Name  taking care of all conditions such as  Name,phone no
 cannot be empty ,phone no should be 10 digits and also if  Name already exist,then it cannot be inerted
 """
 def create_task():
-    sql = ''' INSERT INTO tasks(name,status_id)
-              VALUES(?,?) '''
-    if(Name.get() not in list_of_names):
+    if (Name.get() not in list_of_names):
         
         if((Name.get()=='') | (Number.get()=='') | (len(Number.get())!=10)):
             top = Toplevel(root)
@@ -70,6 +68,8 @@ def create_task():
             return
         onClickAdded()
         cur = conn.cursor()
+        sql = ''' INSERT INTO tasks(name,status_id)
+              VALUES(?,?) '''
         cur.execute(sql, (Name.get(),Number.get()))
         conn.commit()
         return cur.lastrowid
@@ -180,7 +180,7 @@ creating dialog box for warnings!
 class MyDialog:
     def __init__(self, parent):
         top = self.top = Toplevel(parent)
-        self.myLabel = Label(top, text=Name.get().upper()+" NOT FOUND!")
+        self.myLabel = Label(top, text=f"{Name.get().upper()} NOT FOUND!")
         self.myLabel.pack()
         self.mySubmitButton = Button(top, text='Exit', command=self.send)
         self.mySubmitButton.pack()

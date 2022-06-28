@@ -17,10 +17,7 @@ rang = int(pages) + 1
 
 # Select the pixel from the extracted images of pdf pages
 def select_pixel(r,g,b):
-    if r > 120 and r < 254 and g > 120 and g < 254 and b > 120 and b < 254:
-        return True
-    else:
-        return False
+    return r > 120 and r < 254 and g > 120 and g < 254 and b > 120 and b < 254
 
 # Handling of images for removing the watermark
 def handle(imgs):
@@ -36,9 +33,7 @@ try:
     os.mkdir(dirname + '\img')
 except FileExistsError:
     print('Folder exist')
-index = 0
-for img in images:
-    index += 1
+for index, img in enumerate(images, start=1):
     img = np.array(img)
     print(img.shape)
     img = handle(img)
@@ -47,7 +42,7 @@ for img in images:
 
 # Merging images to a sigle PDF
 pdf = FPDF()
-sdir = dirname + "img/"
+sdir = f"{dirname}img/"
 w,h = 0,0
 
 for i in range(1, rang):

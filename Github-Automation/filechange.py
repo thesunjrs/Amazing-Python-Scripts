@@ -32,20 +32,15 @@ def ischanged(url, branch, *args, **kwargs):
     initial = list(read_file(onlyfiles))
     while True:
         current = list(read_file(onlyfiles))
-        changeditem = []
-        previtem = []
         if (current != initial):
+            previtem = []
             # Calculating Previous Version of File
             for ele in initial:
                 if ele not in current:
-                    for item in ele:
-                        previtem.append(item)
-            # Calculating New Version of File
-            for ele in current:
-                if ele not in initial:
-                    changeditem.append(ele)
+                    previtem.extend(iter(ele))
+            changeditem = [ele for ele in current if ele not in initial]
             # calculating changed file's name
-            for i in range(0, len(changeditem)):
+            for i in range(len(changeditem)):
                 print('loop :-', i)
                 changedfile.append(onlyfiles[current.index(changeditem[i])])
             print(

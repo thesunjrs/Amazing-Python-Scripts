@@ -45,8 +45,8 @@ def slides_capture(links):
     for link in links:
         print(f"fetching (slide{pg_no})")
         file = f"slide{pg_no}.jpg"
-        urllib.request.urlretrieve(link, ".cache/"+file)
-        all_slides.append(".cache/"+file)
+        urllib.request.urlretrieve(link, f".cache/{file}")
+        all_slides.append(f".cache/{file}")
         pg_no = pg_no+1
     return all_slides
 
@@ -54,7 +54,7 @@ def slides_capture(links):
 def combine(all_slides):
     output_name = input(
         "\n\n Enter the name for pdf file of slides (without extension):")
-    with open(output_name+".pdf", "wb") as f:
+    with open(f"{output_name}.pdf", "wb") as f:
         f.write(img2pdf.convert(all_slides))
     for i in all_slides:
         os.remove(i)
@@ -66,10 +66,9 @@ t.start()
 all_urls = get_image_list(main_link)
 if len(all_urls) == 0:
     print("Sorry no downloadable slides found")
-    task = True
 else:
     print(f"Total no of Slides found: {len(all_urls)}")
     all_slides = slides_capture(all_urls)
-    task = True
     combine(all_slides)
+task = True
 print("All set your file is ready")

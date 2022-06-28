@@ -57,7 +57,7 @@ def inputs(usernames, targets):
         "slack": f'https://{username}.slack.com'
     }
 
-    for key in websites.keys():
+    for key in websites:
         keys = str(key)
         if keys == target:
             search_web(username, websites[keys])
@@ -71,16 +71,25 @@ def search_web(username, target_website):
     """
     r = requests.get(target_website)
     if r.status_code == 200:
-        print('Got it ' + username + ' in ' + target_website)
+        print(f'Got it {username} in {target_website}')
     elif r.status_code == 400:
-        print('Error 400, Bad Request for ' + username + ' at ' +
-              target_website + ' check the Syntax of the URL')
+        print(
+            (
+                (f'Error 400, Bad Request for {username} at ' + target_website)
+                + ' check the Syntax of the URL'
+            )
+        )
+
     elif r.status_code == 404:
-        print('Error 404, Not Found ' + username + ' at ' + target_website)
+        print(f'Error 404, Not Found {username} at {target_website}')
     else:
-        print('There seems to be a issue ' + username + ' at ' +
-              target_website + ' is not responding. Check the'
-              ' syntax of the URL.')
+        print(
+            (
+                (f'There seems to be a issue {username} at ' + target_website)
+                + ' is not responding. Check the'
+                ' syntax of the URL.'
+            )
+        )
 
 
 if __name__ == '__main__':

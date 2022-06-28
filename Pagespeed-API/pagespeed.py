@@ -46,13 +46,11 @@ class PageSpeed(object):
         # Returns raw data
         raw = requests.get(self.endpoint, params=params)
 
-        response = PageSpeedResponse(raw)
-
-        return response
+        return PageSpeedResponse(raw)
 
     def save(self, response, path='./'):
         json_data = response._json
-        with open(path + "json_data.json", 'w+') as f:
+        with open(f"{path}json_data.json", 'w+') as f:
             json.dump(json_data, f, indent=2)
 
 

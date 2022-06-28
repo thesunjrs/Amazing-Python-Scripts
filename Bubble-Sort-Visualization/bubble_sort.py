@@ -58,13 +58,10 @@ def generate_array():
             message="Max. value should not be less than Min. value")
         min_val, max_val = max_val, min_val
 
-    data = []
-
-    for i in range(size_val):
-        data.append(random.randrange(min_val, max_val + 1))
+    data = [random.randrange(min_val, max_val + 1) for _ in range(size_val)]
 
     unsorted_data = data.copy()
-    draw_data(data, ["red" for x in range(len(data))])
+    draw_data(data, ["red" for _ in range(len(data))])
 
 
 def reset_array():
@@ -74,7 +71,7 @@ def reset_array():
     """
     global data
     data = unsorted_data.copy()
-    draw_data(data, ["red" for x in range(len(data))])
+    draw_data(data, ["red" for _ in range(len(data))])
 
 
 def bubble_sort(data, speed):
@@ -89,11 +86,17 @@ def bubble_sort(data, speed):
         for j in range(len(data) - i - 1):
             if data[j] > data[j+1]:
                 data[j], data[j+1] = data[j+1], data[j]
-            draw_data(data, ["yellow" if x == j or x == j +
-                      1 else "red" for x in range(len(data))])
+            draw_data(
+                data,
+                [
+                    "yellow" if x in [j, j + 1] else "red"
+                    for x in range(len(data))
+                ],
+            )
+
             time.sleep(speed)
 
-    draw_data(data, ["green" for x in range(len(data))])
+    draw_data(data, ["green" for _ in range(len(data))])
 
 
 def run_sort():

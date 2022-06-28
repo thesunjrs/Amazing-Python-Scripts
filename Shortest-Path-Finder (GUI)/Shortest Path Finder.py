@@ -224,7 +224,7 @@ def main(win, width):
                     end = spot
                     end.make_end()
 
-                elif spot != end and spot != start:
+                elif spot not in [end, start]:
                     spot.make_barrier()
 
             elif pg.mouse.get_pressed()[2]:     # right mouse button

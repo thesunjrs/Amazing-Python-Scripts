@@ -16,6 +16,7 @@ def notify(title, score):
                        icon_path='ipl.ico')
 
 
+update = []
 while True:
     request = Request(URL, headers={'User-Agent': 'XYZ/3.0'})
     response = urlopen(request, timeout=20).read()
@@ -25,7 +26,6 @@ while True:
     # page = urlopen(URL)
     soup = BeautifulSoup(data_content, 'html.parser')
 
-    update = []
     # print(soup)
     # print(soup.find_all('div',attrs={'class':'cb-col cb-col-100 cb-plyr-tbody cb-rank-hdr cb-lv-main'}))
     for score in soup.find_all(

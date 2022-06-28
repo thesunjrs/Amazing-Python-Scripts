@@ -41,26 +41,23 @@ def genre(update, context):
     url = 'https://www.imdb.com/search/title/'
     genre = str(update.message.text)[7:]
     print(genre)
-    r = requests.get(url+'?genres='+genre)
+    r = requests.get(f'{url}?genres={genre}')
     soup = BeautifulSoup(r.text, "html.parser")
     title = soup.find('title')
     if title.string == 'IMDb: Advanced Title Search - IMDb':
         update.message.reply_text("Sorry,No such genre.Try again")
     else:
-        res = []
-        res.append(title.string+'\n')
+        res = [title.string + '\n']
         tags = soup('a')
         for tag in tags:
             movie = re.search('<a href=\"/title/.*>(.*?)</a>', str(tag))
             try:
-                if "&amp;" in movie.group(1):
-                    movie.group(1).replace("&amp;", "&")
-                res.append(movie.group(1))
+                if "&amp;" in movie[1]:
+                    movie[1].replace("&amp;", "&")
+                res.append(movie[1])
             except:
                 pass
-        stri = ""
-        for i in res:
-            stri += i+'\n'
+        stri = "".join(i+'\n' for i in res)
         update.message.reply_text(stri)
 
 
@@ -100,7 +97,7 @@ def get_info(movie):
         try:
             lis = []
             link = re.search('/title/(.*?)/', str(m))
-            new_url = 'https://www.imdb.com'+str(link.group(0))
+            new_url = f'https://www.imdb.com{str(link[0])}'
             if new_url != pre_url:
                 html = requests.get(new_url)
                 soup2 = BeautifulSoup(html.text, "html.parser")
@@ -114,21 +111,18 @@ def get_info(movie):
                     genre = re.search(
                         '<a href=\"/search/title\?genres=.*> (.*?)</a>', str(j))
                     try:
-                        genrestring += genre.group(1)+' '
+                        genrestring += genre[1] + ' '
                     except:
                         pass
                 atag = soup2('strong')
                 for i in atag:
                     rating = re.search('<strong title=\"(.*?) based', str(i))
                     try:
-                        rstring = "IMDb Rating : "+rating.group(1)
+                        rstring = "IMDb Rating : " + rating[1]
                     except:
                         pass
-                details = "For more details : "+new_url
-                lis.append(movietitle)
-                lis.append(genrestring)
-                lis.append(rstring)
-                lis.append(details)
+                details = f"For more details : {new_url}"
+                lis.extend((movietitle, genrestring, rstring, details))
                 pre_url = new_url
                 count += 1
                 res.append(lis)

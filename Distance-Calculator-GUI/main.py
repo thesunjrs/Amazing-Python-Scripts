@@ -19,7 +19,7 @@ def get_dis():
         location1 = (Loc1_lat, Loc1_lon)
         location2 = (Loc2_lat, Loc2_lon)
 
-        res = (str(distance.distance(location1, location2).km) + " Km")
+        res = f"{str(distance.distance(location1, location2).km)} Km"
 
         result.set(res)
     except:

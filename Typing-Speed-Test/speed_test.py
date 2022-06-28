@@ -21,10 +21,7 @@ def result():
     time_taken = round(timeit.default_timer() - start_time)
     typed_text = text.get()
     wpm = round((sentence_words/time_taken)*60)
-    count = 0
-    for index, char in enumerate(typed_text):
-        if sentence[index] == char:
-            count += 1
+    count = sum(sentence[index] == char for index, char in enumerate(typed_text))
     accu = round((count/sentence_length)*100)
 
     Speed.config(text=f"Speed: {wpm} WPM")
@@ -47,9 +44,9 @@ def Reset():
     typing_box.delete(0, tk.END)
     start_time = 0
 
-    Speed.config(text=f"Speed: 00 WPM")
-    Accuracy.config(text=f"Accuracy: 00")
-    Time.config(text=f"Time: 0 sec")
+    Speed.config(text="Speed: 00 WPM")
+    Accuracy.config(text="Accuracy: 00")
+    Time.config(text="Time: 0 sec")
 
 
 window = tk.Tk()

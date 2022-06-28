@@ -6,8 +6,7 @@ from sqlite3 import Error
 
 def sql_connection():
     try:
-        con = sqlite3.connect('tweetsDatabase.db')
-        return con
+        return sqlite3.connect('tweetsDatabase.db')
     except Error:
         print(Error)
 

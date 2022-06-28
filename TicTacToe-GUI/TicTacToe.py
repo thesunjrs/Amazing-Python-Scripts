@@ -102,10 +102,7 @@ def is_board_full():
     k = False
     for row in range(board_rows):
         for col in range(board_columns):
-            if board[row][col] == 0:
-                k = False
-            else:
-                k = True
+            k = board[row][col] != 0
     return k
 
 
@@ -132,36 +129,23 @@ def check_win(player):
 def draw_horizontal_winning_line(row, player):
     posY = row*square_size + square_size//2
 
-    if(player == 1):
-        color = circle_color
-    else:
-        color = cross_color
-
+    color = circle_color if (player == 1) else cross_color
     pygame.draw.line(screen, color, (15, posY), (width-15, posY), 15)
 
 
 def draw_vertical_winning_line(col, player):
     posX = col*square_size + square_size//2
-    if(player == 1):
-        color = circle_color
-    else:
-        color = cross_color
+    color = circle_color if (player == 1) else cross_color
     pygame.draw.line(screen, color, (posX, 15), (posX, width-15), 15)
 
 
 def draw_asc_diagonal(player):
-    if(player == 1):
-        color = circle_color
-    else:
-        color = cross_color
+    color = circle_color if (player == 1) else cross_color
     pygame.draw.line(screen, color, (15, height-15), (width-15, 15), 15)
 
 
 def draw_des_diagonal(player):
-    if(player == 1):
-        color = circle_color
-    else:
-        color = cross_color
+    color = circle_color if (player == 1) else cross_color
     pygame.draw.line(screen, color, (15, 15), (width-15, height-15), 15)
 
 
@@ -196,17 +180,15 @@ while True:  # main game loop
             clicked_column = int(mouseX // square_size)
             if available_square(clicked_row, clicked_column):
                 mark_square(clicked_row, clicked_column, player)
-                if(check_win(player)):
+                if (check_win(player)):
                     game_over = True
-                    Won = font.render("Player"+str(player) +
-                                      " Won ", True, blue, green)
+                    Won = font.render((f"Player{str(player)}" + " Won "), True, blue, green)
                     screen.blit(Won, winRect)
                     screen.blit(text, textRect)
                     screen.blit(leave, leaveRect)
                 player = player % 2 + 1
                 if not game_over and not board_full:
-                    Won = font.render("Player"+str(player) +
-                                      " Turn ", True, blue, green)
+                    Won = font.render((f"Player{str(player)}" + " Turn "), True, blue, green)
                     screen.blit(Won, winRect)
                 draw_figures()
         # to restart the game

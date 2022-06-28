@@ -30,25 +30,29 @@ def outcome_handler(user_choice):
 
     # now config the labes acc to the choices
     Player_Choice_Label.config(
-        fg="green", text="Player choice : "+str(user_choice))
+        fg="green", text=f"Player choice : {str(user_choice)}"
+    )
+
 
     Computer_Choice_Label.config(
-        fg="red", text="Computer choice : "+str(computer_choice))
+        fg="red", text=f"Computer choice : {str(computer_choice)}"
+    )
+
 
     if result == 2:
         player_score += 2
-        Player_Score_Label.config(text="Player : "+str(player_score))
+        Player_Score_Label.config(text=f"Player : {player_score}")
         Outcome_Label.config(fg="blue", bg="skyblue", text="Player-Won")
     elif result == 1:
         player_score += 1
         comp_score += 1
-        Player_Score_Label.config(text="Player : "+str(player_score))
+        Player_Score_Label.config(text=f"Player : {player_score}")
         Outcome_Label.config(fg="blue", bg="skyblue", text="Draw")
-        Computer_Score_Label.config(text="Computer : "+str(comp_score))
+        Computer_Score_Label.config(text=f"Computer : {comp_score}")
     elif result == 0:
         comp_score += 2
         Outcome_Label.config(fg="blue", bg="skyblue", text="Computer-Won")
-        Computer_Score_Label.config(text="Computer : "+str(comp_score))
+        Computer_Score_Label.config(text=f"Computer : {comp_score}")
 
 
 # main Screen

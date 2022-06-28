@@ -300,10 +300,7 @@ class quiz(tk.Tk):
             incorrect_options[i].append(self.correct_answers[i])
             random.shuffle(incorrect_options[i])
 
-        self.options = []
-        # the
-        for i in range(len(incorrect_options)):
-            self.options.append(incorrect_options[i])
+        self.options = list(incorrect_options)
 
 
 if __name__ == "__main__":

@@ -23,15 +23,15 @@ def round(n):
         else:
             print("You entered a wrong Number")
             i = i - 1
-    print("Your score :" + str(usr) + "\nComputer Score :" + str(pgm))
+    print(f"Your score :{str(usr)}" + "\nComputer Score :" + str(pgm))
     print("-----Game Over-----")
 
 
 a = ["stone", "paper", "scissors"]
 n = int(input("how many turns you want in a round?"))
-while (True):
+while True:
     round(n)
     s = input("Do you want to play again?(Y/N) : ")
-    if s == 'N' or s == 'n':
+    if s in ['N', 'n']:
         break
 print("-----Thank you-----")

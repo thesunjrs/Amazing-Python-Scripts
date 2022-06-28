@@ -43,7 +43,7 @@ MAX_URL = 250
 '''
 log file path so that we can write into it
 '''
-LOG = ROOT + '/server.log'
+LOG = f'{ROOT}/server.log'
 # using a mode so we can only append and not overrite etc bad stuff
 w = open(LOG, "a")
 w.close()
@@ -51,12 +51,12 @@ w.close()
 workfile.html has the response saved msg.
 It is not part of the Server program I am using it show client that it's response is saved
 '''
-WORKFILE = ROOT + '/workfile.html'  # path
+WORKFILE = f'{ROOT}/workfile.html'
 '''
 this creates a basic html workfile
 '''
-w = open(WORKFILE, "w")
-d = '''<html lang="en">
+with open(WORKFILE, "w") as w:
+    d = '''<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,18 +67,17 @@ d = '''<html lang="en">
     <h1>Your Response was Saved Succesfully!</h1>
 </body>
 </html>'''
-w.write(d)
-w.close()
+    w.write(d)
 '''
 All data entered by the client is stored here for checking Purpose.
 '''
-CSVFILE = ROOT + '/output.csv'
+CSVFILE = f'{ROOT}/output.csv'
 w = open(CSVFILE, "a")  # only appending not writing
 w.close()
 '''
 all the files which are deleted using DELETE are getting moved here.
 '''
-DELETE = ROOT + '/deleted'
+DELETE = f'{ROOT}/deleted'
 '''
 the /deleted folder mentioned above is created here.
 For the DELETE req purpose

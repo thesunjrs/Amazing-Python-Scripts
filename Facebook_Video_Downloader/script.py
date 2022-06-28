@@ -22,11 +22,10 @@ def get_downloadlink(url):
         if r.status_code != 200:
             raise HTTPError
         a = findall("/video_redirect/", r.text)
-        if len(a) == 0:
-            print("[!] Video Not Found...")
-            exit(0)
-        else:
+        if len(a) != 0:
             return unquote(r.text.split("?src=")[1].split('"')[0])
+        print("[!] Video Not Found...")
+        exit(0)
     except (HTTPError, ConnectionError):
         print("[x] Invalid URL")
         exit(1)
@@ -45,7 +44,7 @@ def Download_vid():
 
     # Validating Input
 
-    if not "www.facebook.com" in url:
+    if "www.facebook.com" not in url:
         Invalid_Url()
         return
 

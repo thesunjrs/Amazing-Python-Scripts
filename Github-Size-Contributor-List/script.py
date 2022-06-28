@@ -9,10 +9,7 @@ def main(args):
 
     response_text = f"Size of repository is {res.get('size')}"
 
-    list_of_contributors = []
-
-    for x in response_collaborators:
-        list_of_contributors.append(x.get("login"))
+    list_of_contributors = [x.get("login") for x in response_collaborators]
 
     with open("output.txt", "w") as text:
         text.write(response_text + "\n" +

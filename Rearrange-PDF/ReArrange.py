@@ -31,9 +31,8 @@ def input_and_parse(n):
     # Swapping the position of the lst values to better parse it in dictionary
     lst = [[x[1], x[0]] for x in lst]
     lst.sort(key=lambda x: x[0])
-    dic = {curr: new for curr, new in lst}
     # now I have sorted the dic to the required needs of reorder function
-    return dic
+    return dict(lst)
 
 
 def re_arrange(file_path, output_file_name, dic):
@@ -69,7 +68,7 @@ def re_arrange(file_path, output_file_name, dic):
 if __name__ == "__main__":
     file_path = input("Enter the path of the pdf file:")
     print("\n")
-    output_file_name = path_leaf(file_path)[:-4] + "_modified.pdf"
+    output_file_name = f"{path_leaf(file_path)[:-4]}_modified.pdf"
     dic = input_and_parse(len(PdfReader(file_path).pages))
     re_arrange(file_path, output_file_name, dic)
     print("New modified pdf file created succesfully!")

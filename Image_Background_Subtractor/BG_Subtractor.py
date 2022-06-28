@@ -16,8 +16,7 @@ def open_image(path):
     """
     img = cv2.imread(path)
     dim = (512, 512)
-    resized_image = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
-    return resized_image
+    return cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
 
 
 # mouse callback function

@@ -21,16 +21,13 @@ while True:
     with open(hostsPath, 'r+') as file:
         content = file.read()
         for site in websites:
-            if site in content:
-                pass
-            else:
-                file.write(redirect + " " + site + "\n")
-        else:
-            with open(hostsPath, 'r+') as file:
-                content = file.readlines()
-            file.seek(0)
+            if site not in content:
+                file.write(f"{redirect} {site}" + "\n")
+        with open(hostsPath, 'r+') as file:
+            content = file.readlines()
+        file.seek(0)
         for line in content:
-            if not any(site in line for site in websites):
+            if all(site not in line for site in websites):
                 file.write(line)
             file.truncate()
     print("Allowed access!")

@@ -92,14 +92,12 @@ class Bubble(pygame.sprite.Sprite):
     def xcalc(self, angle):
         radians = math.radians(angle)
 
-        xmove = math.cos(radians)*(self.speed)
-        return xmove
+        return math.cos(radians)*(self.speed)
 
     def ycalc(self, angle):
         radians = math.radians(angle)
 
-        ymove = math.sin(radians)*(self.speed) * -1
-        return ymove
+        return math.sin(radians)*(self.speed) * -1
 
 
 class Ary(pygame.sprite.Sprite):
@@ -137,16 +135,14 @@ class Score(object):
     def __init__(self):
         self.total = 0
         self.font = pygame.font.SysFont('merlin', 35)
-        self.render = self.font.render(
-            'Score: ' + str(self.total), True, black, white)
+        self.render = self.font.render(f'Score: {self.total}', True, black, white)
         self.rect = self.render.get_rect()
         self.rect.left = 5
         self.rect.bottom = winhgt - 5
 
     def update(self, dellst):
         self.total += ((len(dellst)) * 10)
-        self.render = self.font.render(
-            'Score: ' + str(self.total), True, black, white)
+        self.render = self.font.render(f'Score: {str(self.total)}', True, black, white)
 
     def draw(self):
         dispsurf.blit(self.render, self.rect)
@@ -208,16 +204,14 @@ def rngame():
                     terminate()
 
         if launchbb == True:
-            if newbb == None:
+            if newbb is None:
                 newbb = Bubble(nxtbb.color)
                 newbb.angle = arrow.angle
 
             newbb.update()
             newbb.draw()
 
-            if newbb.rect.right >= winwdth - 5:
-                newbb.angle = 180 - newbb.angle
-            elif newbb.rect.left <= 5:
+            if newbb.rect.right >= winwdth - 5 or newbb.rect.left <= 5:
                 newbb.angle = 180 - newbb.angle
             launchbb, newbb, score = stbb(bbarr, newbb, launchbb, score)
 
@@ -229,7 +223,7 @@ def rngame():
                         if bbarr[row][col].rect.bottom > (winhgt - arrow.rect.height - 10):
                             return score.total, 'lose'
 
-            if len(fbblist) < 1:
+            if not fbblist:
                 return score.total, 'win'
             gameclrlist = updtclrlist(bbarr)
             random.shuffle(gameclrlist)
@@ -267,10 +261,8 @@ def rngame():
 def mkeblkbrd():
     array = []
 
-    for row in range(aryhgt):
-        col = []
-        for i in range(arywdth):
-            col.append(blank)
+    for _ in range(aryhgt):
+        col = [blank for _ in range(arywdth)]
         array.append(col)
 
     return array
@@ -309,27 +301,25 @@ def setarrpos(array):
 def delextrbb(array):
     for row in range(aryhgt):
         for col in range(len(array[row])):
-            if array[row][col] != blank:
-                if array[row][col].rect.right > winwdth:
-                    array[row][col] = blank
+            if (
+                array[row][col] != blank
+                and array[row][col].rect.right > winwdth
+            ):
+                array[row][col] = blank
 
 
 def updtclrlist(bbarr):
     newColorList = []
     for row in range(len(bbarr)):
-        for col in range(len(bbarr[0])):
-            if bbarr[row][col] != blank:
-                newColorList.append(bbarr[row][col].color)
+        newColorList.extend(
+            bbarr[row][col].color
+            for col in range(len(bbarr[0]))
+            if bbarr[row][col] != blank
+        )
 
     colorSet = set(newColorList)
 
-    if len(colorSet) < 1:
-        colorList = []
-        colorList.append(white)
-        return colorList
-    else:
-
-        return list(colorSet)
+    return list(colorSet) if colorSet else [white]
 
 
 def chkfflotrs(bbarr):
@@ -391,104 +381,60 @@ def stbb(bbarr, newbb, launchbb, score):
     for row in range(len(bbarr)):
         for col in range(len(bbarr[row])):
 
-            if (bbarr[row][col] != blank and newbb != None):
-                if (pygame.sprite.collide_rect(newbb, bbarr[row][col])) or newbb.rect.top < 0:
-                    if newbb.rect.top < 0:
-                        newRow, newcol = addbbtotop(bbarr, newbb)
+            if (bbarr[row][col] != blank and newbb != None) and (
+                (pygame.sprite.collide_rect(newbb, bbarr[row][col]))
+                or newbb.rect.top < 0
+            ):
+                if newbb.rect.top < 0:
+                    newRow, newcol = addbbtotop(bbarr, newbb)
 
-                    elif newbb.rect.centery >= bbarr[row][col].rect.centery:
+                elif newbb.rect.centery >= bbarr[row][col].rect.centery:
 
-                        if newbb.rect.centerx >= bbarr[row][col].rect.centerx:
-                            if row == 0 or (row) % 2 == 0:
-                                newRow = row + 1
-                                newcol = col
-                                if bbarr[newRow][newcol] != blank:
-                                    newRow = newRow - 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
+                    newRow = row + 1
+                    if newbb.rect.centerx >= bbarr[row][col].rect.centerx:
+                        newcol = col if row == 0 or (row) % 2 == 0 else col + 1
+                    elif row == 0 or row % 2 == 0:
+                        newcol = col - 1
+                        newcol = max(newcol, 0)
+                    else:
+                        newcol = col
+                    if bbarr[newRow][newcol] != blank:
+                        newRow = newRow - 1
+                    bbarr[newRow][newcol] = copy.copy(newbb)
+                    bbarr[newRow][newcol].row = newRow
+                    bbarr[newRow][newcol].col = newcol
 
-                            else:
-                                newRow = row + 1
-                                newcol = col + 1
-                                if bbarr[newRow][newcol] != blank:
-                                    newRow = newRow - 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
+                elif (newbb.rect.centerx >= bbarr[row][col].rect.centerx):
+                    newRow = row - 1
+                    newcol = col if (row == 0 or row % 2 == 0) else col + 1
+                    if(bbarr[newRow][newcol] != blank):
+                        newRow = newRow + 1
+                    bbarr[newRow][newcol] = copy.copy(newbb)
+                    bbarr[newRow][newcol].row = newRow
+                    bbarr[newRow][newcol].col = newcol
+                elif newbb.rect.centerx <= bbarr[row][col].rect.centerx:
+                    newRow = row - 1
+                    newcol = col - 1 if (row == 0 or row % 2 == 0) else col
+                    if(bbarr[newRow][newcol] != blank):
+                        newRow = newRow + 1
+                    bbarr[newRow][newcol] = copy.copy(newbb)
+                    bbarr[newRow][newcol].row = newRow
+                    bbarr[newRow][newcol].col = newcol
 
-                        elif newbb.rect.centerx < bbarr[row][col].rect.centerx:
-                            if row == 0 or row % 2 == 0:
-                                newRow = row + 1
-                                newcol = col - 1
-                                if newcol < 0:
-                                    newcol = 0
-                                if bbarr[newRow][newcol] != blank:
-                                    newRow = newRow - 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
-                            else:
-                                newRow = row + 1
-                                newcol = col
-                                if bbarr[newRow][newcol] != blank:
-                                    newRow = newRow - 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
+                popbb(bbarr, newRow, newcol, newbb.color, dellst)
 
-                    elif(newbb.rect.centery < bbarr[row][col].rect.centery):
-                        if(newbb.rect.centerx >= bbarr[row][col].rect.centerx):
-                            if(row == 0 or row % 2 == 0):
-                                newRow = row - 1
-                                newcol = col
-                                if(bbarr[newRow][newcol] != blank):
-                                    newRow = newRow + 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
-                            else:
-                                newRow = row - 1
-                                newcol = col + 1
-                                if bbarr[newRow][newcol] != blank:
-                                    newRow = newRow + 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
+                if(len(dellst) >= 3):
+                    for pos in dellst:
+                        popSound.play()
+                        row = pos[0]
+                        col = pos[1]
+                        bbarr[row][col] = blank
+                    chkfflotrs(bbarr)
 
-                        elif newbb.rect.centerx <= bbarr[row][col].rect.centerx:
-                            if(row == 0 or row % 2 == 0):
-                                newRow = row - 1
-                                newcol = col - 1
-                                if(bbarr[newRow][newcol] != blank):
-                                    newRow = newRow + 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
+                    score.update(dellst)
 
-                            else:
-                                newRow = row - 1
-                                newcol = col
-                                if(bbarr[newRow][newcol] != blank):
-                                    newRow = newRow + 1
-                                bbarr[newRow][newcol] = copy.copy(newbb)
-                                bbarr[newRow][newcol].row = newRow
-                                bbarr[newRow][newcol].col = newcol
-
-                    popbb(bbarr, newRow, newcol, newbb.color, dellst)
-
-                    if(len(dellst) >= 3):
-                        for pos in dellst:
-                            popSound.play()
-                            row = pos[0]
-                            col = pos[1]
-                            bbarr[row][col] = blank
-                        chkfflotrs(bbarr)
-
-                        score.update(dellst)
-
-                    launchbb = False
-                    newbb = None
+                launchbb = False
+                newbb = None
 
     return launchbb, newbb, score
 
@@ -498,11 +444,9 @@ def addbbtotop(bbarr, bubble):
     leftSidex = posx-bubblerad
     coldiv = math.modf(float(leftSidex)/float(bubblewdth))
     col = int(coldiv[1])
-    if (coldiv[0] < 0.5):
-        bbarr[0][col] = copy.copy(bubble)
-    else:
+    if coldiv[0] >= 0.5:
         col += 1
-        bbarr[0][col] = copy.copy(bubble)
+    bbarr[0][col] = copy.copy(bubble)
     row = 0
     return row, col
 
@@ -571,8 +515,16 @@ def covnxtbb():
 
 def endScreen(score, winorlose):
     endFont = pygame.font.SysFont('merlin', 50)
-    endMessage1 = endFont.render('You ' + winorlose + '! Hey Your Scored  ' + str(
-        score) + '. Press Enter to Play Again.', True, black, bgcolor)
+    endMessage1 = endFont.render(
+        (
+            f'You {winorlose}! Hey Your Scored  {str(score)}'
+            + '. Press Enter to Play Again.'
+        ),
+        True,
+        black,
+        bgcolor,
+    )
+
     endMessage1Rect = endMessage1.get_rect()
     endMessage1Rect.center = disprect.center
 
@@ -582,13 +534,19 @@ def endScreen(score, winorlose):
 
     while True:
         for event in pygame.event.get():
-            if(event.type == QUIT):
+            if (
+                event.type != QUIT
+                and event.type == KEYUP
+                and (event.key == K_RETURN)
+            ):
+                return
+            elif (
+                event.type != QUIT
+                and event.type == KEYUP
+                and event.key == K_ESCAPE
+                or (event.type == QUIT)
+            ):
                 terminate()
-            elif(event.type == KEYUP):
-                if(event.key == K_RETURN):
-                    return
-                elif(event.key == K_ESCAPE):
-                    terminate()
 
 
 if __name__ == '__main__':

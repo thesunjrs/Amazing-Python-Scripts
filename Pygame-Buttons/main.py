@@ -32,11 +32,12 @@ class button():
 
     def isOver(self, pos):
         #Pos is the mouse position or a tuple of (x,y) coordinates
-        if pos[0] > self.x and pos[0] < self.x + self.width:
-            if pos[1] > self.y and pos[1] < self.y + self.height:
-                return True
-            
-        return False
+        return (
+            pos[0] > self.x
+            and pos[0] < self.x + self.width
+            and pos[1] > self.y
+            and pos[1] < self.y + self.height
+        )
     
     
 def redraw():
@@ -77,51 +78,46 @@ input_box1 = pg.Rect(140, 170, 170, 50)
 color_inactive = pg.Color((2, 0, 93))
 color_active = pg.Color((33, 224, 239))
 color1 = color_inactive
-        
+
 active1 = False
-        
+
 text1 = ''
 font = pg.font.SysFont('comicsans', 60)
 p1 = font.render('Enter Your Name ', True,(14, 43, 103))
-        
+
 textRectp1 = p1.get_rect()
-   
+
 textRectp1.center = (245, 115)
 
 
-while(game_is_going):
-    while(run):
+while game_is_going:
+    while run:
         redraw()
         pg.display.update()
-        
+
         for event in pg.event.get():
             pos=pg.mouse.get_pos()
-            
+
             if event.type==pg.QUIT:
                 run=False
                 game_is_going=False
                 pg.quit()
-                
-            
-            if event.type == pg.KEYDOWN:
-                if not active1:
-                    if event.key == pg.K_RETURN:
-                        print(text1)
-                        
-                    elif event.key == pg.K_BACKSPACE:
-                        text1 = text1[:-1]
-                    else:
-                        text1 += event.unicode
-                
-        
+
+
+            if event.type == pg.KEYDOWN and not active1:
+                if event.key == pg.K_RETURN:
+                    print(text1)
+
+                elif event.key == pg.K_BACKSPACE:
+                    text1 = text1[:-1]
+                else:
+                    text1 += event.unicode
+
+
             if event.type==pg.MOUSEBUTTONDOWN:
                 
-                if input_box1.collidepoint(event.pos):
-                    # Toggle the active variable.
-                    active1 = not active1
-                else:
-                    active1 = False
-                color1 = color_active if active1 else color_inactive  
+                active1 = not active1 if input_box1.collidepoint(event.pos) else False
+                color1 = color_active if active1 else color_inactive
                 if greenButton.isOver(pos):
                     print("Clicked Enter")
                     run=False
@@ -131,7 +127,7 @@ while(game_is_going):
                     run=False
                     game_is_going=False
                     pg.quit()
-                    
+
             if event.type ==pg.MOUSEMOTION:
                 if greenButton.isOver(pos):
                     greenButton.color=(158,222,11)
@@ -140,12 +136,12 @@ while(game_is_going):
                 else:
                     greenButton.color=(164,235,243)
                     redButton.color=(164,235,243)
-                
-        
-    while(enter_screen):
+
+
+    while enter_screen:
         draw_enter()
         pg.display.update()
-        
+
         for event in pg.event.get():
             pos=pg.mouse.get_pos()
             welcomeButton.text="Hi "+str(text1)
@@ -153,13 +149,12 @@ while(game_is_going):
                 enter_screen=False
                 game_is_going=False
                 pg.quit()
-                
-        
-            if event.type==pg.MOUSEBUTTONDOWN:
-                if backButton.isOver(pos):
-                    print("Gone back")
-                    run=True
-                    enter_screen=False
+
+
+            if event.type == pg.MOUSEBUTTONDOWN and backButton.isOver(pos):
+                print("Gone back")
+                run=True
+                enter_screen=False
             if event.type ==pg.MOUSEMOTION:
                 if welcomeButton.isOver(pos):
                     welcomeButton.color=(158,222,11)
@@ -168,8 +163,8 @@ while(game_is_going):
                 else:
                     welcomeButton.color=(164,235,243)
                     backButton.color=(164,235,243)
-                
-            
+
+
 if __name__=="__main__":
     import ExampleButtons
     

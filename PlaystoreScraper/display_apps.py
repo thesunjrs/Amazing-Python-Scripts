@@ -8,8 +8,7 @@ def sql_connection():
     :return connection object:
     """
     path = os.path.abspath('PlaystoreDatabase.db')
-    con = sqlite3.connect(path)
-    return con
+    return sqlite3.connect(path)
 
 
 def sql_fetcher(con):
@@ -45,7 +44,6 @@ while 1:
     ans = input('\nPress (y) to continue or any other key to exit: ').lower()
     if ans == 'y':
         continue
-    else:
-        print('\nExiting..\n')
-        break
+    print('\nExiting..\n')
+    break
 

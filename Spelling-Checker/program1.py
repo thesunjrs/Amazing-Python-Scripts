@@ -1,9 +1,9 @@
 from textblob import TextBlob
 
 a = "cmputr"  # incorrect spelling
-print("original text: " + str(a))
+print(f"original text: {a}")
 
 b = TextBlob(a)
 
 # prints the corrected spelling
-print("corrected text: " + str(b.correct()))
+print(f"corrected text: {str(b.correct())}")

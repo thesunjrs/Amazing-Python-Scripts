@@ -20,7 +20,7 @@ def calculate_conversion():
 
     # Logic to convert amount to INR (if county code is not INR)
     if fc != 'INR':
-        amount = amount/currency_rates[fc]
+        amount /= currency_rates[fc]
 
     # INR to To_country code
     amount = amount * currency_rates[tc]

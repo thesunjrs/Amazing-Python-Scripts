@@ -54,10 +54,8 @@ Creating ball for the game
         collision_threshold = 5
         block_object = Block.bricks
         brick_destroyed = 1
-        count_row = 0
-        for row in block_object:
-            count_item = 0
-            for item in row:
+        for count_row, row in enumerate(block_object):
+            for count_item, item in enumerate(row):
                 # check collision with gaming window
                 if self.rect.colliderect(item[0]):
                     if abs(self.rect.bottom - item[0].top) < collision_threshold and self.y_speed > 0:
@@ -77,9 +75,6 @@ Creating ball for the game
 
                 if block_object[count_row][count_item][0] != (0, 0, 0, 0):
                     brick_destroyed = 0
-                count_item += 1
-            count_row += 1
-
         if brick_destroyed == 1:
             self.game_over = 1
 
@@ -93,16 +88,19 @@ Creating ball for the game
             self.game_over = -1
 
         # check for collission with base
-        if self.rect.colliderect(user_basepad):
-            if abs(self.rect.bottom - user_basepad.rect.top) < collision_threshold and self.y_speed > 0:
-                self.y_speed *= -1
-                self.x_speed += user_basepad.direction
-                if self.x_speed > self.max_speed:
-                    self.x_speed = self.max_speed
-                elif self.x_speed < 0 and self.x_speed < -self.max_speed:
-                    self.x_speed = -self.max_speed
-                else:
-                    self.x_speed *= -1
+        if (
+            self.rect.colliderect(user_basepad)
+            and abs(self.rect.bottom - user_basepad.rect.top) < collision_threshold
+            and self.y_speed > 0
+        ):
+            self.y_speed *= -1
+            self.x_speed += user_basepad.direction
+            if self.x_speed > self.max_speed:
+                self.x_speed = self.max_speed
+            elif self.x_speed < 0 and self.x_speed < -self.max_speed:
+                self.x_speed = -self.max_speed
+            else:
+                self.x_speed *= -1
 
         self.rect.x += self.x_speed
         self.rect.y += self.y_speed

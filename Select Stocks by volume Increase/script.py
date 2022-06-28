@@ -7,7 +7,7 @@ import os
 print("1) Dataset comparison of stocks")
 print("2) Real time comparison of stocks")
 ch = int(input("Enter choice: "))
-if(ch == 1):
+if ch == 1:
     data = input("Enter file path: ")
     df = pd.read_csv(data)
 
@@ -20,9 +20,7 @@ if(ch == 1):
 
     for stock in df[stocks]:
         stock = stock.upper()
-        if '^' in stock:
-            pass
-        else:
+        if '^' not in stock:
             try:
                 stock_info = yf.Ticker(stock)
 
@@ -38,8 +36,7 @@ if(ch == 1):
     print(increased_stocks)
 
 
-elif(ch == 2):
-
+elif ch == 2:
     api_key = os.environ['api_key']
     stocks = input("Name of the stock: ")
 
@@ -50,12 +47,12 @@ elif(ch == 2):
     close_data = data['4. close']
     percentage_change = close_data.pct_change()
 
-    print("Percentage Change: " + str(percentage_change))
+    print(f"Percentage Change: {str(percentage_change)}")
 
     last_change = percentage_change[-1]
 
     if abs(last_change) > 0.0004:
-        print("Stock Alert:" + str(last_change))
+        print(f"Stock Alert:{str(last_change)}")
 
 else:
     print("Invalid choice")

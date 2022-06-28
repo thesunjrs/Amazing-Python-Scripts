@@ -37,20 +37,19 @@ def rem_count(total_lenth):
     while curr_secs <= total_lenth and mixer.music.get_busy():
         if paused:
             continue
-        else:
-            m, s = divmod(curr_secs, 60)
-            m = round(m)
-            s = round(s)
-            m1, s1 = divmod(total_lenth, 60)
-            m1 = round(m1)
-            s1 = round(s1)
+        m, s = divmod(curr_secs, 60)
+        m = round(m)
+        s = round(s)
+        m1, s1 = divmod(total_lenth, 60)
+        m1 = round(m1)
+        s1 = round(s1)
 
-            time_format = '{:02d}:{:02d}'.format(m, s)
-            time_format1 = '{:02d}:{:02d}'.format(m1, s1)
-            current_lenth['text'] = 'Cuurent Duration : ' + ' ' + time_format
-            time.sleep(1)
-            curr_secs += 1
-            total_lenth -= 1
+        time_format = '{:02d}:{:02d}'.format(m, s)
+        time_format1 = '{:02d}:{:02d}'.format(m1, s1)
+        current_lenth['text'] = 'Cuurent Duration : ' + ' ' + time_format
+        time.sleep(1)
+        curr_secs += 1
+        total_lenth -= 1
 
 
 def Play_music():

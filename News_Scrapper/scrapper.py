@@ -6,12 +6,11 @@ URL = "https://www.indiatoday.in/"
 
 
 def writeToCSV(topTenNews, category):
-    with open("topTen" + category + "News.csv", "w") as file:
+    with open(f"topTen{category}News.csv", "w") as file:
         writer = csv.writer(file)
         writer.writerow(["Date", "Link", "Headline"])
         for news in topTenNews:
-            writer.writerow(
-                [news[2], "https://www.indiatoday.in/" + news[1], news[0]])
+            writer.writerow([news[2], f"https://www.indiatoday.in/{news[1]}", news[0]])
 
 
 def getTopTenFromDivTag(category):
@@ -69,7 +68,7 @@ def main():
     print("Please Choose a Category from the following list")
 
     for index, category in enumerate(categories):
-        print(str(index + 1) + ". " + category.capitalize())
+        print(f"{str(index + 1)}. {category.capitalize()}")
 
     print("Example: Enter 'world' for top 10 world news")
     print()

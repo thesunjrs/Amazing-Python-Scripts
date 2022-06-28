@@ -8,8 +8,7 @@ def sql_connection():
     Establishes a connection to the SQL file database
     :return connection object:
     """
-    con = sqlite3.connect('PlaystoreDatabase.db')
-    return con
+    return sqlite3.connect('PlaystoreDatabase.db')
 
 
 def sql_table(con):

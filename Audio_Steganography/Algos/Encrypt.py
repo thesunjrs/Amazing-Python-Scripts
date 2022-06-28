@@ -75,7 +75,10 @@ class Encrypt:
         except:
             pass
 
-        print(f"This might take some while if either your audio file or your secret message is big")
+        print(
+            "This might take some while if either your audio file or your secret message is big"
+        )
+
 
         # Reading shape of secret message and reshaping
         m1, n1 = self.secret_as_nparr.shape
@@ -116,5 +119,4 @@ class Encrypt:
             return message_reshape, True
         except:
             print("Error !!!")
-            pass
             return None, False

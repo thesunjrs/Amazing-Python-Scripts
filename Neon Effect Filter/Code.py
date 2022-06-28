@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-import os.path 
+import os.path
 from matplotlib import pyplot as plt
 
 img_path = input("Enter the path of image: ")  #example -> C:\Users\xyz\OneDrive\Desktop\project\image.jpg 
@@ -26,6 +26,6 @@ plt.imshow(array1,cmap='gray')
 plt.title("Neon Effect Filtered Photo")
 plt.axis('off')
 filename = os.path.basename(image_path)
-plt.savefig("./Neon Effect Filter/Neon Effect Filter"+filename)  #saved file name as (Filtered)image_name.jpg
+plt.savefig(f"./Neon Effect Filter/Neon Effect Filter{filename}")
 
 plt.show()

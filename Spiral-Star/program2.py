@@ -26,8 +26,7 @@ def draw(n, x, angle):
         begin_fill()
 
         # loop for drawing each star
-        for j in range(5):
-
+        for _ in range(5):
             forward(5 * n - 5 * i)
             right(x)
             forward(5 * n - 5 * i)

@@ -4,8 +4,7 @@ import boto3
 
 
 def get_delete_data(older_days):
-    delete_time = datetime.now(tz=timezone.utc) - timedelta(days=older_days)
-    return delete_time
+    return datetime.now(tz=timezone.utc) - timedelta(days=older_days)
 
 
 def is_ignore_shutdown(tags):
@@ -19,15 +18,13 @@ def is_ignore_shutdown(tags):
 
 
 def is_unassigned(tags):
-    if 'user' not in [t['Key'] for t in tags]:
-        return True
-    return False
+    return 'user' not in [t['Key'] for t in tags]
 
 
 class Ec2Instances(object):
 
     def __init__(self, region):
-        print("region " + region)
+        print(f"region {region}")
 
         # if you are not using AWS Tool Kit tool you will be needing to pass your access key and secret key here
 
@@ -49,11 +46,14 @@ class Ec2Instances(object):
         return delete_snapshots_num
 
     def get_user_created_snapshots(self):
-        snapshots = self.ec2.describe_snapshots(
-            Filters=[{
-                'Name': 'owner-id', 'Values': ['your owner id'],
-            }])  # Filters=[{'Name': 'description', 'Values': ['Created by Nimesa']}]
-        return snapshots
+        return self.ec2.describe_snapshots(
+            Filters=[
+                {
+                    'Name': 'owner-id',
+                    'Values': ['your owner id'],
+                }
+            ]
+        )
 
     def delete_available_volumes(self):
         volumes = self.ec2.describe_volumes()['Volumes']

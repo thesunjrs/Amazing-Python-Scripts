@@ -34,7 +34,7 @@ def result_flame(x, y):
             left = result[:split_index]
             result = right + left
         else:
-            result = result[:len(result) - 1]
+            result = result[:-1]
     return result
 
 

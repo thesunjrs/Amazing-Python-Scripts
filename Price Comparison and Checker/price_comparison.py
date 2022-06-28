@@ -13,47 +13,46 @@ def amazon(item):
     page = requests.get(URL, headers=headers)
     soup = BeautifulSoup(page.content, "html.parser")
     name = "Amazon"
-    # For access to product links un-comment these:
-    #links = []
-    # for link in soup.find_all("a",{"class":"a-link-normal a-text-normal"}, limit = 5):
-    # links.append(link["href"])
+    products = [
+        sp.text
+        for sp in soup.find_all(
+            "span",
+            {
+                "class": [
+                    "a-size-base-plus a-color-base a-text-normal",
+                    "a-size-medium a-color-base a-text-normal",
+                ]
+            },
+            limit=5,
+        )
+    ]
 
-    products = []
-    prices = []
-
-    for sp in soup.find_all("span", {"class": ["a-size-base-plus a-color-base a-text-normal", "a-size-medium a-color-base a-text-normal"]}, limit=5):
-        products.append(sp.text)
-    for p in soup.find_all("span", {"class": "a-price-whole"}, limit=5):
-        # Extracting names of product and their prices
-        prices.append(priceToInt(p.text))
+    prices = [
+        priceToInt(p.text)
+        for p in soup.find_all("span", {"class": "a-price-whole"}, limit=5)
+    ]
 
     if products and prices:
         return cheapest(products, prices, name)
     else:
-        print(name + " search failed.")
+        print(f"{name} search failed.")
 
 
 def flipkart(item):
-    URL = "https://www.flipkart.com/search?q=" + item
+    URL = f"https://www.flipkart.com/search?q={item}"
     page = requests.get(URL, headers=headers)
     soup = BeautifulSoup(page.content, "html.parser")
     name = "Flipkart"
-    # For access to product links un-comment these:
-    #links = []
-
-    products = []
-    prices = []
-    for a in soup.find_all("a", {"class": "s1Q9rs"}, limit=5):
-        products.append(a.text)
-        # links.append(a["href"])
-    for p in soup.find_all("div", {"class": "_30jeq3"}, limit=5):
-        # Extracting names of product and their prices
-        prices.append(priceToInt(p.text))
+    products = [a.text for a in soup.find_all("a", {"class": "s1Q9rs"}, limit=5)]
+    prices = [
+        priceToInt(p.text)
+        for p in soup.find_all("div", {"class": "_30jeq3"}, limit=5)
+    ]
 
     if products and prices:
         return cheapest(products, prices, name)
     else:
-        print(name + " search failed.")
+        print(f"{name} search failed.")
 
 
 def snapdeal(item):
@@ -62,19 +61,22 @@ def snapdeal(item):
     soup = BeautifulSoup(page.content, "html.parser")
     name = "Snapdeal"
 
-    products = []
-    prices = []
+    products = [
+        sp.text
+        for sp in soup.find_all("p", {"class": "product-title"}, limit=5)
+    ]
 
-    for sp in soup.find_all("p", {"class": "product-title"}, limit=5):
-        products.append(sp.text)
-    for p in soup.find_all("span", {"class": "lfloat product-price"}, limit=5):
-        # Extracting names of product and their prices
-        prices.append(priceToInt(p.text))
+    prices = [
+        priceToInt(p.text)
+        for p in soup.find_all(
+            "span", {"class": "lfloat product-price"}, limit=5
+        )
+    ]
 
     if products and prices:
         return cheapest(products, prices, name)
     else:
-        print(name + " search failed.")
+        print(f"{name} search failed.")
 
 
 # HELPER FUNCTIONS
@@ -83,7 +85,7 @@ def cheapest(products, prices, name):
     # Prints top 5 products and returns the cheapest price
     productList = list(zip(products, prices))
     productList.sort(key=lambda x: x[1])
-    print(name.upper() + " TOP 5 PRODUCTS:")
+    print(f"{name.upper()} TOP 5 PRODUCTS:")
     print(tabulate(productList, headers=[
           "Product Name", "Price (Rs.)"]), end="\n\n")
     # Returns only the cheapest price for each website for final comparison
@@ -92,11 +94,7 @@ def cheapest(products, prices, name):
 
 def priceToInt(price):
     # Converts the text scraped from website into integer for proper comparison
-    converted_price = []
-    for i in price:
-        if i.isdigit():
-            converted_price.append(i)  # Extracting only digits
-
+    converted_price = [i for i in price if i.isdigit()]
     # Converting the string price to integer for comparison
     converted_price = int("".join(converted_price))
     return converted_price
@@ -109,7 +107,9 @@ if __name__ == "__main__":
     snapdealPrices = [snapdeal(item), "Snapdeal"]
     if amazonPrices[0] and flipkartPrices[0] and snapdealPrices[0]:
         bestPrice = min(amazonPrices, flipkartPrices, snapdealPrices)
-        print("\nBest product available for your search \"{}\" is on {} at Rs.{}".format(
-            item, bestPrice[1], bestPrice[0]))
+        print(
+            f'\nBest product available for your search \"{item}\" is on {bestPrice[1]} at Rs.{bestPrice[0]}'
+        )
+
     else:
         print("Could not get the best price.")

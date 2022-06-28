@@ -6,19 +6,20 @@ import pandas as pd
 def get_google_news_result(term, count):
     results = []
     obj = parseString(
-        requests.get('http://news.google.com/news?q=%s&output=rss' %
-                     term).text)
+        requests.get(f'http://news.google.com/news?q={term}&output=rss').text
+    )
+
     items = obj.getElementsByTagName('item')
     # Storing the Titles and Links
-    titles = list()
-    links = list()
+    titles = []
+    links = []
     for item in items[:count]:
         title, link = '', ''
         for node in item.childNodes:
-            if node.nodeName == 'title':
-                title = node.childNodes[0].data
-            elif node.nodeName == 'link':
+            if node.nodeName == 'link':
                 link = node.childNodes[0].data
+            elif node.nodeName == 'title':
+                title = node.childNodes[0].data
         titles.append(title)
         links.append(link)
 
@@ -32,4 +33,4 @@ if __name__ == '__main__':
 
     news = {'title': titles, 'links': links}
     df = pd.DataFrame(news, columns=['title', 'links'])
-    df.to_excel('{}_news_scrapper.xlsx'.format(titleName))
+    df.to_excel(f'{titleName}_news_scrapper.xlsx')

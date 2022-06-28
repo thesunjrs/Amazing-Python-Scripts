@@ -5,6 +5,7 @@
     
 """
 
+
 import os
 import requests
 
@@ -20,7 +21,7 @@ whose profile we are requesting
 path = os.getcwd()
 # get the path of the current working directory
 
-if not "fb_dps" in os.listdir(path):
+if "fb_dps" not in os.listdir(path):
     os.mkdir("fb_dps")
 
 """checks if the folder exists in the current working directory.
@@ -32,7 +33,7 @@ fbid=int(input("Enter the Facebook-id to download it's profile picture: "))
 
 try:
     result=requests.get(url.format(fbid))
-    with open("fb_dps/{}_img.jpg".format(fbid),"wb") as file:
+    with open(f"fb_dps/{fbid}_img.jpg", "wb") as file:
         file.write(result.content)
 
 except:

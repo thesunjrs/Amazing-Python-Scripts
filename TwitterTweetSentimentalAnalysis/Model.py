@@ -16,15 +16,13 @@ class model(object):
     def get_authenticated_api(self):
         auth = tweepy.OAuthHandler(self.candidate_key, self.candidate_sec)
         auth.set_access_token(self.access_key, self.access_sec)
-        api = tweepy.API(auth)
-        return api
+        return tweepy.API(auth)
 
     def get_live_tweets_from_Twitter(self, text):
 
         api = self.get_authenticated_api()
 
-        tweet_live = api.search(text, tweet_mode='extended')
-        return tweet_live
+        return api.search(text, tweet_mode='extended')
 
     def analysis_live_tweet_data(self, text):
 

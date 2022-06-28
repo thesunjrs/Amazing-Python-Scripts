@@ -10,14 +10,13 @@ def gen():
 
     passlen = int(input("Enter the Password Length: "))
 
-    s = []
-    s.extend(list(s1))
+    s = list(list(s1))
     s.extend(list(s2))
     s.extend(list(s3))
     s.extend(list(s4))
 
     random.shuffle(s)
-    pas = ("".join(s[0:passlen]))
+    pas = "".join(s[:passlen])
     print(pas)
 
 

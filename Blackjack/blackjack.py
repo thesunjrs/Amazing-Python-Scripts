@@ -14,7 +14,7 @@ class Card:  # Creates all the cards
         self.rank = rank
 
     def __str__(self):
-        return self.rank + ' of ' + self.suit
+        return f'{self.rank} of {self.suit}'
 
 
 class Deck:  # creates a deck of cards
@@ -26,21 +26,17 @@ class Deck:  # creates a deck of cards
     def __init__(self):
         self.deck = []  # haven't created a deck yet
         for suit in Deck.suits:
-            for rank in Deck.ranks:
-                self.deck.append(Card(suit, rank))
+            self.deck.extend(Card(suit, rank) for rank in Deck.ranks)
 
     def __str__(self):
-        deck_comp = ''
-        for card in self.deck:
-            deck_comp += '\n ' + card.__str__()
-        return 'The deck has: ' + deck_comp
+        deck_comp = ''.join('\n ' + card.__str__() for card in self.deck)
+        return f'The deck has: {deck_comp}'
 
     def shuffle(self):  # shuffle all the cards in the deck
         random.shuffle(self.deck)
 
     def deal(self):  # pick out a card from the deck
-        single_card = self.deck.pop()
-        return single_card
+        return self.deck.pop()
 
 
 class Hand:   # show all the cards that the dealer and player have

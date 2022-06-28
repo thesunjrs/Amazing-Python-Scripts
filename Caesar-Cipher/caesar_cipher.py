@@ -1,7 +1,7 @@
 import string as st
 
 letter_list = st.ascii_lowercase
-alphabet = [letter for letter in letter_list]*2
+alphabet = list(letter_list) * 2
 
 
 def caesar(text1, shift1, direction1):
@@ -24,7 +24,7 @@ while should_continue:
     direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
     text = input("Type your message:\n").lower()
     shift = int(input("Type the shift number:\n"))
-    shift = shift % 25
+    shift %= 25
 
     caesar(text, shift, direction)
     choice = input("Type 'yes' to continue otherwise type 'no'.\n")

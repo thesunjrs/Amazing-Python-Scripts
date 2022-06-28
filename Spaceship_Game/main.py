@@ -40,8 +40,14 @@ def drawWindow(red, yellow, red_bullets, yellow_bullets, red_health, yellow_heal
     HEALTH_FONT = pygame.font.SysFont('comicsans', 40)
 
     # Displaying Health by font
-    red_health_text = HEALTH_FONT.render("Health: " + str(red_health), True, (255, 255, 255))
-    yellow_health_text = HEALTH_FONT.render("Health: " + str(yellow_health), True, (255, 255, 255))
+    red_health_text = HEALTH_FONT.render(
+        f"Health: {str(red_health)}", True, (255, 255, 255)
+    )
+
+    yellow_health_text = HEALTH_FONT.render(
+        f"Health: {str(yellow_health)}", True, (255, 255, 255)
+    )
+
     WINDOW.blit(red_health_text, (util.width - red_health_text.get_width() - 10, 10))
     WINDOW.blit(yellow_health_text, (10, 10))
 

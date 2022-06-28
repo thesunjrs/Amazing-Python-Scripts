@@ -13,7 +13,7 @@ def draw_circle(size, angle, shift, shape):
         t.circle(size)
         next_shape = 'square'    # draw next shape as square after circle
     elif shape == 'square':
-        for i in range(4):
+        for _ in range(4):
             t.forward(size * 2)
             t.left(90)
         next_shape = 'circle'

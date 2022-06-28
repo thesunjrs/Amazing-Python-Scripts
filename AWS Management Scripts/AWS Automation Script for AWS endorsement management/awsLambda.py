@@ -1,6 +1,6 @@
 def lambda_handler(event, context):
-    print("event " + str(event))
-    print("context " + str(context))
+    print(f"event {str(event)}")
+    print(f"context {str(context)}")
     ec2_reg = boto3.client('ec2')
     regions = ec2_reg.describe_regions()
     for region in regions['Regions']:

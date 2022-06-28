@@ -63,30 +63,28 @@ def check():
         b1.configure(state=DISABLED)
         l5.configure(text='You have 0 attempts left')
         l4.configure(
-            text='Sorry! All attempts done. The correct answer is ' + str(value), fg='red')
+            text=f'Sorry! All attempts done. The correct answer is {str(value)}',
+            fg='red',
+        )
+
         b2.configure(text='Play Again', command=reset, state=NORMAL)
         b2.grid(row=9, column=1)
         b3.configure(text='Quit', command=root.quit)
         b3.grid(row=9, column=2)
+    elif guessed_num.get() == value:
+        l4.configure(text='Congratulations! You are right')
+        b2.configure(text='Play Again', command=reset, state=NORMAL)
+        b2.grid(row=9, column=1)
+        b3.configure(text='Quit', command=root.quit)
+        b3.grid(row=9, column=2)
+
     else:
-        # if attempts are still left
-
-        # if guessed value is correct
-        if guessed_num.get() == value:
-            l4.configure(text='Congratulations! You are right')
-            b2.configure(text='Play Again', command=reset, state=NORMAL)
-            b2.grid(row=9, column=1)
-            b3.configure(text='Quit', command=root.quit)
-            b3.grid(row=9, column=2)
-
-        # if guessed value is incorrect
+        if guessed_num.get() > value:
+            l4.configure(text='Better Luck Next time! Try a lesser number')
         else:
-            if guessed_num.get() > value:
-                l4.configure(text='Better Luck Next time! Try a lesser number')
-            else:
-                l4.configure(
-                    text='Better Luck Next time! Try a greater number')
-            l5.configure(text='You have ' + str(attempts) + ' attempts left')
+            l4.configure(
+                text='Better Luck Next time! Try a greater number')
+        l5.configure(text=f'You have {attempts} attempts left')
 
 
 l6 = Label(root, text='Input fields cannot be 0', font=font_used, fg='red')

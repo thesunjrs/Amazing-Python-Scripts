@@ -34,10 +34,12 @@ class Button(object):
     def event_handler(self, event):
 
         # change selected color if rectange clicked
-        if event.type == pygame.MOUSEBUTTONDOWN: # is some button clicked
-            if event.button == 1: # is left button clicked
-                if self._rect.collidepoint(event.pos): # is mouse over button
-                    self._index = (self._index+1) % 3 # change image
+        if (
+            event.type == pygame.MOUSEBUTTONDOWN
+            and event.button == 1
+            and self._rect.collidepoint(event.pos)
+        ):
+            self._index = (self._index+1) % 3 # change image
 
 # --- main ---
 
@@ -96,34 +98,30 @@ while running:
             #pygame.quit()
             pygame.quit()
             sys.exit()
-        
+
         # --- buttons events ---
 
         button1.event_handler(event)
         button2.event_handler(event)
         button3.event_handler(event)
-        
-        
+
+
         if event.type==pygame.MOUSEBUTTONDOWN:
-            if rect0.collidepoint(event.pos):
-                    # Toggle the active variable.
-                    act = not act
-            else:
-                    act = False
+            act = not act if rect0.collidepoint(event.pos) else False
             if act:
                 print("You Clicked PNG button")
                 print("Gone back")
                 running=False
                 import main 
-                
-  
+
+
     screen.fill(GRAY)
     screen.blit(img0, rect0)
     screen.blit(p0,textRectp0)
     screen.blit(p1,textRectp1)
     screen.blit(p2,textRectp2)
-    
-    
+
+
     #---Buttons
     button1.draw(screen)
     button2.draw(screen)

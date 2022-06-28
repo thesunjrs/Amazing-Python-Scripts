@@ -100,24 +100,27 @@ while sta:
 
                 l_b_c, u_b_c, l_b_r, u_b_r = generate_bounds(r, c)
 
-                if all([
-                        num not in np_problem[l_b_r:u_b_r, l_b_c:u_b_c], num
-                        not in np_problem[r, :], num not in np_problem[:, c]
-                ]):
-                    if num not in avoid_dict.get(
-                            empty_coordinates.index([n_r, n_c])):
-                        np_problem[n_r, n_c], fix_flag = num, True
+                if all(
+                    [
+                        num not in np_problem[l_b_r:u_b_r, l_b_c:u_b_c],
+                        num not in np_problem[r, :],
+                        num not in np_problem[:, c],
+                    ]
+                ) and num not in avoid_dict.get(
+                    empty_coordinates.index([n_r, n_c])
+                ):
+                    np_problem[n_r, n_c], fix_flag = num, True
 
-                        screen.blit(image_fill, coordinates[n_r][n_c])
-                        pygame.display.update()
+                    screen.blit(image_fill, coordinates[n_r][n_c])
+                    pygame.display.update()
 
-                        label_n1 = font.render(str(num), 2, (0, 0, 200))
-                        screen.blit(label_n1, coordinates[n_r][n_c])
-                        pygame.display.update()
+                    label_n1 = font.render(str(num), 2, (0, 0, 200))
+                    screen.blit(label_n1, coordinates[n_r][n_c])
+                    pygame.display.update()
 
-                        time.sleep(animation_time)
+                    time.sleep(animation_time)
 
-                        break
+                    break
 
             if fix_flag:
                 n_r, n_c = empty_coordinates[

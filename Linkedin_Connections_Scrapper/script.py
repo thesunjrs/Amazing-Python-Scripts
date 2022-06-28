@@ -74,7 +74,7 @@ def scrap_basic(driver):
             "window.scrollTo(0, document.body.scrollHeight);")
 
         # This loop is for bypassing a small bug upon scrolling that causes the Ajax call to be cancelled
-        for i in range(2):
+        for _ in range(2):
             time.sleep(time_to_wait)
             driver.execute_script("window.scrollTo(0, 0);")  # Scroll up to top
             time.sleep(time_to_wait)
@@ -112,7 +112,7 @@ def scrap_basic(driver):
     links = []
     for i in extracted_scrap:
         link = i.get_attribute("href")
-        if "https://www.linkedin.com/in" in link and not link in links:
+        if "https://www.linkedin.com/in" in link and link not in links:
             links.append(link)
     # Return outputs
     return driver, names, headlines, links
@@ -121,12 +121,12 @@ def scrap_basic(driver):
 def scrap_skills(driver, links):
     skill_set = []
     length = len(links)
+    # Bypassing Ajax Call through scrolling through profile multiple sections
+    time_to_wait = 3
     for i in range(length):
         link = links[i]  # Get profile link
         driver.get(link)
 
-        # Bypassing Ajax Call through scrolling through profile multiple sections
-        time_to_wait = 3
         last_height = driver.execute_script(
             "return document.body.scrollHeight")
         while True:
@@ -135,7 +135,7 @@ def scrap_skills(driver, links):
                 "window.scrollTo(0, document.body.scrollHeight);")
 
             # This loop is for bypassing a small bug upon scrolling that causes the Ajax call to be cancelled
-            for i in range(2):
+            for _ in range(2):
                 time.sleep(time_to_wait)
                 driver.execute_script(
                     "window.scrollTo(0, document.body.scrollHeight/4);")
@@ -170,9 +170,7 @@ def scrap_skills(driver, links):
         # Finally extract the skills
         skills = driver.find_elements_by_xpath(
             "//*[starts-with(@class,'pv-skill-category-entity__name-text')]")
-        skill_set_list = []
-        for skill in skills:
-            skill_set_list.append(skill.text)
+        skill_set_list = [skill.text for skill in skills]
         # Append each skill set to its corresponding name
         # Appending all to one string
         skill_set.append(" -- ".join(skill_set_list))
@@ -207,7 +205,7 @@ if __name__ == "__main__":
     print("Successfull Login!")
     print("Commencing 'My-Connections' list scrap...")
     driver, names, headlines, links = scrap_basic(driver)  # Basic Scrap Phase
-    print("Finished basic scrap, scrapped {}".format(len(names)))
+    print(f"Finished basic scrap, scrapped {len(names)}")
 
     if skills:
         print("Commencing 'Skills' scrap...")

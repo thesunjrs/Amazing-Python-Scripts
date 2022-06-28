@@ -51,7 +51,7 @@ cv2.imshow('result',result)
 #Naming the output image
 image_name = path.split(r'/')
 image_path = image_name[-1].split('.')
-output  = r"./ORB Algorithm/"+ image_path[0] + "(featureMatched).jpg"
+output = f"./ORB Algorithm/{image_path[0]}(featureMatched).jpg"
 cv2.imwrite(output,result)
 
 # Print total number of matching points between the training and query images

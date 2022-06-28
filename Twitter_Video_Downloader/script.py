@@ -19,17 +19,17 @@ def Download_vid():
     Status["fg"] = "green"
 
     # Validate input
-    if not "twitter.com" in url:
+    if "twitter.com" not in url:
         Invalid_URL()
         return
     response = requests.get(url)
-    if not response.status_code == 200:
+    if response.status_code != 200:
         Invalid_URL()
         response.close()
         return
     response.close()
 
-    with subprocess.Popen("youtube-dl {} --no-cache-dir".format(url), stdout=subprocess.PIPE, shell=True, universal_newlines=True) as Process:
+    with subprocess.Popen(f"youtube-dl {url} --no-cache-dir", stdout=subprocess.PIPE, shell=True, universal_newlines=True) as Process:
         for line in Process.stdout:
             Download_Window.insert(END, line)
             main.update_idletasks()

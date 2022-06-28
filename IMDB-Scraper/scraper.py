@@ -65,9 +65,7 @@ def find_movie(query):
     resp = requests.get(url)
 # for parsing we have used the lxml parser for optimization purposes, if lxml does not work for you replace 'lxml' with 'html.parser'
     soup1 = bs(resp.text, 'lxml')
-# Since for every query imdb gives about 150-200 responses , we choose the top 5 and return the details for them
-    movie_list = soup1.findAll("tr", attrs={"class": "findResult"})[0:5]
-    if movie_list:
+    if movie_list := soup1.findAll("tr", attrs={"class": "findResult"})[:5]:
         for movie in movie_list:
             # Through the table given , we extract the title id from the 'href' attribute of the <a> tag
             title_id = movie.find(

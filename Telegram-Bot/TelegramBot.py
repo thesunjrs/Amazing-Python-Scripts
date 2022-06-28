@@ -7,8 +7,7 @@ import re
 
 def gett():
     contents = requests.get('https://random.dog/woof.json').json()
-    url = contents['url']
-    return url
+    return contents['url']
 
 
 # function to check allowed extension
@@ -19,14 +18,13 @@ def image_urll():
     ext = ''
     while ext not in extension:
         url = gett()
-        ext = re.search("([^.]*)$", url).group(1).lower()
+        ext = re.search("([^.]*)$", url)[1].lower()
     return url
 
 
 def get():
     contents = requests.get('https://xkcd.com/info.0.json').json()
-    img = contents['img']
-    return img
+    return contents['img']
 
 
 def image_url():
@@ -34,7 +32,7 @@ def image_url():
     ext = ''
     while ext not in extension:
         img = get()
-        ext = re.search("([^.]*)$", img).group(1).lower()
+        ext = re.search("([^.]*)$", img)[1].lower()
     return img
 
 

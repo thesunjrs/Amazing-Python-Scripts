@@ -10,8 +10,7 @@ def sql_connection():
     Establishes a connection to the SQL file database
     :return connection object:
     """
-    con = sqlite3.connect('SubredditDatabase.db')
-    return con
+    return sqlite3.connect('SubredditDatabase.db')
 
 
 def sql_table(con):
@@ -74,7 +73,7 @@ def scraper():
             tag_url = '/top/'
 
         # URL for the desired subreddit
-        url = 'https://old.reddit.com/r/' + subreddit
+        url = f'https://old.reddit.com/r/{subreddit}'
 
         # Using a user-agent to mimic browser activity
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -113,7 +112,7 @@ def scraper():
 
                         # To get the URL of the post
                         link = post.find('a', class_='title')['href']
-                        link = 'www.reddit.com' + link
+                        link = f'www.reddit.com{link}'
 
                         # Entering all the collected information into our database
                         entities = (subreddit, tag, title, author, time_stamp, upvotes, 
@@ -147,9 +146,8 @@ def scraper():
             ans = input('Press (y) to continue or any other key to exit: ').lower()
             if ans == 'y':
                 continue
-            else:
-                print('Exiting..')
-                break
+            print('Exiting..')
+            break
         else:
             print('Error fetching results.. Try again!')
 

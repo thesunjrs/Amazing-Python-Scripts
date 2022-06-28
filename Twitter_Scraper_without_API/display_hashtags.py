@@ -8,8 +8,7 @@ def sql_connection():
     :return connection object:
     """
     path = os.path.abspath('./Twitter_Scraper_without_API/TwitterDatabase.db')
-    con = sqlite3.connect(path)
-    return con
+    return sqlite3.connect(path)
 
 
 def sql_fetcher(con):
@@ -19,7 +18,7 @@ def sql_fetcher(con):
     :return:
     """
     hashtag = input("\nEnter hashtag to search: #")
-    hashtag = '#' + hashtag
+    hashtag = f'#{hashtag}'
     count = 0
     cur = con.cursor()
     cur.execute('SELECT * FROM tweets')  # SQL search query
@@ -44,7 +43,6 @@ while 1:
     ans = input('Press (y) to continue or any other key to exit: ').lower()
     if ans == 'y':
         continue
-    else:
-        print('Exiting..')
-        break
+    print('Exiting..')
+    break
 

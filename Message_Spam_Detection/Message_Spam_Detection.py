@@ -43,27 +43,19 @@ text = input("Enter text: ")
 # data cleaning/preprocessing - removing punctuation and digits
 updated_text = ''
 for i in range(len(text)):
-    if text[i] not in string.punctuation:
-        if text[i].isdigit() == False:
-            updated_text = updated_text+text[i]
+    if text[i] not in string.punctuation and text[i].isdigit() == False:
+        updated_text = updated_text+text[i]
 text = updated_text
 
 # data clearning/preprocessing - tokenization and convert to lower case
 text = re.split("\W+", text.lower())
 
-# data cleaning/preprocessing - stopwords
-updated_list = []
 stopwords = nltk.corpus.stopwords.words('english')
-for i in range(len(text)):
-    if text[i] not in stopwords:
-        updated_list.append(text[i])
+updated_list = [text[i] for i in range(len(text)) if text[i] not in stopwords]
 text = updated_list
 
-# data cleaning/preprocessing - lemmentizing
-updated_list = []
 wordlem = nltk.WordNetLemmatizer()
-for i in range(len(text)):
-    updated_list.append(wordlem.lemmatize(text[i]))
+updated_list = [wordlem.lemmatize(item) for item in text]
 text = updated_list
 
 # data cleaning/preprocessing - mergining token

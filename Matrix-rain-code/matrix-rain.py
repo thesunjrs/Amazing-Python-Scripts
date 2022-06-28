@@ -35,14 +35,13 @@ symbol = [[
 
 while 1:
 
-    chunk_template = ["" for i in range(139)]
+    chunk_template = ["" for _ in range(139)]
     chunk_length = randint(23, 31)
     positions_to_fill = randint(21, 27)
-    symbol_positions = set([randint(0, 138) for j in range(positions_to_fill)])
+    symbol_positions = {randint(0, 138) for _ in range(positions_to_fill)}
     symbol_positions = list(symbol_positions)
 
-    for x in range(chunk_length):
-
+    for _ in range(chunk_length):
         for a in symbol_positions:
 
             row = randint(0, 5)

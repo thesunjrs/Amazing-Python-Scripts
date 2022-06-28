@@ -8,7 +8,7 @@ def send_request_to_API(start_char):
     The function sends request to the API.
     """
     # first 5 characters of hashed password added to the URL
-    url = 'https://api.pwnedpasswords.com/range/' + start_char
+    url = f'https://api.pwnedpasswords.com/range/{start_char}'
     try:
         res = requests.get(url)
 
@@ -18,7 +18,6 @@ def send_request_to_API(start_char):
             return 0
 
         return res
-
 	# In case connection was not even established
     except:
         print('\nConnection Error!!!')
@@ -33,12 +32,7 @@ def get_count(res, suffix):
     # The data has a ':' delimiter separating the hashed password and its count
     results = (line.split(':') for line in res.text.splitlines())
 
-    for hashed, count in results:
-        # Finding match for the last 5 characters of the hashed password
-        if hashed == suffix:
-            return count
-
-    return 0
+    return next((count for hashed, count in results if hashed == suffix), 0)
 
 
 def password_hashing(password):
@@ -55,38 +49,34 @@ def password_hashing(password):
 
 
 def submit_info():
-	"""
+    """
 	The function stores the user input password and displays the result in a
 	pop up window
 	"""
-	# Returns the string obtained from Entry
-	password = pass_var.get()
+    # Returns the string obtained from Entry
+    password = pass_var.get()
 
-	start, end = password_hashing(password)
-	res = send_request_to_API(start)
+    start, end = password_hashing(password)
+    if res := send_request_to_API(start):
+        if num := get_count(res, end):
+            Text = f'Password found {num} times in the dataset.\n Recommended to change it ASAP!'
+        else:
+            Text = 'Your password was not found in the dataset. \nYou have a safe password!'
 
-	if res:
-		num = get_count(res, end)
+    else:
+        Text = 'Error fetching results'
 
-		if num:
-			Text = f'Password found {num} times in the dataset.\n Recommended to change it ASAP!'
-		else:
-			Text = 'Your password was not found in the dataset. \nYou have a safe password!'
+    # Creating a popup window to display results
+    global popup
+    popup = tk.Toplevel()
+    popup.title("Status")
+    popup.geometry("400x100")
 
-	else:
-		Text = 'Error fetching results'
+    tk.Label(popup, text = Text, font = ('DejaVu Serif',11, 'bold')).pack()
+    button = tk.Button(popup, text="OK", command=popup.destroy)
+    button.place(x = 175, y = 50)
 
-	# Creating a popup window to display results
-	global popup
-	popup = tk.Toplevel()
-	popup.title("Status")
-	popup.geometry("400x100")
-
-	tk.Label(popup, text = Text, font = ('DejaVu Serif',11, 'bold')).pack()
-	button = tk.Button(popup, text="OK", command=popup.destroy)
-	button.place(x = 175, y = 50)
-	
-	pass_var.set("")
+    pass_var.set("")
 
 
 def show_call():

@@ -21,7 +21,7 @@ def next():
     n = (n+1) % len(itemslist)
     img1 = itemslist[n]
 
-    image = Image.open(path+"/"+img1)
+    image = Image.open(f"{path}/{img1}")
     copy_image = image.copy()
     photo = ImageTk.PhotoImage(image)
 
@@ -36,7 +36,7 @@ def previous():
     n = (n-1) % len(itemslist)
     img1 = itemslist[n]
 
-    image = Image.open(path+"/"+img1)
+    image = Image.open(f"{path}/{img1}")
     copy_image = image.copy()
     photo = ImageTk.PhotoImage(image)
 
@@ -50,7 +50,7 @@ path = input(r"Enter path for the image folder: ")
 itemslist = os.listdir(path)
 img1 = itemslist[n]
 
-image = Image.open(path+"/"+img1)
+image = Image.open(f"{path}/{img1}")
 copy_image = image.copy()
 photo = ImageTk.PhotoImage(image)
 

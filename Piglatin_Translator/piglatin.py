@@ -5,7 +5,7 @@ def main():
         for k in range(len(sentence)):
                 i = sentence[k]
                 if i[0] in ['a', 'e', 'i', 'o', 'u']:
-                        sentence[k] = i+'yay'
+                        sentence[k] = f'{i}yay'
                 elif t(i) in lst:
                         sentence[k] = i[2:]+i[:2]+'ay'
                 elif i.isalpha() == False:

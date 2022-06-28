@@ -19,7 +19,7 @@ def scrape_news():
     search_topic = config.get('your_settings', 'search_topic')
 
     # set up driver
-    PATH_TO_DRIVER = "./%s" % driver
+    PATH_TO_DRIVER = f"./{driver}"
 
     if driver == 'geckodriver':
         firefox_options = Options_firefox()
@@ -89,8 +89,6 @@ def scrape_news():
     browser.close()
     print('Done. Search results exported to "newsletter.txt"')
 
-    pass
-
 
 def send_email():
 
@@ -126,10 +124,7 @@ def send_email():
 
     print("Email sent!")
 
-    pass
-
 
 if __name__ == "__main__":
     scrape_news()
     send_email()
-    pass

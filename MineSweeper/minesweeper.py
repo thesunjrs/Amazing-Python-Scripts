@@ -102,10 +102,8 @@ def board():
                but51, but52, but53, but54, but55]
     vallist = ['1', '2', '3', '4', '1', '2', '3', '4', '1', '2', '3', '4', '1', '2', '3', '4',
                '1', '2', '3', '4', 'b', 'b', 'b', 'b', 'b']
-    value = {}
     random.shuffle(vallist)  # shuffle for randomness
-    for i in range(25):
-        value[butlist[i]] = vallist[i]  # assining values to buttons
+    value = {butlist[i]: vallist[i] for i in range(25)}
     root.mainloop()
 
 
@@ -144,7 +142,7 @@ def number_clicked(b, n, tk):
         b['text'] = n
         total += n
         value[b] = '0'
-        w['text'] = "Your Score : " + str(total)
+        w['text'] = f"Your Score : {str(total)}"
         if total >= 50:  # if player reached score of 50 he won
             b['text'] = "\U0001f600"
             b['relief'] = SUNKEN

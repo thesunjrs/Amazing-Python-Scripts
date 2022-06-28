@@ -22,17 +22,17 @@ def f3():
 def f4():
     x = 0
     s = e1_val.get()
-    for i in range(0, len(s)):
-        if s[i] == '/' or s[i] == 'X' or s[i] == '+' or s[i] == '-':
-            a = s[0:i]
-            b = s[i + 1:len(s)]
+    for i in range(len(s)):
+        if s[i] in ['/', 'X', '+', '-']:
+            a = s[:i]
+            b = s[i + 1:]
             if s[i] == '-':
                 x = sub(int(a), int(b))
             elif s[i] == '/':
-                x = int(int(a) / int(b))
+                x = int(a) // int(b)
             elif s[i] == 'X':
                 x = int(int(a) * int(b))
-            elif s[i] == '+':
+            else:
                 x = int(add(int(a), int(b)))
 
     e1.delete(first=0, last=len(s))
@@ -58,34 +58,32 @@ def add(x, y):
     a = bin_to_dec(x)
     b = bin_to_dec(y)
     c = a + b
-    d = bin(c).replace("0b", "")
-    return d
+    return bin(c).replace("0b", "")
 
 
 def sub(x, y):
     a = bin_to_dec(x)
     b = bin_to_dec(y)
     c = a - b
-    d = bin(c).replace("0b", "")
-    return d
+    return bin(c).replace("0b", "")
 
 
 def f5():
     x = 0
     s = e1_val.get()
     flag = 1
-    for i in range(0, len(s)):
-        if s[i] == '/' or s[i] == 'X' or s[i] == '+' or s[i] == '-':
+    for i in range(len(s)):
+        if s[i] in ['/', 'X', '+', '-']:
             flag = 0
-            a = s[0:i]
-            b = s[i + 1:len(s)]
+            a = s[:i]
+            b = s[i + 1:]
             if s[i] == '-':
                 x = sub(int(a), int(b))
             elif s[i] == '/':
-                x = int(int(a) / int(b))
+                x = int(a) // int(b)
             elif s[i] == 'X':
                 x = int(int(a) * int(b))
-            elif s[i] == '+':
+            else:
                 x = int(add(int(a), int(b)))
     if flag == 0:
         e1.delete(first=0, last=len(s))
@@ -97,18 +95,18 @@ def f6():
     x = 0
     s = e1_val.get()
     flag = 1
-    for i in range(0, len(s)):
-        if s[i] == '/' or s[i] == 'X' or s[i] == '+' or s[i] == '-':
+    for i in range(len(s)):
+        if s[i] in ['/', 'X', '+', '-']:
             flag = 0
-            a = s[0:i]
-            b = s[i + 1:len(s)]
+            a = s[:i]
+            b = s[i + 1:]
             if s[i] == '-':
                 x = sub(int(a), int(b))
             elif s[i] == '/':
-                x = int(int(a) / int(b))
+                x = int(a) // int(b)
             elif s[i] == 'X':
                 x = int(int(a) * int(b))
-            elif s[i] == '+':
+            else:
                 x = int(add(int(a), int(b)))
     if flag == 0:
         e1.delete(first=0, last=len(s))
@@ -120,18 +118,18 @@ def f7():
     x = 0
     s = e1_val.get()
     flag = 1
-    for i in range(0, len(s)):
-        if s[i] == '/' or s[i] == 'X' or s[i] == '+' or s[i] == '-':
+    for i in range(len(s)):
+        if s[i] in ['/', 'X', '+', '-']:
             flag = 0
-            a = s[0:i]
-            b = s[i + 1:len(s)]
+            a = s[:i]
+            b = s[i + 1:]
             if s[i] == '-':
                 x = sub(int(a), int(b))
             elif s[i] == '/':
-                x = int(int(a) / int(b))
+                x = int(a) // int(b)
             elif s[i] == 'X':
                 x = int(int(a) * int(b))
-            elif s[i] == '+':
+            else:
                 x = int(add(int(a), int(b)))
     if flag == 0:
         e1.delete(first=0, last=len(s))
@@ -143,18 +141,18 @@ def f8():
     x = 0
     s = e1_val.get()
     flag = 1
-    for i in range(0, len(s)):
-        if s[i] == '/' or s[i] == 'X' or s[i] == '+' or s[i] == '-':
+    for i in range(len(s)):
+        if s[i] in ['/', 'X', '+', '-']:
             flag = 0
-            a = s[0:i]
-            b = s[i + 1:len(s)]
+            a = s[:i]
+            b = s[i + 1:]
             if s[i] == '-':
                 x = sub(int(a), int(b))
             elif s[i] == '/':
-                x = int(int(a) / int(b))
+                x = int(a) // int(b)
             elif s[i] == 'X':
                 x = int(int(a) * int(b))
-            elif s[i] == '+':
+            else:
                 x = int(add(int(a), int(b)))
     if flag == 0:
         e1.delete(first=0, last=len(s))

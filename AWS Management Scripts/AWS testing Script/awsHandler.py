@@ -7,8 +7,7 @@ def create_ec2_snapshots(client, volume_id):
 
 
 def create_ec2_volume(client, AZ):
-    ab = client.create_volume(AZ)
-    return ab
+    return client.create_volume(AZ)
 
 
 def create_vpc(client, cidr_block):

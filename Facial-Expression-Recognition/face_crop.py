@@ -39,7 +39,7 @@ def facecrop(image):
         faces = cascade.detectMultiScale(miniframe)
 
         for f in faces:
-            x, y, w, h = [v for v in f]
+            x, y, w, h = list(f)
             cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
             sub_face = img[y:y+h, x:x+w]
@@ -49,7 +49,7 @@ def facecrop(image):
 
             # Change here the Desired directory.
             cv2.imwrite(f_directory + f_name, sub_face)
-            print("Writing: " + image)
+            print(f"Writing: {image}")
 
     except:
         pass
@@ -57,10 +57,7 @@ def facecrop(image):
 
 if __name__ == '__main__':
     images = os.listdir(directory)
-    i = 0
-
-    for img in images:
+    for i, img in enumerate(images):
         file = directory + img
         print(i)
         facecrop(file)
-        i += 1

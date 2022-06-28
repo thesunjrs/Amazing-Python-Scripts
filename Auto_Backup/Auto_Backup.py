@@ -58,7 +58,7 @@ def size_if_newer(source, target):
         target_ts = os.stat(target).st_mtime
     except FileNotFoundError:
         try:
-            target_ts = os.stat(target + '.gz').st_mtime
+            target_ts = os.stat(f'{target}.gz').st_mtime
         except FileNotFoundError:
             target_ts = 0
 
@@ -78,9 +78,7 @@ def threaded_sync_file(source, target, compress):
     Returns: The threads
 
     """
-    size = size_if_newer(source, target)
-
-    if size:
+    if size := size_if_newer(source, target):
         thread = threading.Thread(target=transfer_file,
                                   args=(source, target, size > compress))
         thread.start()
@@ -95,9 +93,7 @@ def sync_file(source, target, compress):
         target: Target for ZIP file
         compress: The compression threshold
     """
-    size = size_if_newer(source, target)
-
-    if size:
+    if size := size_if_newer(source, target):
         transfer_file(source, target, size > compress)
 
 
@@ -111,13 +107,13 @@ def transfer_file(source, target, compress):
     """
     try:
         if compress:
-            with gzip.open(target + '.gz', 'wb') as target_fid:
+            with gzip.open(f'{target}.gz', 'wb') as target_fid:
                 with open(source, 'rb') as source_fid:
                     target_fid.writelines(source_fid)
-            print('Compress {}'.format(source))
+            print(f'Compress {source}')
         else:
             shutil.copy2(source, target)
-            print('Copy {}'.format(source))
+            print(f'Copy {source}')
     except FileNotFoundError:
         os.makedirs(os.path.dirname(target))
         transfer_file(source, target, compress)
@@ -134,7 +130,7 @@ def sync_root(root, arg):
 
     for path, _, files in os.walk(root):
         for source in files:
-            source = path + '/' + source
+            source = f'{path}/{source}'
             threads.append(
                 threaded_sync_file(source, target + source, compress))
     #            sync_file(source, target + source, compress)

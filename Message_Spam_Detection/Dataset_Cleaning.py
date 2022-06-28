@@ -20,22 +20,20 @@ msg.rename(columns={"v1": "label", "v2": "text"}, inplace=True)
 
 # mapping ham=0 and spam=1
 for i in msg.index:
-    if msg['label'][i] == 'ham':
-        msg['label'][i] = 0
-    else:
-        msg['label'][i] = 1
-
+    msg['label'][i] = 0 if msg['label'][i] == 'ham' else 1
 # dropping duplicate columns
 msg = msg.drop_duplicates()
 
 # data cleaning/preprocessing - removing punctuation and digits
 msg['cleaned_text'] = ""
 for i in msg.index:
-    updated_list = []
-    for j in range(len(msg['text'][i])):
-        if msg['text'][i][j] not in string.punctuation:
-            if msg['text'][i][j].isdigit() == False:
-                updated_list.append(msg['text'][i][j])
+    updated_list = [
+        msg['text'][i][j]
+        for j in range(len(msg['text'][i]))
+        if msg['text'][i][j] not in string.punctuation
+        and msg['text'][i][j].isdigit() == False
+    ]
+
     updated_string = "".join(updated_list)
     msg['cleaned_text'][i] = updated_string
 msg.drop(['text'], axis=1, inplace=True)
@@ -49,10 +47,12 @@ for i in msg.index:
 msg['updated_token'] = ""
 stopwords = nltk.corpus.stopwords.words('english')
 for i in msg.index:
-    updated_list = []
-    for j in range(len(msg['token'][i])):
-        if msg['token'][i][j] not in stopwords:
-            updated_list.append(msg['token'][i][j])
+    updated_list = [
+        msg['token'][i][j]
+        for j in range(len(msg['token'][i]))
+        if msg['token'][i][j] not in stopwords
+    ]
+
     msg['updated_token'][i] = updated_list
 msg.drop(['token'], axis=1, inplace=True)
 
@@ -60,9 +60,11 @@ msg.drop(['token'], axis=1, inplace=True)
 msg['lem_text'] = ""
 wordlem = nltk.WordNetLemmatizer()
 for i in msg.index:
-    updated_list = []
-    for j in range(len(msg['updated_token'][i])):
-        updated_list.append(wordlem.lemmatize(msg['updated_token'][i][j]))
+    updated_list = [
+        wordlem.lemmatize(msg['updated_token'][i][j])
+        for j in range(len(msg['updated_token'][i]))
+    ]
+
     msg['lem_text'][i] = updated_list
 msg.drop(['updated_token'], axis=1, inplace=True)
 

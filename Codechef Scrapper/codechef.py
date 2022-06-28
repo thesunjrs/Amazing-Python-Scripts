@@ -30,7 +30,7 @@ def get_problems(category, no_of_problems):
     # A map to store problem name and problem url
     problem_info = {}
     try:
-        driver.get(baseurl + '/' + category)
+        driver.get(f'{baseurl}/{category}')
         # wait till the  first element is loaded
         wait.until(EC.element_to_be_clickable(
             (By.XPATH, "//*[@id='primary-content']/div/div[2]/div/div[2]/table/tbody/tr[1]/td[1]/div/a/b")))
@@ -40,9 +40,13 @@ def get_problems(category, no_of_problems):
 
     for problem_index in range(1, no_of_problems + 1):
         problem_name = driver.find_element_by_xpath(
-            "//*[@id='primary-content']/div/div[2]/div/div[2]/table/tbody/tr[{}]/td[1]/div/a/b".format(problem_index)).text
+            f"//*[@id='primary-content']/div/div[2]/div/div[2]/table/tbody/tr[{problem_index}]/td[1]/div/a/b"
+        ).text
+
         problem_url = driver.find_element_by_xpath(
-            "//*[@id='primary-content']/div/div[2]/div/div[2]/table/tbody/tr[{}]/td[1]/div/a".format(problem_index)).get_attribute('href')
+            f"//*[@id='primary-content']/div/div[2]/div/div[2]/table/tbody/tr[{problem_index}]/td[1]/div/a"
+        ).get_attribute('href')
+
         print(problem_name, " ", problem_url)
         problem_info[problem_name] = problem_url
     return problem_info
@@ -102,7 +106,7 @@ def convert_to_pdf(problem):
     pdf.write(5, 'Problem_Link: ')
     pdf.write(5, url, url)
 
-    pdf.output(title+".pdf")
+    pdf.output(f"{title}.pdf")
 
 
 # main function
@@ -114,10 +118,8 @@ def main():
     info = get_problems(problem_difficulty[category], no_of_problems)
     for name, url in info.items():
         problem = get_problem_description(url, name)
-        if(problem is not None):
+        if (problem is not None):
             convert_to_pdf(problem)
-        else:
-            pass
 
 
 if __name__ == '__main__':

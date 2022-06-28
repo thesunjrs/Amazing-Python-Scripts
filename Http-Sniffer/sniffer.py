@@ -28,8 +28,7 @@ def process_sniffed_packet(packet):
     if packet.haslayer(http.HTTPRequest):
         url = get_url(packet)
         print("[+] HTTP REQUEST >> \n" + url)
-        login_info = get_login_info(packet)
-        if login_info:
+        if login_info := get_login_info(packet):
             print("\n\n[+] possible username/password >>" + login_info +
                   "\n\n")
 

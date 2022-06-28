@@ -13,24 +13,23 @@ def main():
     3) Setting the size
     """
     if len(M) == len(Q):
-        M = "0" + M
+        M = f"0{M}"
+    elif len(Q) > len(M):
+        how = len(Q) - len(M)
+        for _ in range(how):
+            M = f"0{M}"
     else:
-        if len(Q) > len(M):
-            how = len(Q) - len(M)
-            for i in range(0, how, 1):
-                M = "0" + M
-        else:
-            how = len(M) - len(Q)
-            for i in range(0, how - 1, 1):
-                Q = "0" + Q
-    for i in range(0, len(M), 1):
-        A = "0" + A
+        how = len(M) - len(Q)
+        for _ in range(how - 1):
+            Q = f"0{Q}"
+    for _ in range(len(M)):
+        A = f"0{A}"
     size = len(M)
     """
     The Calculation and Line by Line Display begins from here
     """
-    A = "0" + A
-    M = "0" + M
+    A = f"0{A}"
+    M = f"0{M}"
     M2 = twos_complement(M)
     print("Solution=>")
     print("A=", A)
@@ -45,12 +44,12 @@ def main():
     """
     The division will be taking place until the size of the Divisor becomes zero
     """
-    for i in range(size, 0, -1):
+    for _ in range(size, 0, -1):
         """
         Left Shift Operation
         """
-        A = A[1:len(A)] + Q[0]
-        Q = Q[1:len(Q)]
+        A = A[1:] + Q[0]
+        Q = Q[1:]
         printer = A + "\t\t" + Q + "\t\t" + str(size) + "\t\tLeft Shift"
         print(printer)
         """
@@ -63,16 +62,16 @@ def main():
         Bit Checking and AAddition if required
         """
         if A[0] == '0':
-            Q = Q + "1"
+            Q = f"{Q}1"
         else:
-            Q = Q + "0"
+            Q = f"{Q}0"
             A = add(A, M)
         printer = A + "\t\t" + Q + "\t\t" + str(size) + "\t\tBit Checking"
         print(printer)
         """
         Decreasing Size
         """
-        size = size - 1
+        size -= 1
         printer = A + "\t\t" + Q + "\t\t" + str(size)
         print(printer)
 
@@ -83,18 +82,15 @@ def twos_complement(n):
     """
     Performing 1's Complement by changing all zeroes to one
     """
-    for i in range(0, len(n)):
-        if n[i] == '1':
-            a = a + "0"
-        else:
-            a = a + "1"
+    for i in range(len(n)):
+        a = f"{a}0" if n[i] == '1' else f"{a}1"
     """
     Performing 2's complement by adding 1 to the 1's complement
     """
     d = ""
-    for i in range(0, len(a) - 1):
-        d = d + "0"
-    d = d + "1"
+    for _ in range(len(a) - 1):
+        d = f"{d}0"
+    d = f"{d}1"
     c = add(a, d)
     return c
 
@@ -112,30 +108,29 @@ def add(x, y):
         c = y[i]
 
         if a == b and b == c and c == '0':
-            result = "0" + result
+            result = f"0{result}"
             carry = "0"
         elif a == b and b == c and c == '1':
-            result = "1" + result
+            result = f"1{result}"
             carry = "1"
-        else:
-            if a == '1' and b == c and c == '0':
-                result = "1" + result
-                carry = "0"
-            elif a == '0' and b == '1' and c == '0':
-                result = "1" + result
-                carry = "0"
-            elif a == '0' and b == '0' and c == '1':
-                result = "1" + result
-                carry = "0"
-            elif a == '0' and b == '1' and c == '1':
-                result = "0" + result
-                carry = "1"
-            elif a == '1' and b == '0' and c == '1':
-                result = "0" + result
-                carry = "1"
-            elif a == '1' and b == '1' and c == '0':
-                result = "0" + result
-                carry = '1'
+        elif a == '1' and b == c and c == '0':
+            result = f"1{result}"
+            carry = "0"
+        elif a == '0' and b == '1' and c == '0':
+            result = f"1{result}"
+            carry = "0"
+        elif a == '0' and b == '0' and c == '1':
+            result = f"1{result}"
+            carry = "0"
+        elif a == '0' and b == '1' and c == '1':
+            result = f"0{result}"
+            carry = "1"
+        elif a == '1' and b == '0' and c == '1':
+            result = f"0{result}"
+            carry = "1"
+        elif a == '1' and b == '1' and c == '0':
+            result = f"0{result}"
+            carry = '1'
     return result
 
 

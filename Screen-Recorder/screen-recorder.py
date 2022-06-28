@@ -7,7 +7,7 @@ import time
 def screenrecorder():
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     name = int(round(time.time() * 1000))
-    name = '{}.avi'.format(name)
+    name = f'{name}.avi'
     out = cv2.VideoWriter(name, fourcc, 5.0, (1920, 1080))
 
     while True:
